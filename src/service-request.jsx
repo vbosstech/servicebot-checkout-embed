@@ -221,17 +221,7 @@ class ServiceRequest extends React.Component {
                         </div>
                         <div className="request-summary col-xs-12 col-sm-12 col-md-4 col-lg-4">
                             <div className="request-summary-heading">{rightHeading}</div>
-                            <StickyContainer style={{height: "100%"}}>
-                                <Sticky>
-                                    {({
-                                          isSticky,
-                                          wasSticky,
-                                          style,
-                                          distanceFromTop,
-                                          distanceFromBottom,
-                                          calculatedHeight
-                                      }) => {
-                                        return <div style={style}>
+
                                             <div className="request-summary-content">
                                                 {(service.trial_period_days > 0) ? (
                                                     <div className="free-trial-content">{service.trial_period_days} Day
@@ -304,10 +294,7 @@ class ServiceRequest extends React.Component {
                                                 ) : null}
                                             </div>
 
-                                        </div>;
-                                    }}
-                                </Sticky>
-                            </StickyContainer>
+
                         </div>
                     </div>
 
