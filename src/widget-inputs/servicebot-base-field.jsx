@@ -1,6 +1,6 @@
 import React from 'react';
 import CurrencyInput from 'react-currency-input';
-import './css/servicebot-base-field.css';
+import '../css/servicebot-base-field.css';
 import ReactTooltip from 'react-tooltip'
 import {toCents} from "./handleInputs"
 // import CurrencyInput from 'react-currency-masked-input'

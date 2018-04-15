@@ -56,7 +56,7 @@ class ServiceBotBaseForm extends React.Component {
             failureRoute: (this.props.failureRoute || "/"),
             successRoute: (this.props.successRoute || null),
             initialValues: this.props.initialValues || {},
-            helpers: this.props.helpers || {}
+            helpers: this.props.helpers || {},
         };
         this.submitForm = this.submitForm.bind(this);
         this.validate = this.validate.bind(this);
@@ -80,12 +80,37 @@ class ServiceBotBaseForm extends React.Component {
             throw new SubmissionError({_error: e});
         }
     }
+    getRequest(method="GET", body){
+        let headers = {
+            "Content-Type": "application/json"
+        };
+        if(this.props.token){
+            headers["Authorization"] = "JWT " + this.props.token;
+        }
+
+
+
+        let request = { method: method,
+            headers: new Headers(headers),
+
+
+        };
+
+        if(method === "POST" || method==="PUT"){
+            request.body = JSON.stringify(body)
+        }
+        return request;
+    }
 
     async makeCall(values) {
         let self = this;
         let result = null;
+        let request = null;
         try {
-            result = await Fetcher(self.state.submissionRequest.url, self.state.submissionRequest.method, values);
+            if(this.props.token){
+                request = this.getRequest(self.state.submissionRequest.method, values);
+            }
+            result = await Fetcher(self.state.submissionRequest.url, self.state.submissionRequest.method, values, request);
         } catch (e) {
             console.error("Fetch error", e);
             self.setState({loading: false});

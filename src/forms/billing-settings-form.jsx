@@ -65,13 +65,18 @@ function BillingInfo(props) {
 class CreditCardForm extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
+        let state = {
             hasCard: false,
             loading: true,
             card: {},
             alerts: null,
             showForm: false
         };
+        if(props.userFund){
+            state.hasCard= true;
+            state.card = props.userFund.source.card;
+        }
+        this.state = state;
         this.submissionPrep = this.submissionPrep.bind(this);
         // this.checkIfUserHasCard = this.checkIfUserHasCard.bind(this);
         this.handleSuccessResponse = this.handleSuccessResponse.bind(this);
@@ -84,8 +89,7 @@ class CreditCardForm extends React.Component {
         let self = this;
             self.setState({
                 loading: false,
-                hasCard: false,
-                showForm: true
+                showForm: this.props.hasCard
             });
     }
 
@@ -177,7 +181,7 @@ class CreditCardForm extends React.Component {
     render() {
         let submissionRequest = {
             'method': 'POST',
-            'url': `${this.props.url}/api/v1/funds`
+            'url': `${this.props.url}/api/v1/funds`,
         };
 
         if(this.props.submitAPI) {
@@ -185,8 +189,13 @@ class CreditCardForm extends React.Component {
         }
 
 
-
-        let {hasCard, displayName, card: {brand, last4, exp_month, exp_year}} = this.state;
+        let card = {}
+        let {hasCard, displayName} = this.state;
+        if(this.props.userFund){
+            hasCard = true;
+            card = this.props.userFund.source.card;
+        }
+        let {brand, last4, exp_month, exp_year} = card;
 
         let getBrandIcon = ()=>{
             if(brand === 'American Express'){
@@ -257,6 +266,7 @@ class CreditCardForm extends React.Component {
                                     handleResponse={this.handleSuccessResponse}
                                     handleFailure={this.handleFailureResponse}
                                     reShowForm={true}
+                                    token={this.props.token}
                                 />
                             </div>
                         }

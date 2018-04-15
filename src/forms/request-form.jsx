@@ -1,6 +1,6 @@
 import React from 'react';
 import 'react-tagsinput/react-tagsinput.css';
-import '../widget-inputs/css/template-create.css';
+import '../css/template-create.css';
 import {
     Field,
     FormSection,
