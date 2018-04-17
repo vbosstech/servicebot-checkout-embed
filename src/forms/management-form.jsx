@@ -18,11 +18,12 @@ class ServicebotManagedBilling extends React.Component {
             spk: null,
             loading:true,
             cancel_modal: false,
-            token: null
+            token: null,
+            error: null
         };
         this.getServicebotDetails = this.getServicebotDetails.bind(this);
         this.requestCancellation = this.requestCancellation.bind(this);
-        this.requestCancellation = this.requestCancellation.bind(this);
+        this.handleResponse = this.handleResponse.bind(this);
         this.getRequest = this.getRequest.bind(this);
 
     }
@@ -32,6 +33,18 @@ class ServicebotManagedBilling extends React.Component {
         self.getSPK();
         self.getServicebotDetails();
         self.getFundingDetails();
+
+    }
+
+    handleResponse(instance){
+        let self = this;
+        return async (response)=> {
+            self.props.handleResponse && self.props.handleResponse({event: "add_fund",response});
+            if(instance.status === "cancelled"){
+                await self.resubscribe(instance.id)();
+            }
+            self.getFundingDetails();
+        }
 
     }
     async getFundingDetails(){
@@ -66,6 +79,8 @@ class ServicebotManagedBilling extends React.Component {
         return Fetcher(`${self.props.url}/api/v1/service-instances/own`, "GET", null, this.getRequest("GET")).then(function (response) {
             if (!response.error) {
                 self.setState({instances : response});
+            }else{
+                self.setState({error: response.error})
             }
         });
     }
@@ -88,6 +103,7 @@ class ServicebotManagedBilling extends React.Component {
         Fetcher(`${this.props.url}/api/v1/service-instances/${id}/request-cancellation`, null, null, this.getRequest("POST", body)).then(function (response) {
             if (!response.error) {
                 self.getServicebotDetails();
+                self.props.handleResponse && self.props.handleResponse({event: "cancellation", response});
             }
         });
     }
@@ -141,16 +157,23 @@ class ServicebotManagedBilling extends React.Component {
     getBillingForm(){
         let self = this;
         let fund = self.state.funds[0];
+        let buttonText = "Subscribe";
+        if(fund){
+            buttonText ="Update Card";
+        }
+        if(self.state.instances[0].status === "cancelled"){
+            buttonText="Resubscribe"
+        }
         return (
             <div>
                 {self.state.funds.length === 0 || !self.state.funds[0].source ?
                     <div>
                         <p>Add your funding credit/debit card.</p>
-                        <BillingForm token={self.props.token} spk={self.state.spk} submitAPI={`${self.props.url}/${self.state.fund_url}`} />
+                        <BillingForm buttonText={buttonText} handleResponse={self.handleResponse(self.state.instances[0])} token={self.props.token} spk={self.state.spk} submitAPI={`${self.props.url}/${self.state.fund_url}`} />
                     </div>
                     :
                     <div>
-                        <BillingForm token={self.props.token} spk={self.state.spk} submitAPI={`${self.props.url}/${self.state.fund_url}`} userFund={fund} />
+                        <BillingForm handleResponse={self.handleResponse(self.state.instances[0])} buttonText={buttonText} token={self.props.token} spk={self.state.spk} submitAPI={`${self.props.url}/${self.state.fund_url}`} userFund={fund} />
                     </div>
 
                 }
@@ -159,6 +182,7 @@ class ServicebotManagedBilling extends React.Component {
     }
     resubscribe(id){
 
+        return async ()=>{
             let headers = {
                 "Content-Type": "application/json",
                 'Accept': 'application/json'
@@ -167,15 +191,16 @@ class ServicebotManagedBilling extends React.Component {
                 headers["Authorization"] = `JWT ${this.props.token}`;
             }
 
-        let self = this;
-        const URL = this.props.url;
-        return async ()=>{
+            let self = this;
+            const URL = this.props.url;
+
             self.setState({loading:true});
             let updatedInstance = await (await fetch(`${URL}/api/v1/service-instances/${id}/reactivate`, {
                 method : "POST",
                 headers
             })).json();
             await self.getServicebotDetails();
+            self.props.handleResponse && self.props.handleResponse({event: "resubscribe", response: updatedInstance});
             self.setState({"loading" : false})
         }
     }
@@ -183,7 +208,9 @@ class ServicebotManagedBilling extends React.Component {
         let self = this;
         let pageName = 'Account Billing';
         let subtitle = 'Manage your ServiceBot accounts & billing';
-
+        if(this.state.error){
+            return <p>{this.state.error}</p>
+        }
         return (
             <div>
                 <div className="page-servicebot-billing">
@@ -211,7 +238,7 @@ class ServicebotManagedBilling extends React.Component {
                                                                     :
                                                                     <div className="sb-badge yellow m-l-10">{service.status.charAt(0).toUpperCase() + service.status.slice(1)}<i className="fa fa-refresh fa-spin fa-fw"/></div>
                                                                 }
-                                                                {service.status === "cancelled" && <button onClick={self.resubscribe(service.id)}>Resubscribe</button>}
+                                                                {service.status === "cancelled" && self.state.funds[0] && <button onClick={self.resubscribe(service.id)}>Resubscribe</button>}
                                                             </div>
                                                         </div>
                                                         <div className="service-instance-box-content">
@@ -222,13 +249,13 @@ class ServicebotManagedBilling extends React.Component {
                                                 ))}
                                             </div>
                                             :
-                                            <div><p>You currently don't have any managed applications.</p></div>
+                                            <div><p>You currently don't have any subscriptions.</p></div>
                                         }
                                     </div>
 
                                 </div>
                                 :
-                                <div className="fetching"><i className="fa fa-refresh fa-spin fa-fw"/> Loading page. Make sure you are logged in!</div>
+                                <div className="fetching"><i className="fa fa-refresh fa-spin fa-fw"/> Loading Billing Management</div>
                             }
                         </div>
                     </div>

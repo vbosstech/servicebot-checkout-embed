@@ -47,6 +47,7 @@ class BillingForm extends React.Component {
 }
 
 function BillingInfo(props) {
+    console.log(props);
     return (
         <form>
             <CardSection/>
@@ -56,7 +57,7 @@ function BillingInfo(props) {
             <Field name="address_state" type="text" component={inputField} placeholder="State"/>
             {/*<button type="submit">Submit</button>*/}
             <div className="text-right">
-                <Buttons btnType="primary" text="Save Card" onClick={props.handleSubmit} type="submit" value="submit"/>
+                <Buttons btnType="primary" text={props.buttonText || "Save Card"} onClick={props.handleSubmit} type="submit" value="submit"/>
             </div>
         </form>
     )
@@ -70,10 +71,11 @@ class CreditCardForm extends React.Component {
             loading: true,
             card: {},
             alerts: null,
-            showForm: false
+            showForm: true
         };
         if(props.userFund){
             state.hasCard= true;
+            state.showForm = false;
             state.card = props.userFund.source.card;
         }
         this.state = state;
@@ -89,7 +91,6 @@ class CreditCardForm extends React.Component {
         let self = this;
             self.setState({
                 loading: false,
-                showForm: this.props.hasCard
             });
     }
 
@@ -259,6 +260,7 @@ class CreditCardForm extends React.Component {
                             <div className="service-instance-box-content">
                                 <ServiceBotBaseForm
                                     form={BillingInfo}
+                                    formProps={{...this.props}}
                                     initialValues={{...this.state.personalInformation}}
                                     submissionPrep={this.submissionPrep}
                                     submissionRequest={submissionRequest}
