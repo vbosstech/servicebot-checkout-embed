@@ -16,7 +16,7 @@ import getSymbolFromCurrency from 'currency-symbol-map'
 
 import {Price} from "../utilities/price.jsx";
 import Fetcher from "../utilities/fetcher.jsx";
-import {required, email, numericality, length} from 'redux-form-validators'
+import {required, email, numericality, length, confirmation} from 'redux-form-validators'
 import {injectStripe, Elements, StripeProvider} from 'react-stripe-elements';
 import getWidgets from "../core-input-types/client";
 
@@ -152,6 +152,12 @@ class ServiceRequestForm extends React.Component {
                                label="Email Address" validate={[required(), email()]}/>
 
                         {helpers.emailExists && "That email is in use"}
+                        {helpers.setPassword && <div>
+                            <Field name="password" type="password" component={inputField} label="Password" validate={[length({min: 8}), required()]}/>
+                            <Field name="password_confirmation" type="password" label="Password confirmation" component={inputField}
+                                   validate={[confirmation({ field: 'password', fieldLabel: 'Password' })]} />
+
+                        </div>}
                     </div>
                     }
                     <FormSection name="references">
