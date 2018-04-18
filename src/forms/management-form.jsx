@@ -44,6 +44,8 @@ class ServicebotManagedBilling extends React.Component {
                 await self.resubscribe(instance.id)();
             }
             self.getFundingDetails();
+            this.props.setLoading(false);
+
         }
 
     }
@@ -96,6 +98,8 @@ class ServicebotManagedBilling extends React.Component {
     }
 
     requestCancellation(id){
+        this.props.setLoading(true);
+
         let self = this;
         let body = {
             instance_id : id
@@ -104,6 +108,7 @@ class ServicebotManagedBilling extends React.Component {
             if (!response.error) {
                 self.getServicebotDetails();
                 self.props.handleResponse && self.props.handleResponse({event: "cancellation", response});
+                self.props.setLoading(false);
             }
         });
     }
@@ -211,6 +216,17 @@ class ServicebotManagedBilling extends React.Component {
         if(this.state.error){
             return <p>{this.state.error}</p>
         }
+        let buttonStyle = {
+            backgroundColor: "#d32f2f",
+            border: "none",
+            color: "#ffffff"
+        }
+        let buttonStyle2 = {
+            backgroundColor: "#0054d3",
+            border: "none",
+            color: "#ffffff"
+        }
+
         return (
             <div>
                 <div className="page-servicebot-billing">
@@ -232,11 +248,10 @@ class ServicebotManagedBilling extends React.Component {
                                                         <div className="service-instance-box-title">
                                                             {service.name}
                                                             <div className="pull-right">
-                                                                <b><Price value={service.payment_plan.amount} /> / {service.payment_plan.interval}</b>
-                                                                {service.status === "running" || service.status === "requested" || service.status === "in_progress" ?
-                                                                    <button className="btn btn-default btn-rounded btn-sm m-l-5" onClick={this.requestCancellation.bind(this, service.id)}>Cancel Service</button>
-                                                                    :
-                                                                    <div className="sb-badge yellow m-l-10">{service.status.charAt(0).toUpperCase() + service.status.slice(1)}<i className="fa fa-refresh fa-spin fa-fw"/></div>
+                                                                <b><Price value={service.payment_plan.amount} /> / {service.payment_plan.interval}</b><br/>
+                                                                {service.status === "running" || service.status === "requested" || service.status === "in_progress" &&
+                                                                    <button className="btn btn-default btn-rounded btn-sm m-r-5" style={buttonStyle} onClick={this.requestCancellation.bind(this, service.id)}>Cancel Service</button>
+
                                                                 }
                                                                 {service.status === "cancelled" && self.state.funds[0] && <button onClick={self.resubscribe(service.id)}>Resubscribe</button>}
                                                             </div>

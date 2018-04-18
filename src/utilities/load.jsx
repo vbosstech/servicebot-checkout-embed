@@ -1,5 +1,6 @@
 import React from 'react';
-
+import {connect} from "react-redux"
+import {getFormValues} from "redux-form";
 class Load extends React.Component {
 
     constructor(props) {
@@ -57,12 +58,21 @@ class Load extends React.Component {
         }
 
         return(
+            <div>
+            {this.props.loading &&
             <div className="loader" style={style}>
                 <div className={this.state.loadState} style={loadingStyle}></div>
                 <p className={`help-block m-b-0 ${this.state.loadState}`}>{this.state.message}</p>
+            </div>}
             </div>
         );
     }
 }
+function mapStateToProps(state) {
+    return {
+        loading: state.loading
+    }
+}
 
-export default Load;
+
+export default connect(mapStateToProps)(Load);

@@ -330,8 +330,16 @@ class ServiceInstanceForm extends React.Component {
 
     }
 }
+let mapDispatchToProps = function(dispatch){
+    return {
+        setLoading : function(is_loading){
+            dispatch({type: "SET_LOADING", is_loading});
+        }}
+}
+
 
 ServiceInstanceForm = injectStripe(ServiceInstanceForm);
+ServiceInstanceForm = connect(null, mapDispatchToProps)(ServiceInstanceForm)
 
 
 class ServicebotRequestForm extends React.Component {

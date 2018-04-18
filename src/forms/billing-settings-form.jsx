@@ -7,6 +7,7 @@ import {inputField} from "../widget-inputs/servicebot-base-field.jsx";
 import Alerts from '../utilities/alerts.jsx';
 import {Field,} from 'redux-form'
 import Buttons from "../utilities/buttons.jsx";
+import {connect} from "react-redux";
 
 class CardSection extends React.Component {
     render() {
@@ -95,6 +96,7 @@ class CreditCardForm extends React.Component {
     }
 
     async submissionPrep(values) {
+        this.props.setLoading(true);
         let token = await this.props.stripe.createToken({...values});
         if (token.error) {
             let message = token.error;
@@ -106,6 +108,7 @@ class CreditCardForm extends React.Component {
                 icon: 'times',
                 message: message
             }});
+            this.props.setLoading(false);
             throw token.error
         }
         return {user_id: this.props.uid, token_id: token.token.id};
@@ -146,9 +149,10 @@ class CreditCardForm extends React.Component {
 
     handleSuccessResponse(response) {
         //If the billing form is passed in a callback, call it.
+
         if(this.props.handleResponse) {
             this.props.handleResponse(response);
-        //Otherwise, set own alert.
+            //Otherwise, set own alert.
         } else {
             this.setState({ alerts: {
                 type: 'success',
@@ -158,6 +162,7 @@ class CreditCardForm extends React.Component {
             //re-render
             // this.checkIfUserHasCard();
         }
+        this.props.setLoading(false);
 
     }
 
@@ -169,6 +174,8 @@ class CreditCardForm extends React.Component {
                 message: response.error
             }});
         }
+        this.props.setLoading(false);
+
     }
 
     showPaymentForm(){
@@ -236,6 +243,12 @@ class CreditCardForm extends React.Component {
                                  position={{position: 'fixed', bottom: true}} icon={this.state.alerts.icon} /> );
             }
         };
+        let buttonStyle2 = {
+            backgroundColor: "#0054d3",
+            border: "none",
+            color: "#ffffff"
+        }
+
 
         return (
             <div id="payment-form">
@@ -247,14 +260,16 @@ class CreditCardForm extends React.Component {
                     <div className="service-instance-box navy">
                         <div className="service-instance-box-title">
                             {getCard()}
-                            <div className="pull-right">
+                            <div>
+                                <br/>
                                 {!this.state.showForm ?
-                                    <button className="btn btn-default btn-rounded btn-sm m-r-5 application-launcher" onClick={this.showPaymentForm}>Update Payment</button>
+                                    <button style={buttonStyle2} className="btn btn-default btn-rounded btn-sm m-r-5 application-launcher" onClick={this.showPaymentForm}>Update Payment</button>
                                     :
                                     <button className="btn btn-default btn-rounded btn-sm m-r-5 application-launcher" onClick={this.hidePaymentForm}>Cancel</button>
                                 }
 
                             </div>
+
                         </div>
                         {this.state.showForm &&
                             <div className="service-instance-box-content">
@@ -279,6 +294,14 @@ class CreditCardForm extends React.Component {
     }
 }
 
+let mapDispatchToProps = function(dispatch){
+    return {
+        setLoading : function(is_loading){
+            dispatch({type: "SET_LOADING", is_loading});
+        }}
+}
+
 CreditCardForm = injectStripe(CreditCardForm);
+CreditCardForm = connect(null, mapDispatchToProps)(CreditCardForm);
 
 export {CreditCardForm, BillingForm, CardSection};

@@ -6,7 +6,6 @@ import ServicebotRequest from "./service-request.jsx"
 import { Provider } from 'react-redux'
 import { createStore, combineReducers} from 'redux'
 import {reducer as formReducer} from 'redux-form'
-
 class App extends Component {
   render() {
 
@@ -18,10 +17,18 @@ class App extends Component {
                   return state
           }
       }
-
+      const loadingReducer = (state = false, action) => {
+          switch(action.type){
+              case "SET_LOADING" :
+                  return action.is_loading;
+              default:
+                  return state;
+          }
+      };
 
       let store = createStore(combineReducers({
           options,
+          loading : loadingReducer,
           form : formReducer,
       }));
       let Component;
