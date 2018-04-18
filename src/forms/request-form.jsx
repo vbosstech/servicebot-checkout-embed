@@ -254,10 +254,13 @@ class ServiceInstanceForm extends React.Component {
         }
         return {...values, token_id: token.token.id};
     }
-    handleResponse(response){
+    async handleResponse(response){
         this.setState({serviceCreated: true});
         if(this.props.handleResponse){
-            this.props.handleResponse(response);
+            await this.props.handleResponse(response);
+        }
+        if(this.props.redirect){
+            window.location = this.props.redirect;
         }
     }
 
