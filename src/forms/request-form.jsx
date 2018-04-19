@@ -213,6 +213,7 @@ class ServiceInstanceForm extends React.Component {
         this.updatePrice = this.updatePrice.bind(this);
         this.submissionPrep = this.submissionPrep.bind(this);
         this.handleResponse = this.handleResponse.bind(this);
+        this.handleFailure = this.handleFailure.bind(this);
 
     }
 
@@ -242,26 +243,36 @@ class ServiceInstanceForm extends React.Component {
         self.setState({servicePrice: newPrice});
     }
 
-
+    handleFailure(event){
+        this.props.setLoading(false);
+    }
     closeUserLoginModal() {
         this.setState({emailExists: false});
     }
 
     async submissionPrep(values) {
+        this.props.setLoading(true);
         let token = await this.props.stripe.createToken();
         if (token.error) {
+            this.props.setLoading(false);
             throw token.error.message
         }
         return {...values, token_id: token.token.id};
     }
     async handleResponse(response){
         this.setState({serviceCreated: true});
-        if(this.props.handleResponse){
-            await this.props.handleResponse(response);
+        try {
+            if (this.props.handleResponse) {
+                await this.props.handleResponse(response);
+            }
+        }catch(e){
+            console.error(e);
         }
-        if(this.props.redirect){
+        this.props.setLoading(false);
+        if (this.props.redirect) {
             window.location = this.props.redirect;
         }
+
     }
 
 
@@ -288,7 +299,7 @@ class ServiceInstanceForm extends React.Component {
         let self = this;
         let initialValues = this.props.service;
         let initialRequests = [];
-        let submissionPrep;
+        let submissionPrep = (values) => {self.props.setLoading(true); return values;}
         let submissionRequest = {
             'method': 'POST',
             'url': `${this.props.url}/api/v1/service-templates/${this.props.templateId}/request`
@@ -320,6 +331,7 @@ class ServiceInstanceForm extends React.Component {
                     successMessage={successMessage}
                     // successRoute={successRoute}
                     handleResponse={this.handleResponse}
+                    handleFailure={this.handleFailure}
                     formName="serviceInstanceRequestForm"
                     helpers={helpers}
                     validations={this.formValidation}

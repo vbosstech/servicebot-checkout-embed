@@ -127,7 +127,7 @@ class ServiceBotBaseForm extends React.Component {
             console.error("submission error", result.error);
             self.setState({loading: false});
             if(this.props.handleFailure) {
-                self.props.handleFailure(result);
+                await self.props.handleFailure(result);
             }
             // self.props.endSubmit({_error: result.error})
             throw result.error;
