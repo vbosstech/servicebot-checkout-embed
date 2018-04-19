@@ -14,14 +14,16 @@ class Load extends React.Component {
 
     componentDidMount() {
         let self = this;
-        if(this.props.timeout !== false ){
-            this.timeout = setTimeout(function(){
-                self.setState({message: "There seems to be a problem in processing your request. Please try again.", loadState: "done" });
-            }, this.props.timeout || 10000);
-        }
+        console.log("loading");
+        // if(this.props.timeout !== false ){
+        //     this.timeout = setTimeout(function(){
+        //         // self.setState({message: "There seems to be a problem in processing your request. Please try again.", loadState: "done" });
+        //     }, this.props.timeout || 10000);
+        // }
     }
 
     componentWillUnmount() {
+        console.log("unloading");
         clearTimeout(this.timeout);
     }
 
@@ -56,14 +58,14 @@ class Load extends React.Component {
                 };
             }
         }
-
+        console.log("loading:", this.props.loading);
         return(
             <div>
             {this.props.loading &&
-            <div className="loader" style={style}>
-                <div className={this.state.loadState} style={loadingStyle}></div>
+            (<div className="loader" style={style}>
+                <div className={this.state.loadState} style={loadingStyle}/>
                 <p className={`help-block m-b-0 ${this.state.loadState}`}>{this.state.message}</p>
-            </div>}
+            </div>)}
             </div>
         );
     }

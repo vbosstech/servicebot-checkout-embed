@@ -4,6 +4,8 @@ import {Price} from '../utilities/price.jsx';
 import DateFormat from "../utilities/date-format.jsx";
 import {BillingForm} from "./billing-settings-form.jsx";
 import '../css/managed.css';
+import {injectStripe} from "react-stripe-elements";
+import {connect} from "react-redux";
 
 
 
@@ -44,7 +46,7 @@ class ServicebotManagedBilling extends React.Component {
                 await self.resubscribe(instance.id)();
             }
             self.getFundingDetails();
-            this.props.setLoading(false);
+            self.props.setLoading(false);
 
         }
 
@@ -151,7 +153,7 @@ class ServicebotManagedBilling extends React.Component {
                         </div>
                     )
                 }
-            } else {
+            } else {<br/>
                 return (null);
             }
         } else {
@@ -188,6 +190,8 @@ class ServicebotManagedBilling extends React.Component {
     resubscribe(id){
 
         return async ()=>{
+            let self = this;
+            self.props.setLoading(true);
             let headers = {
                 "Content-Type": "application/json",
                 'Accept': 'application/json'
@@ -196,7 +200,6 @@ class ServicebotManagedBilling extends React.Component {
                 headers["Authorization"] = `JWT ${this.props.token}`;
             }
 
-            let self = this;
             const URL = this.props.url;
 
             self.setState({loading:true});
@@ -206,7 +209,7 @@ class ServicebotManagedBilling extends React.Component {
             })).json();
             await self.getServicebotDetails();
             self.props.handleResponse && self.props.handleResponse({event: "resubscribe", response: updatedInstance});
-            self.setState({"loading" : false})
+            self.props.setLoading(false);
         }
     }
     render () {
@@ -249,11 +252,11 @@ class ServicebotManagedBilling extends React.Component {
                                                             {service.name}
                                                             <div className="pull-right">
                                                                 <b><Price value={service.payment_plan.amount} /> / {service.payment_plan.interval}</b><br/>
-                                                                {service.status === "running" || service.status === "requested" || service.status === "in_progress" &&
-                                                                    <button className="btn btn-default btn-rounded btn-sm m-r-5" style={buttonStyle} onClick={this.requestCancellation.bind(this, service.id)}>Cancel Service</button>
+                                                                {(service.status === "running" || service.status === "requested" || service.status === "in_progress") &&
+                                                                <button className="btn btn-default btn-rounded btn-sm m-r-5" style={buttonStyle} onClick={this.requestCancellation.bind(this, service.id)}>Cancel Service</button>
 
                                                                 }
-                                                                {service.status === "cancelled" && self.state.funds[0] && <button onClick={self.resubscribe(service.id)}>Resubscribe</button>}
+                                                                {service.status === "cancelled" && self.state.funds[0] && <button className="btn btn-default btn-rounded btn-sm m-r-5" style={buttonStyle2} onClick={self.resubscribe(service.id)}>Resubscribe</button>}
                                                             </div>
                                                         </div>
                                                         <div className="service-instance-box-content">
@@ -281,6 +284,12 @@ class ServicebotManagedBilling extends React.Component {
     }
 }
 
+let mapDispatchToProps = function(dispatch){
+    return {
+        setLoading : function(is_loading){
+            dispatch({type: "SET_LOADING", is_loading});
+        }}
+}
 
-
+ServicebotManagedBilling = connect(null, mapDispatchToProps)(ServicebotManagedBilling);
 export default ServicebotManagedBilling

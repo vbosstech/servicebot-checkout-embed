@@ -6,6 +6,7 @@ import ServicebotRequest from "./service-request.jsx"
 import { Provider } from 'react-redux'
 import { createStore, combineReducers} from 'redux'
 import {reducer as formReducer} from 'redux-form'
+import Load from "./utilities/load.jsx"
 class App extends Component {
   render() {
 
@@ -45,7 +46,10 @@ class App extends Component {
       return (
       <div className="App">
       <Provider store={store}>
-          <Component {...this.props.config}/>
+          <div>
+              <Load/>
+              <Component {...this.props.config}/>
+          </div>
         </Provider>
       </div>
     );
