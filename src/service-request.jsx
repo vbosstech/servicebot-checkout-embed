@@ -26,7 +26,8 @@ class ServiceRequest extends React.Component {
             image: null,
             icon: null,
             editingMode: false,
-            editingGear: false
+            editingGear: false,
+            error: null
         };
         this.getCoverImage = this.getCoverImage.bind(this);
         this.getIcon = this.getIcon.bind(this);
@@ -120,6 +121,9 @@ class ServiceRequest extends React.Component {
             if (!response.error) {
                 self.setState({service: response});
             } else {
+                if(response.error === "Unauthenticated"){
+                    self.setState({error : "Error: Trying to request unpublished template"});
+                }
                 console.error("Error getting template request data", response);
             }
             self.setState({loading: false});
@@ -147,7 +151,11 @@ class ServiceRequest extends React.Component {
             return (<span></span>);
         } else {
             let {formJSON, options} = this.props;
-            let {service} = this.state;
+            let {service, error} = this.state;
+            if(this.state.error){
+                return (<span>{error}</span>)
+            }
+
             let prefix = getSymbolFromCurrency(service.currency);
 
 
