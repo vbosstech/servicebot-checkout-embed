@@ -119,6 +119,18 @@ class ServiceRequest extends React.Component {
         let self = this;
         Fetcher(`${self.props.url}/api/v1/service-templates/${this.state.id}/request`).then(function (response) {
             if (!response.error) {
+                let propertyOverrides = self.props.propertyOverrides;
+                if(propertyOverrides) {
+                    response.references.service_template_properties = response.references.service_template_properties.map(prop => {
+                        if (propertyOverrides[prop.name]){
+                            prop.prompt_user = false;
+                            prop.private = true;
+                            prop.data = {value : propertyOverrides[prop.name]};
+                        }
+                        return prop;
+                    })
+                }
+
                 self.setState({service: response});
             } else {
                 if(response.error === "Unauthenticated"){
@@ -204,30 +216,31 @@ class ServiceRequest extends React.Component {
                     rightHeading = "Plan Summary";
             }
 
-
+            const requestClasses = this.props.hideSummary ? "col-md-12 col-lg-12" : "col-md-8 col-lg-8";
+            const requestStyle = this.props.hideSummary ? {"border-right": "none"} : {};
             return (
 
                 <div className="request-wrap">
                     {/*{JSON.stringify(this.getPriceData())}*/}
                     <div
                         className="request-content col-lg-offset-1 col-xl-offset-2 col-xs-12 col-sm-12 col-md-12 col-lg-10 col-xl-8">
-                        <div className="request-user-form col-xs-12 col-sm-12 col-md-8 col-lg-8">
-                            <div className="request-form-heading">
+                        <div className={`request-user-form col-xs-12 col-sm-12 ${requestClasses}`} style={requestStyle}>
+                            {!this.props.hideHeaders && <div className="request-form-heading">
                                 {service.name}
-                            </div>
+                            </div>}
                             <div className="request-form-content">
                                 <div className="basic-info">
-                                    <div className="service-request-details">
+                                    {!this.props.hideHeaders && <div className="service-request-details">
                                         <div dangerouslySetInnerHTML={{__html: service.details}}/>
-                                    </div>
+                                    </div>}
                                 </div>
-                                <div className="devider">
+                                {!this.props.hideHeaders && <div className="devider">
                                     <hr/>
-                                </div>
+                                </div>}
                                 <ServiceRequestForm  {...this.props} service={service}/>
                             </div>
                         </div>
-                        <div className="request-summary col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                        {!this.props.hideSummary && <div className="request-summary col-xs-12 col-sm-12 col-md-4 col-lg-4">
                             <div className="request-summary-heading">{rightHeading}</div>
 
                                             <div className="request-summary-content">
@@ -303,7 +316,7 @@ class ServiceRequest extends React.Component {
                                             </div>
 
 
-                        </div>
+                        </div>}
                     </div>
 
                 </div>

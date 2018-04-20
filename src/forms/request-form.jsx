@@ -60,7 +60,7 @@ let renderCustomProperty = (props) => {
                                 validate={required()}
                             />)
                     }else{
-                        if(formJSON[index].data && formJSON[index].data.value){
+                        if(formJSON[index].data && formJSON[index].data.value && !formJSON[index].private){
                             return (
                                 <div className={`form-group form-group-flex`}>
                                     {(formJSON[index].prop_label && formJSON[index].type !== 'hidden') && <label className="control-label form-label-flex-md">{formJSON[index].prop_label}</label>}
@@ -346,7 +346,13 @@ let mapDispatchToProps = function(dispatch){
     return {
         setLoading : function(is_loading){
             dispatch({type: "SET_LOADING", is_loading});
-        }}
+        },
+        setOverrides: (propName, prop) => {
+            if (!event.currentTarget.value || event.currentTarget.value == 'false') {
+                dispatch(change(TEMPLATE_FORM_NAME, `references.${ownProps.member}.private`, false));
+            }
+        }
+    }
 }
 
 
