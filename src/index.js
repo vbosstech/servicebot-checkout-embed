@@ -1,6 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+// import './index.css';
+import './css/servicebot--layout.css'
+import './css/servicebot--form-elements.css'
+import './css/servicebot--text-elements.css'
+import './css/servicebot--colors.css'
 import App from './App';
 import { AppContainer } from 'react-hot-loader'
 

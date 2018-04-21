@@ -1,0 +1,33 @@
+.servicebot--embeddable {
+    font-family: 'Helvetica', sans-serif;
+    font-size: 18px;
+    line-height: 1.6em;
+}
+.servicebot--embeddable h1,
+.servicebot--embeddable h2,
+.servicebot--embeddable h3,
+.servicebot--embeddable h4,
+.servicebot--embeddable h5,
+.servicebot--embeddable h6,
+.servicebot--embeddable p{
+    margin: 0;
+}
+.servicebot--embeddable h4 {
+    font-size: 1.4em;
+}
+.servicebot--embeddable h5 {
+    font-size: 1.2em;
+}
+.servicebot--embeddable h6 {
+    font-size: 1em;
+}
+.servicebot--embeddable p, .servicebot--embeddable span {
+    font-size: 0.88em;
+    font-weight: 300;
+    margin-bottom: 12px;
+}
+
+/* Element Specifics */
+.fe--total-price-value, .fe--total-price-value span{
+    font-weight: 600;
+}

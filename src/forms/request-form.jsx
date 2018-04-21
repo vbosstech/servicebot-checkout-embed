@@ -1,6 +1,6 @@
 import React from 'react';
-import 'react-tagsinput/react-tagsinput.css';
-import '../css/template-create.css';
+// import 'react-tagsinput/react-tagsinput.css';
+// import '../css/template-create.css';
 import {
     Field,
     FormSection,
@@ -137,13 +137,7 @@ class ServiceRequestForm extends React.Component {
         //Sort users and if user does not have name set, set it to the email value which will always be there
 
         return (
-            <div className="service-request-form-body">
-                {/*             <div className="col-md-3">
-                 Tabs
-                 <pre className="" style={{maxHeight: '300px', overflowY: 'scroll'}}>
-                 {JSON.stringify(formJSON, null, 2)}
-                 </pre>
-                 </div>*/}
+            <div className="rf--body">
                 <form onSubmit={handleSubmit}>
 
                     {!helpers.uid &&
@@ -317,7 +311,7 @@ class ServiceInstanceForm extends React.Component {
             submissionPrep = this.submissionPrep;
         }
         return (
-            <div>
+            <div className="rf--form-elements">
                 {needsCard && !this.state.serviceCreated &&
                 <CardSection/>}
 
@@ -389,12 +383,13 @@ class ServicebotRequestForm extends React.Component {
         if(this.state.loading){
             return "Loading";
         }
-        let form = (<StripeProvider apiKey={spk || "no_public_token"}>
+        let form = (
+            <StripeProvider apiKey={spk || "no_public_token"}>
                 <Elements>
                     <ServiceInstanceForm {...this.props}/>
                 </Elements>
             </StripeProvider>
-        )
+        );
         if(this.props.hasStore) {
             return form
         }else {

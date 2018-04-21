@@ -37,7 +37,7 @@ let getPrice = (myService, serviceType = null)=>{
         return (
             <span>
                 <Price value={myService.amount} prefix={prefix}/>
-                {myService.interval_count === 1 ? ' /' : ' / ' + myService.interval_count} {' '+myService.interval}
+                <span>{myService.interval_count === 1 ? ' /' : ' / ' + myService.interval_count} {' '+myService.interval}</span>
             </span>
         );
     }else if (serType === "one_time"){

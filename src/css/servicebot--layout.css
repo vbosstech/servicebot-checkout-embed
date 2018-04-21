@@ -1,0 +1,76 @@
+/* Request form Starts */
+.servicebot--embeddable{
+    position: relative;
+}
+.servicebot--request-user-form-wrapper {
+    display: flex;
+    padding: 15px;
+}
+.rf--form-wrapper.summary-shown {
+    flex-basis: 70%;
+}
+.rf--form-wrapper.summary-hidden {
+    flex-basis: 100%;
+}
+.rf--summary-wrapper {
+    flex-basis: 30%;
+    flex-grow: 1;
+    padding: 0 0 0 20px;
+    position: relative;
+}
+.rf--form-heading, .rf--form-content, .rf--summary-heading{
+    padding: 20px;
+}
+.rf--form, .rf--summary {
+    border: 1px solid #e8e8e8;
+    border-radius: 5px;
+}
+.rf--form-heading, .rf--summary-heading {
+    border-bottom: 1px solid #ededed;
+}
+.rf--summary {
+    position: sticky;
+    top: 20px;
+}
+.rf--details, .rf--form-elements{
+    padding: 20px 0;
+}
+.fe--line-item-pricing-wrapper .subscription-pricing {
+    padding: 4px 20px;
+    display: flex;
+    justify-content: space-between;
+}
+/* Request form Ends */
+
+/* Elements */
+.fe--pricing-breakdown-wrapper, .fe--total-price-wrapper{
+    padding: 20px;
+}
+.fe--total-price-wrapper {
+    border-top: 1px solid #e8e8e8;
+    display: flex;
+    justify-content: space-between;
+}
+
+/* iPad Size or Smaller */
+@media only screen and (max-width: 768px) {
+    .servicebot--request-user-form-wrapper{
+        flex-direction: column;
+    }
+    .rf--summary-wrapper{
+        margin-top: 20px;
+        padding: 0;
+    }
+}
+/* iPhone Size or Smaller */
+@media only screen and (max-width: 414px) {
+    .servicebot--request-user-form-wrapper {
+        padding: 0;
+    }
+    .rf--form-heading, .rf--form-content, .rf--summary-heading {
+        padding: 20px 12px;
+    }
+    .fe--pricing-breakdown-wrapper, .fe--total-price-wrapper{
+        padding: 20px 12px;
+    }
+}

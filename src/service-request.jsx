@@ -169,28 +169,6 @@ class ServiceRequest extends React.Component {
             }
 
             let prefix = getSymbolFromCurrency(service.currency);
-
-
-            const featuredStyle = {
-                height: _.get(options, 'purchase_page_featured_area_height.value', 'auto'),
-                minHeight: _.get(options, 'purchase_page_featured_area_height.value', 'auto'),
-                paddingTop: _.get(options, 'purchase_page_featured_area_padding_top.value', '90px'),
-                paddingBottom: _.get(options, 'purchase_page_featured_area_padding_bottom.value', '0px'),
-            };
-
-            const featuredOverlayStyle = {
-                backgroundColor: _.get(options, 'purchase_page_featured_area_overlay_color.value', '#000000'),
-                opacity: _.get(options, 'purchase_page_featured_area_overlay_opacity.value', '0'),
-            };
-
-            const featuredTextStyle = {
-                color: _.get(options, 'purchase_page_featured_area_text_color.value', '#ffffff'),
-            };
-
-            //const {formJSON, options} = this.props;
-            let service_request_title_description = _.get(options, 'service_request_title_description.value', 'What you are getting');
-            let service_request_title_form = _.get(options, 'service_request_title_form.value', 'Get Your Service');
-            let formAmount = _.get(formJSON, 'amount', 'N/A');
             let {total, adjustments} = this.getPriceData();
             let filteredAdjustments = adjustments.filter(adjustment => adjustment.value > 0);
             let splitPricing = service.split_configuration;
@@ -216,111 +194,106 @@ class ServiceRequest extends React.Component {
                     rightHeading = "Plan Summary";
             }
 
-            const requestClasses = this.props.hideSummary ? "col-md-12 col-lg-12" : "col-md-8 col-lg-8";
-            const requestStyle = this.props.hideSummary ? {"border-right": "none"} : {};
+            const requestClasses = this.props.hideSummary ? "summary-hidden" : "summary-shown";
             return (
-
-                <div className="request-wrap">
+                <div className="servicebot--embeddable servicebot--request-user-form-wrapper custom">
                     {/*{JSON.stringify(this.getPriceData())}*/}
-                    <div
-                        className="request-content col-lg-offset-1 col-xl-offset-2 col-xs-12 col-sm-12 col-md-12 col-lg-10 col-xl-8">
-                        <div className={`request-user-form col-xs-12 col-sm-12 ${requestClasses}`} style={requestStyle}>
-                            {!this.props.hideHeaders && <div className="request-form-heading">
-                                {service.name}
-                            </div>}
-                            <div className="request-form-content">
-                                <div className="basic-info">
-                                    {!this.props.hideHeaders && <div className="service-request-details">
-                                        <div dangerouslySetInnerHTML={{__html: service.details}}/>
-                                    </div>}
+                    <div className={`rf--form-wrapper ${requestClasses}`}>
+                        <div className={`rf--form`}>
+                            {!this.props.hideHeaders &&
+                                <div className="rf--form-heading">
+                                    <h4>{service.name}</h4>
                                 </div>
-                                {!this.props.hideHeaders && <div className="devider">
-                                    <hr/>
-                                </div>}
-                                <ServiceRequestForm  {...this.props} service={service}/>
+                            }
+                            <div className="rf--form-content">
+                                <div className="rf--basic-info">
+                                    {!this.props.hideHeaders &&
+                                        <div className="rf--details">
+                                            <div dangerouslySetInnerHTML={{__html: service.details}}/>
+                                        </div>
+                                    }
+                                </div>
+                                {!this.props.hideHeaders && <div className="divider"><hr/></div>}
+                                <ServiceRequestForm {...this.props} service={service}/>
                             </div>
                         </div>
-                        {!this.props.hideSummary && <div className="request-summary col-xs-12 col-sm-12 col-md-4 col-lg-4">
-                            <div className="request-summary-heading">{rightHeading}</div>
-
-                                            <div className="request-summary-content">
-                                                {(service.trial_period_days > 0) ? (
-                                                    <div className="free-trial-content">{service.trial_period_days} Day
-                                                        Free Trial</div>
-                                                ) : null}
-                                                {(service.type === "subscription" || service.type === "one_time") ? (
-                                                    <div>
-                                                        <div className="pricing-wrapper">
-                                                            <div className="subscription-pricing row m-r-0 m-l-0">
-                                                                {(service.type === "subscription") ? (
-                                                                    <div className="col-md-6 p-r-0 p-l-0">Recurring
-                                                                        Fee</div>) : null}
-                                                                {(service.type === "one_time") ? (
-                                                                    <div className="col-md-6 p-r-0 p-l-0">Base
-                                                                        Cost</div>) : null}
-                                                                <div className="col-md-6 p-r-0 p-l-0 text-right">
-                                                                    <b>{getPrice(service)}</b></div>
-                                                            </div>
-                                                        </div>
-                                                        {filteredAdjustments.map((lineItem, index) => (
-                                                            <div key={"line-" + index} className="pricing-wrapper">
-                                                                <div className="subscription-pricing row m-r-0 m-l-0">
-                                                                    <div
-                                                                        className="col-md-6 p-r-0 p-l-0">{lineItem.name}</div>
-                                                                    <div className="col-md-6 p-r-0 p-l-0 text-right">
-                                                                        <b>{this.getAdjustmentSign(lineItem, prefix)}</b>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        ))}
-                                                        <div className="total-price">
-                                                            <div className="row m-r-0 m-l-0">
-                                                                <div className="col-md-6 p-r-0 p-l-0">Total:</div>
-                                                                <div className="col-md-6 p-r-0 p-l-0 text-right">
-                                                                    <b><Price value={total} prefix={prefix}/></b></div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                ) : null}
-
-                                                {(service.type === "custom") ? (
-                                                    <div className="quote-content">Custom Quote</div>
-                                                ) : null}
-
-                                                {(service.type === "split" && splitPricing) ? (
-                                                    <div>
-                                                        {splitPricing.splits.map((splitItem, index) => (
-                                                            <div key={"split-" + index} className="split-wrapper">
-                                                                <div className="subscription-pricing row m-r-0 m-l-0">
-                                                                    <div
-                                                                        className="col-md-6 p-r-0 p-l-0">{(splitItem.charge_day === 0) ? (
-                                                                        <span>Right Now</span>) : (
-                                                                        <span>After {splitItem.charge_day} Days</span>)}</div>
-                                                                    <div className="col-md-6 p-r-0 p-l-0 text-right"><b><Price
-                                                                        value={splitItem.amount} prefix={prefix}/></b>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        ))}
-                                                        <div className="total-price">
-                                                            <div className="row m-r-0 m-l-0">
-                                                                <div className="col-md-6 p-r-0 p-l-0">Total:</div>
-                                                                <div className="col-md-6 p-r-0 p-l-0 text-right">
-                                                                    <b><Price value={splitTotal} prefix={prefix}/></b>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                ) : null}
-                                            </div>
-
-
-                        </div>}
                     </div>
+                    {!this.props.hideSummary &&
+                        <div className="rf--summary-wrapper">
+                            <div className="rf--summary">
+                                <div className="rf--summary-heading"><h4>{rightHeading}</h4></div>
+                                <div className="rf--summary-content">
+                                    {(service.trial_period_days > 0) ? (
+                                        <div className="rf--free-trial-content">
+                                            {service.trial_period_days} Day Free Trial
+                                        </div>
+                                    ) : null}
+                                    {(service.type === "subscription" || service.type === "one_time") ? (
+                                        <div className="rf--pricing-content">
+                                            <div className="fe--pricing-breakdown-wrapper">
+                                                <div className="subscription-pricing">
+                                                    {(service.type === "subscription") ? (
+                                                        <div className="fe--recurring-fee"><h5>Recurring Fee</h5></div>) : null}
+                                                    {(service.type === "one_time") ? (
+                                                        <div className="fe--base-price"><h5>Base Cost</h5></div>) : null}
+                                                    <div className="fe--base-price-value">
+                                                        {getPrice(service)}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            {filteredAdjustments.map((lineItem, index) => (
+                                                <div key={"line-" + index} className="fe--line-item-pricing-wrapper">
+                                                    <div className="subscription-pricing">
+                                                        <div
+                                                            className="fe--line-item">{lineItem.name}</div>
+                                                        <div className="fe--line-item-price-value">
+                                                            {this.getAdjustmentSign(lineItem, prefix)}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                            <div className="fe--total-price-wrapper">
+                                                <div className="fe--total-price-label"><h5>Total:</h5></div>
+                                                <div className="fe--total-price-value">
+                                                    <Price value={total} prefix={prefix}/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ) : null}
 
+                                    {(service.type === "custom") ? (
+                                        <div className="rf--quote-content">Custom Quote</div>
+                                    ) : null}
+
+                                    {(service.type === "split" && splitPricing) ? (
+                                        <div>
+                                            {splitPricing.splits.map((splitItem, index) => (
+                                                <div key={"split-" + index} className="rf--split-wrapper">
+                                                    <div className="subscription-pricing">
+                                                        <div className="col-md-6 p-r-0 p-l-0">{(splitItem.charge_day === 0) ? (
+                                                            <span>Right Now</span>) : (
+                                                            <span>After {splitItem.charge_day} Days</span>)}</div>
+                                                        <div className="col-md-6 p-r-0 p-l-0 text-right"><b><Price
+                                                            value={splitItem.amount} prefix={prefix}/></b>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                            <div className="total-price">
+                                                <div className="row m-r-0 m-l-0">
+                                                    <div className="col-md-6 p-r-0 p-l-0">Total:</div>
+                                                    <div className="col-md-6 p-r-0 p-l-0 text-right">
+                                                        <b><Price value={splitTotal} prefix={prefix}/></b>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ) : null}
+                                </div>
+                            </div>
+                        </div>
+                    }
                 </div>
-
             );
         }
     }
