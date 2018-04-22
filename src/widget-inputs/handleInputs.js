@@ -80,6 +80,8 @@ module.exports = {
         }
         return (currentPrice  - additions)/multiplication;
     },
+
+
     getPrice : function(properties, handlers, basePrice, cents=false){
         let adjustments = [];
         try {
