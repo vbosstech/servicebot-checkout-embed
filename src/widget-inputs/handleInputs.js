@@ -31,6 +31,7 @@ function getPriceAdjustments(properties, handlers) {
                 const adjuster = handlers[prop.type].priceHandler;
                 let valToPUsh = {
                     name: prop.name,
+                    prop_label: prop.prop_label,
                     type: prop.type,
                     operation: prop.config.pricing.operation,
                     value: adjuster(prop.data, prop.config) || 0

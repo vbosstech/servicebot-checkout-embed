@@ -145,7 +145,7 @@ class ServiceRequest extends React.Component {
             }
 
             let prefix = getSymbolFromCurrency(service.currency);
-            let {total, adjustments} = getPriceData();
+            let {total, adjustments} = getPriceData(formJSON && formJSON.amount, formJSON && formJSON.references.service_template_properties);
             let filteredAdjustments = adjustments.filter(adjustment => adjustment.value > 0);
             let splitPricing = service.split_configuration;
             let splitTotal = 0;
@@ -221,7 +221,7 @@ class ServiceRequest extends React.Component {
                                                 <div key={"line-" + index} className="fe--line-item-pricing-wrapper">
                                                     <div className="subscription-pricing">
                                                         <div
-                                                            className="fe--line-item">{lineItem.name}</div>
+                                                            className="fe--line-item">{lineItem.prop_label}</div>
                                                         <div className="fe--line-item-price-value">
                                                             {this.getAdjustmentSign(lineItem, prefix)}
                                                         </div>
