@@ -276,7 +276,7 @@ class ServicebotManagedBilling extends React.Component {
                                                     <div>Purchased: <b><DateFormat date={service.created_at} time/></b></div>
                                                 </div>
 
-                                                {service.references.service_instance_properties.filter(prop => prop.config.pricing).length > 0 && <button onClick={self.showPropEdit(service)}>Change Plan</button>}
+                                                {!self.props.disablePlanChange && service.references.service_instance_properties.filter(prop => prop.config.pricing).length > 0 && <button onClick={self.showPropEdit(service)}>Change Plan</button>}
 
                                             </div>
                                         ))}
