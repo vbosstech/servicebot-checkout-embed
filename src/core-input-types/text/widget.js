@@ -2,9 +2,10 @@ import React from "react";
 
 
 let Text = (props) => {
+    let {meta: {touched, error, warning}} = props;
     return (
-        <div className="form-group form-group-flex addon-text-widget-input-wrapper">
-            <input className="form-control addon-text-widget-input" {...props.input} type="text" placeholder={props.label}/>
+        <div className={`form-group form-group-flex addon-text-widget-input-wrapper`}>
+            <input className={`form-control addon-text-widget-input${error && touched ? " has-error" : ""}`} {...props.input} type="text" placeholder={props.label}/>
         </div>
     );
 };

@@ -4,9 +4,9 @@ import PriceAdjustment from '../../widget-inputs/WidgetPriceAdjustment';
 import WidgetPricingInput from '../../widget-inputs/WidgetPricingInput.jsx';
 import {OnOffToggleField} from "../../widget-inputs/servicebot-base-field.jsx";
 let Checkbox = (props) => {
-    let {input, configValue, label} = props;
+    let {input, configValue, label, meta: {touched, error, warning}} = props;
     return (
-        <div className={`addon-checkbox-widget-default-value-wrapper`}>
+        <div className={`addon-checkbox-widget-default-value-wrapper${error && touched ? " has-error" : ""}`}>
             <div className="form-group form-group-flex addon-checkbox-widget-default-value">
                 {label && <label className="control-label form-label-flex-md addon-checkbox-widget-default-value-label">{label}</label>}
                 <div className="form-input-flex">
