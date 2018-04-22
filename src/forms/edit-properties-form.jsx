@@ -23,9 +23,9 @@ let renderCustomProperty = (props) => {
        //
         <div>
             {fields.map((customProperty, index) => {
-                    // if(!formJSON[index].config.pricing){
-                    //     return <div/>
-                    // }
+                    if(!formJSON[index].config.pricing){
+                        return <div/>
+                    }
                     let property = widgets[formJSON[index].type];
                     if(formJSON[index].prompt_user){
 
