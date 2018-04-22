@@ -41,7 +41,7 @@ let RenderWidget = (props) => {
                                {id: "divide", name: "Percent off from base price"},
                            ]}/>
 
-                        <div className="form-group form-group-flex addon-widget-pricing-inputs-wrapper">
+                        <div className="addon-widget-pricing-inputs-wrapper">
                             <label className="control-label form-label-flex-md addon-widget-pricing-input-label">Add-On Pricing</label>
                             <Field name={`value`} configValue={configValue} component={widget.pricing}/>
                         </div>

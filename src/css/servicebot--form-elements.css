@@ -1,29 +1,32 @@
-.servicebot--embeddable .form-group {
+.servicebot--embeddable input {
+    padding: 12px 15px;
+    font-size: 0.9em;
+    border-radius: 5px;
+    border: 1px solid #e6e6e6;
+}
+.servicebot--embeddable .rf--body .form-group {
     position: relative;
     display: flex;
     justify-content: space-between;
     margin-bottom: 12px;
 }
-.servicebot--embeddable input {
-    padding: 12px 15px;
-    font-size: 0.9em;
-    color: #e6e6e6;
-    border-radius: 5px;
-    border: 1px solid #e6e6e6;
+.servicebot--embeddable .addon-text-widget-input-wrapper{
+    display: flex;
 }
-
-.form-input-flex {
+.rf--body .form-input-flex {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
     position: relative;
 }
-
-label.control-label {
+.rf--body label.control-label {
     flex-basis: 30%;
 }
 
-input.form-control {
+.rf--body input.form-control {
     flex-basis: 70%;
     flex-grow: 1;
+}
+.servicebot--embeddable span.form-error{
+    margin-bottom: 0;
 }
