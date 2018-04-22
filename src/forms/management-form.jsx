@@ -6,7 +6,7 @@ import {BillingForm} from "./billing-settings-form.jsx";
 import '../css/managed.css';
 import {injectStripe} from "react-stripe-elements";
 import {connect} from "react-redux";
-
+import {ModalEditProperties} from "./edit-properties-form.jsx";
 
 
 class ServicebotManagedBilling extends React.Component {
@@ -21,12 +21,15 @@ class ServicebotManagedBilling extends React.Component {
             loading:true,
             cancel_modal: false,
             token: null,
-            error: null
+            error: null,
+            propEdit: false
         };
         this.getServicebotDetails = this.getServicebotDetails.bind(this);
         this.requestCancellation = this.requestCancellation.bind(this);
         this.handleResponse = this.handleResponse.bind(this);
         this.getRequest = this.getRequest.bind(this);
+        this.showPropEdit = this.showPropEdit.bind(this);
+        this.hidePropEdit = this.hidePropEdit.bind(this);
 
     }
 
@@ -187,6 +190,16 @@ class ServicebotManagedBilling extends React.Component {
             </div>
         );
     }
+    showPropEdit() {
+        this.setState({propEdit: true})
+    }
+
+    hidePropEdit(e) {
+        this.setState({propEdit: false});
+        this.getServicebotDetails();
+
+    }
+
     resubscribe(id){
 
         return async ()=>{
@@ -232,6 +245,7 @@ class ServicebotManagedBilling extends React.Component {
 
         return (
             <div>
+                {this.state.propEdit && <ModalEditProperties token={this.props.token} url={this.props.url} instance={self.state.instances[0]} hide={this.hidePropEdit}/>}
                 <div className="page-servicebot-billing">
                     <div id="service-instance-detail" className="row">
                         <div className="col-md-10 col-lg-8 col-md-offset-1 col-lg-offset-2">
@@ -263,6 +277,7 @@ class ServicebotManagedBilling extends React.Component {
                                                             <div>Status: <b>{service.status}</b></div>
                                                             <div>Purchased: <b><DateFormat date={service.created_at} time/></b></div>
                                                         </div>
+
                                                     </div>
                                                 ))}
                                             </div>
@@ -270,7 +285,7 @@ class ServicebotManagedBilling extends React.Component {
                                             <div><p>You currently don't have any subscriptions.</p></div>
                                         }
                                     </div>
-
+                                    <button onClick={this.showPropEdit}>Change Plan</button>
                                 </div>
                                 :
                                 <div className="fetching"><i className="fa fa-refresh fa-spin fa-fw"/> Loading Billing Management</div>

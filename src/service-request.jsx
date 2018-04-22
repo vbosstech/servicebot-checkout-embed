@@ -12,8 +12,7 @@ const REQUEST_FORM_NAME = "serviceInstanceRequestForm";
 const selector = formValueSelector(REQUEST_FORM_NAME); // <-- same as form name
 import {StickyContainer, Sticky} from 'react-sticky';
 import getSymbolFromCurrency from 'currency-symbol-map'
-import getWidgets from "./core-input-types/client"
-
+import {getPriceData} from "./core-input-types/client";
 class ServiceRequest extends React.Component {
 
     constructor(props) {
@@ -34,7 +33,6 @@ class ServiceRequest extends React.Component {
         this.toggleEditingMode = this.toggleEditingMode.bind(this);
         this.toggleOnEditingGear = this.toggleOnEditingGear.bind(this);
         this.toggleOffEditingGear = this.toggleOffEditingGear.bind(this);
-        this.getPriceData = this.getPriceData.bind(this);
         this.getService = this.getService.bind(this);
     }
 
@@ -92,28 +90,6 @@ class ServiceRequest extends React.Component {
         this.setState({editingGear: false})
     }
 
-    getPriceData() {
-        let {formJSON} = this.props;
-        if (formJSON) {
-            let handlers = getWidgets().reduce((acc, widget) => {
-                acc[widget.type] = widget.handler;
-                return acc;
-
-            }, {});
-            let newPrice = formJSON.amount;
-            let adjustments = [];
-            try {
-                newPrice = getTotalPrice(formJSON.references.service_template_properties, handlers, formJSON.amount);
-                adjustments = getPriceAdjustments(formJSON.references.service_template_properties, handlers)
-            } catch (e) {
-                console.error(e);
-            }
-            return {total: newPrice, adjustments};
-        } else {
-            return {total: 0, adjustments: []};
-        }
-
-    }
 
     getService() {
         let self = this;
@@ -191,7 +167,7 @@ class ServiceRequest extends React.Component {
             let service_request_title_description = _.get(options, 'service_request_title_description.value', 'What you are getting');
             let service_request_title_form = _.get(options, 'service_request_title_form.value', 'Get Your Service');
             let formAmount = _.get(formJSON, 'amount', 'N/A');
-            let {total, adjustments} = this.getPriceData();
+            let {total, adjustments} = getPriceData(formJSON && formJSON.amount, formJSON && formJSON.references.service_template_properties);
             let filteredAdjustments = adjustments.filter(adjustment => adjustment.value > 0);
             let splitPricing = service.split_configuration;
             let splitTotal = 0;
