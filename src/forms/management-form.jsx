@@ -21,7 +21,8 @@ class ServicebotManagedBilling extends React.Component {
             cancel_modal: false,
             token: null,
             error: null,
-            propEdit: false
+            propEdit: false,
+            currentInstance: {}
         };
         this.getServicebotDetails = this.getServicebotDetails.bind(this);
         this.requestCancellation = this.requestCancellation.bind(this);
@@ -189,8 +190,11 @@ class ServicebotManagedBilling extends React.Component {
             </div>
         );
     }
-    showPropEdit() {
-        this.setState({propEdit: true})
+    showPropEdit(instance) {
+        let self = this;
+        return function() {
+            self.setState({propEdit: true, currentInstance : instance});
+        }
     }
 
     hidePropEdit(e) {
@@ -241,7 +245,7 @@ class ServicebotManagedBilling extends React.Component {
 
         return (
             <div className="servicebot__form-container client-custom-selector">
-                {this.state.propEdit && <ModalEditProperties token={this.props.token} url={this.props.url} instance={self.state.instances[0]} hide={this.hidePropEdit}/>}
+                {this.state.propEdit && <ModalEditProperties token={this.props.token} url={this.props.url} instance={self.state.currentInstance} hide={this.hidePropEdit}/>}
 
                 <div className="servicebot__form-manage-user-billing">
                     {self.state.instances.length > 0 ?
@@ -271,13 +275,15 @@ class ServicebotManagedBilling extends React.Component {
                                                     <div>Status: <b>{service.status}</b></div>
                                                     <div>Purchased: <b><DateFormat date={service.created_at} time/></b></div>
                                                 </div>
+
+                                                {service.references.service_instance_properties.filter(prop => prop.config.pricing).length > 0 && <button onClick={self.showPropEdit(service)}>Change Plan</button>}
+
                                             </div>
                                         ))}
                                     </div>
                                     :
                                     <div><p>You currently don't have any subscriptions.</p></div>
                                 }
-                            <button onClick={this.showPropEdit}>Change Plan</button>
 
                         </div>
                         :
