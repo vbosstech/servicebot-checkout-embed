@@ -381,7 +381,11 @@ class ServicebotRequestForm extends React.Component {
 
         let spk = this.props.spk;
         if(this.state.loading){
-            return "Loading";
+            return (
+                <div className="loader">
+                    <div className="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+                </div>
+            );
         }
         let form = (
             <StripeProvider apiKey={spk || "no_public_token"}>
