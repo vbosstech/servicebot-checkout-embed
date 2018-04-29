@@ -59,15 +59,15 @@ class Load extends React.Component {
             }
         }
         console.log("loading:", this.props.loading);
-        return(
-            <div>
-            {this.props.loading &&
-            (<div className="loader" style={style}>
-                <div className={this.state.loadState} style={loadingStyle}/>
-                <p className={`help-block m-b-0 ${this.state.loadState}`}>{this.state.message}</p>
-            </div>)}
-            </div>
-        );
+        if(this.props.loading){
+            return (
+                <div className="page-loader">
+                    <div className="lds-ellipsis"><div/><div/><div/><div/></div>
+                </div>
+            );
+        }else{
+            return <div/>;
+        }
     }
 }
 function mapStateToProps(state) {

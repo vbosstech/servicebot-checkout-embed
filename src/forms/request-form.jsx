@@ -383,7 +383,7 @@ class ServicebotRequestForm extends React.Component {
         if(this.state.loading){
             return (
                 <div className="loader">
-                    <div className="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+                    <div className="lds-ellipsis"><div/><div/><div/><div/></div>
                 </div>
             );
         }
