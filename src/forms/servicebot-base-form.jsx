@@ -202,7 +202,6 @@ class ServiceBotBaseForm extends React.Component {
 
             return (
                 <div>
-                    {this.state.loading && <Load timeout={this.props.loaderTimeout}/>}
                     <ReduxFormWrapper {...this.props.formProps} helpers={this.props.helpers} onSubmit={this.submitForm} />
                 </div>
             );

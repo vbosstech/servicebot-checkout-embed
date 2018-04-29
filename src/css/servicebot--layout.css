@@ -52,29 +52,6 @@
     justify-content: space-between;
 }
 
-/* iPad Size or Smaller */
-@media only screen and (max-width: 768px) {
-    .servicebot--request-user-form-wrapper{
-        flex-direction: column;
-    }
-    .rf--summary-wrapper{
-        margin-top: 20px;
-        padding: 0;
-    }
-}
-/* iPhone Size or Smaller */
-@media only screen and (max-width: 414px) {
-    .servicebot--request-user-form-wrapper {
-        padding: 0;
-    }
-    .rf--form-heading, .rf--form-content, .rf--summary-heading {
-        padding: 20px 12px;
-    }
-    .fe--pricing-breakdown-wrapper, .fe--total-price-wrapper{
-        padding: 20px 12px;
-    }
-}
-
 /* Loader */
 .page-loader {
     position: fixed;
@@ -83,12 +60,14 @@
     width: 100vw;
     background: #ffffffab;
 }
-
-.page-loader > div {
+.page-loader > div, .page-loader .page-loader-text{
     position: absolute;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
+}
+.page-loader .page-loader-text{
+    transform: translate(-50%, 50%);
 }
 .loader{
     position: relative;
@@ -211,5 +190,52 @@
     width: 9px;
     height: 1px;
     background-color: currentColor;
+}
+
+
+/* iPad Size or Smaller */
+@media only screen and (max-width: 768px) {
+    .servicebot--request-user-form-wrapper{
+        flex-direction: column;
+    }
+    .rf--summary-wrapper{
+        margin-top: 20px;
+        padding: 0;
+    }
+}
+/* iPhone Size or Smaller */
+@media only screen and (max-width: 414px) {
+    .servicebot--request-user-form-wrapper {
+        padding: 0;
+    }
+    .rf--form-heading, .rf--form-content, .rf--summary-heading {
+        padding: 20px 12px;
+    }
+    .fe--pricing-breakdown-wrapper, .fe--total-price-wrapper{
+        padding: 20px 12px;
+    }
+    .mbf--current-services-list {
+        flex-direction: column;
+    }
+
+    .mbf--current-services-item {
+        margin: 8px 0 !important;
+    }
+    .mbf--card-wrapper{
+        width: 269pt;
+    }
+    .mbf--card-display{
+        padding: 32% 5% 5%;
+    }
+    .mbf--card-first-12 span{
+        width: 9px;
+        height: 9px;
+    }
+    .mbf--card-chip{
+        top: 34%;
+    }
+    form.mbf--funding-personal-info button[type="submit"]{
+        margin-left: 0;
+    }
 }
 

@@ -283,7 +283,10 @@ class ServicebotManagedBilling extends React.Component {
 
                         </div>
                         :
-                        <div className="fetching"><i className="fa fa-refresh fa-spin fa-fw"/> Loading Billing Management</div>
+                        <div className="page-loader">
+                            <div className="lds-ellipsis"><div/><div/><div/><div/></div>
+                            <p className="page-loader-text">Billing Management</p>
+                        </div>
                     }
                 </div>
             </div>
