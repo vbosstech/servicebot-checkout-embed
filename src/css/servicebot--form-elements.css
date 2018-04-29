@@ -52,7 +52,6 @@
 .servicebot--embeddable input.hidden.checkbox {
     display: none;
 }
-
 .servicebot--embeddable .iconToggleField.slideToggle {
     width: 20px !important;
     height: 20px !important;
@@ -113,9 +112,20 @@
     border-radius: 5px;
     border: none;
 }
-
+/* Buttons */
 .servicebot--embeddable button.btn-bar.submit-request:hover {
     background: #007bff;
+    cursor: pointer;
+}
+/* Default Button */
+button, button.btn-default {
+    padding: 7px 12px;
+    border: none;
+    background: #0f407c;
+    color: white;
+    border-radius: 5px;
+    font-size: 15px;
+    font-weight: 300;
     cursor: pointer;
 }
 /* Stripe Element */
@@ -125,4 +135,69 @@
     font-size: 0.9em;
     border-radius: 5px;
     border: 1px solid #e6e6e6;
+}
+
+/* Manage Billing Form */
+.mbf--update-funding-wrapper {
+    padding: 15px;
+    margin: 15px 0;
+    background: #eaeaea;
+    border-radius: 5px;
+}
+
+.mbf--update-funding.help-text {
+    margin: 0;
+}
+.btn-default.mbf--btn-update-funding {
+    margin-top: 20px;
+}
+/* Manage Billing Form - Stripe element */
+#mbf--funding-form {
+    margin-bottom: 40px;
+}
+.mbf--funding-form-element .StripeElement {
+    margin: 0 0 10px;
+    background: white;
+}
+.mbf--funding-form-element .form-group{
+    margin-bottom: 5px;
+}
+button.mf--btn-cancel-update-funding {
+    margin-top: 5px;
+    background: #4f729c;
+}
+button.mf--btn-cancel-update-funding {
+    margin-top: 5px;
+    background: #4f729c;
+}
+form.mbf--funding-personal-info {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+form.mbf--funding-personal-info .form-input-flex {
+    display: flex;
+}
+form.mbf--funding-personal-info div#card-element {
+    flex-basis: 100%;
+}
+form.mbf--funding-personal-info .form-group:nth-child(2), form.mbf--funding-personal-info .form-group:nth-child(3) {
+    flex-basis: 100%;
+}
+form.mbf--funding-personal-info input[name=name], form.mbf--funding-personal-info input[name=address_line1] {
+    flex-basis: 100%;
+    flex-grow: 1;
+}
+form.mbf--funding-personal-info .form-group:nth-child(3) {
+    flex-basis: 100%;
+}
+form.mbf--funding-personal-info > div {
+    flex-basis: 38%;
+    flex-grow: 1;
+}
+form.mbf--funding-personal-info button[type="submit"] {
+    margin-left: 15px;
+    line-height: 8px;
+    max-height: 43px;
+    margin-top: 1px;
 }

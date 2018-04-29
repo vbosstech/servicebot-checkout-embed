@@ -6,7 +6,6 @@ import {BillingForm} from "./billing-settings-form.jsx";
 import '../css/managed.css';
 import {injectStripe} from "react-stripe-elements";
 import {connect} from "react-redux";
-import {ModalEditProperties} from "./edit-properties-form.jsx";
 
 class ServicebotManagedBilling extends React.Component {
 
@@ -170,8 +169,8 @@ class ServicebotManagedBilling extends React.Component {
         return (
             <div>
                 {self.state.funds.length === 0 || !self.state.funds[0].source ?
-                    <div>
-                        <p>Add your funding credit/debit card.</p>
+                    <div className="mbf--funding-card-wrapper">
+                        <p className="mbf--add-funding-message">Add your funding credit/debit card.</p>
                         <BillingForm buttonText={buttonText}
                                      handleResponse={self.handleResponse(self.state.instances[0])}
                                      token={self.props.token} spk={self.state.spk}
@@ -244,10 +243,10 @@ class ServicebotManagedBilling extends React.Component {
         };
 
         return (
-            <div className="servicebot__form-container client-custom-selector">
+            <div className="servicebot--embeddable servicebot--manage-billing-form-wrapper custom">
                 {this.state.propEdit && <ModalEditProperties token={this.props.token} url={this.props.url} instance={self.state.currentInstance} hide={this.hidePropEdit}/>}
 
-                <div className="servicebot__form-manage-user-billing">
+                <div className="mbf--form-wrapper">
                     {self.state.instances.length > 0 ?
                         <div className="">
                                 {this.getTrialStatus()}

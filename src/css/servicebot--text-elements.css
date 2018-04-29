@@ -39,3 +39,98 @@
     border-radius: 5px;
     white-space: nowrap;
 }
+
+/* Manage Billing Form Text */
+.servicebot--embeddable .mbf--your-funding-title {
+    display: flex;
+    flex-direction:  row;
+    align-items: center;
+    margin: 10px 0;
+}
+.servicebot--embeddable .mbf--your-funding-title-text {
+    display: block;
+    padding-left: 32px;
+    margin-bottom: 0;
+    font-weight: 600;
+}
+.servicebot--embeddable .mbf--your-funding-title-icon.card.icon {
+    margin-top: -1px;
+}
+.mbf--update-funding-wrapper-icon.keyboard.icon {
+    margin-top: 7px;
+}
+.mbf--update-funding.help-text {
+    padding-left: 33px;
+    color: #8c8c8c;
+}
+
+/* Manage Billing Form Card */
+.mbf--card-wrapper {
+    display: block;
+    height: 178pt;
+    width: 281pt;
+    background: #0f407d;
+    border-radius: 13px;
+    overflow: hidden;
+    position: relative;
+}
+.mbf--card-display {
+    display: block;
+    height: calc(100% - 60%);
+    width: calc(100% - 10%);
+    padding: 35% 5% 5%;
+    color: white;
+}
+.mbf--card-chip {
+    position: absolute;
+    height: 17%;
+    width: 16%;
+    background: #ffffffbf;
+    border-radius: 5px;
+    top: 34%;
+    left: 6%;
+}
+.mbf--card-first-12 {
+    display: flex;
+    margin-right: 10px;
+}
+.mbf--card-first-12 span {
+    width: 12px;
+    height: 12px;
+    background: #ffffffbf;
+    margin: 3px;
+    border-radius: 50%;
+}
+.mbf--card-first-12 span:nth-child(4n) {
+    margin-right: 20px;
+}
+.mbf--card-number-holder {
+    display: flex;
+    align-items: center;
+}
+.mbf--card-last4 {
+    font-weight: 600;
+    font-size: 17px;
+    letter-spacing: 6px;
+}
+.mbf--card-info-holder {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5% 0;
+}
+.mbf--card-date-holder {
+    letter-spacing: 3px;
+    color: #d2d2d2;
+}
+span.mbf--card-brand {
+    margin: 0;
+    font-size: 40px;
+    display: block;
+    text-transform: capitalize;
+    line-height: 1em;
+}
+.mbf--card-date-holder, .mbf--card-number-holder{
+    text-shadow: 1px 1px 1px #ffffff78;
+}

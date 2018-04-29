@@ -8,6 +8,7 @@ import Alerts from '../utilities/alerts.jsx';
 import {Field,} from 'redux-form'
 import Buttons from "../utilities/buttons.jsx";
 import {connect} from "react-redux";
+import "../css/servicebot--form-elements.css";
 
 class CardSection extends React.Component {
     render() {
@@ -50,16 +51,13 @@ class BillingForm extends React.Component {
 function BillingInfo(props) {
     console.log(props);
     return (
-        <form>
+        <form className="mbf--funding-personal-info">
             <CardSection/>
             <Field name="name" type="text" component={inputField} placeholder="Name on the card"/>
             <Field name="address_line1" type="text" component={inputField} placeholder="Address"/>
             <Field name="address_city" type="text" component={inputField} placeholder="City"/>
             <Field name="address_state" type="text" component={inputField} placeholder="State"/>
-            {/*<button type="submit">Submit</button>*/}
-            <div className="text-right">
-                <Buttons btnType="primary" text={props.buttonText || "Save Card"} onClick={props.handleSubmit} type="submit" value="submit"/>
-            </div>
+            <button onClick={props.handleSubmit} type="submit">Save Card</button>
         </form>
     )
 }
@@ -207,22 +205,30 @@ class CreditCardForm extends React.Component {
 
         let getBrandIcon = ()=>{
             if(brand === 'American Express'){
-                return 'fa fa-cc-amex';
+                return 'amex';
             }else{
-                return `fa fa-cc-${brand.replace(/\s+/g, '-').toLowerCase()}`;
+                return `${brand.replace(/\s+/g, '-').toLowerCase()}`;
             }
         };
 
         let getCard = ()=>{
             if(hasCard) {
                 return (
-                    <div className="card-accordion">
-                        <p>
-                            <i className={getBrandIcon()}/>
-                            {brand} ending in <span className="last4">{last4}</span>
-                            <span className="exp_month">{exp_month}</span> /
-                            <span className="exp_year">{exp_year}</span>
-                        </p>
+                    <div className="mbf--card-wrapper">
+                        <div className="mbf--card-display">
+                            <div className="mbf--card-chip"/>
+                            <div className="mbf--card-number-holder">
+                                <span className="mbf--card-first-12"><span/><span/><span/><span/><span/><span/><span/><span/><span/><span/><span/><span/></span>
+                                <span className="mbf--card-last4">{last4}</span>
+                            </div>
+                            <div className="mbf--card-info-holder">
+                                <div className="mbf--card-date-holder">
+                                    <span className="mbf--card-exp-month">{exp_month} / </span>
+                                    <span className="mbf--card-exp-year">{exp_year}</span>
+                                </div>
+                                <span className="mbf--card-brand">{getBrandIcon()}</span>
+                            </div>
+                        </div>
                     </div>
                 )
             }else{
@@ -243,52 +249,40 @@ class CreditCardForm extends React.Component {
                                  position={{position: 'fixed', bottom: true}} icon={this.state.alerts.icon} /> );
             }
         };
-        let buttonStyle2 = {
-            backgroundColor: "#0054d3",
-            border: "none",
-            color: "#ffffff"
-        }
-
 
         return (
-            <div id="payment-form">
-                <h3><i className="fa fa-credit-card"/>Your credit/debit card</h3>
-                <hr/>
-                <div className="form-row">
-                    {hasCard && <p>You can update your payment method by clicking on Update Payment.</p>}
-                    {getAlerts()}
-                    <div className="service-instance-box navy">
-                        <div className="service-instance-box-title">
-                            {getCard()}
-                            <div>
-                                <br/>
-                                {!this.state.showForm ?
-                                    <button style={buttonStyle2} className="btn btn-default btn-rounded btn-sm m-r-5 application-launcher" onClick={this.showPaymentForm}>Update Payment</button>
-                                    :
-                                    <button className="btn btn-default btn-rounded btn-sm m-r-5 application-launcher" onClick={this.hidePaymentForm}>Cancel</button>
-                                }
-
-                            </div>
-
-                        </div>
-                        {this.state.showForm &&
-                            <div className="service-instance-box-content">
-                                <ServiceBotBaseForm
-                                    form={BillingInfo}
-                                    formProps={{...this.props}}
-                                    initialValues={{...this.state.personalInformation}}
-                                    submissionPrep={this.submissionPrep}
-                                    submissionRequest={submissionRequest}
-                                    successMessage={"Fund added successfully"}
-                                    handleResponse={this.handleSuccessResponse}
-                                    handleFailure={this.handleFailureResponse}
-                                    reShowForm={true}
-                                    token={this.props.token}
-                                />
-                            </div>
-                        }
+            <div id="mbf--funding-form">
+                <h3 className="mbf--your-funding-title">
+                    <div className="mbf--your-funding-title-icon card icon"/>
+                    <span className="mbf--your-funding-title-text">Your credit / debit card</span>
+                </h3>
+                {getAlerts()}
+                {getCard()}
+                {!this.state.showForm &&
+                    <div className="mbf--update-funding-wrapper">
+                        <div className="mbf--update-funding-wrapper-icon keyboard icon"/>
+                        <p className="mbf--update-funding help-text">You can update your payment method by clicking on Update Payment</p>
+                        <button className="btn btn-default btn-rounded mbf--btn-update-funding" onClick={this.showPaymentForm}>Update Payment</button>
                     </div>
-                </div>
+                }
+                {this.state.showForm &&
+                    <div className="mbf--update-funding-wrapper">
+                        <div className="mbf--funding-form-element">
+                            <ServiceBotBaseForm
+                                form={BillingInfo}
+                                formProps={{...this.props}}
+                                initialValues={{...this.state.personalInformation}}
+                                submissionPrep={this.submissionPrep}
+                                submissionRequest={submissionRequest}
+                                successMessage={"Fund added successfully"}
+                                handleResponse={this.handleSuccessResponse}
+                                handleFailure={this.handleFailureResponse}
+                                reShowForm={true}
+                                token={this.props.token} />
+                        </div>
+                        <button className="btn btn-default btn-rounded mf--btn-cancel-update-funding" onClick={this.hidePaymentForm}>Cancel</button>
+                    </div>
+                }
             </div>
         );
     }
@@ -299,7 +293,7 @@ let mapDispatchToProps = function(dispatch){
         setLoading : function(is_loading){
             dispatch({type: "SET_LOADING", is_loading});
         }}
-}
+};
 
 CreditCardForm = injectStripe(CreditCardForm);
 CreditCardForm = connect(null, mapDispatchToProps)(CreditCardForm);
