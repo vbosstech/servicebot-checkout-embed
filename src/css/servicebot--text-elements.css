@@ -17,6 +17,7 @@
 }
 .servicebot--embeddable h5 {
     font-size: 1.2em;
+    font-weight: 300;
 }
 .servicebot--embeddable h6 {
     font-size: 1em;
@@ -133,4 +134,39 @@ span.mbf--card-brand {
 }
 .mbf--card-date-holder, .mbf--card-number-holder{
     text-shadow: 1px 1px 1px #ffffff78;
+}
+/* Manage Billing Form Card -- No Card */
+.mbf--card-wrapper.no-card {
+    background: #a2a2a2;
+}
+
+/* Manage Billing Form -- Services list */
+.mbf--current-services-list {
+    display: flex;
+    margin-top: 15px;
+    padding: 20px;
+    background: #eaeaea;
+    border-radius: 5px;
+}
+.mbf--current-services-item {
+    padding: 20px 15px;
+    background: #fbfbfb;
+    flex-basis: 30%;
+    flex-shrink: 1;
+    border-radius: 5px;
+}
+h6.mbf--current-services-item-title {
+    margin-bottom: 10px;
+}
+.mbf--current-services-list .mbf--current-services-item:first-child {
+    margin-right: 15px;
+}
+.mbf--current-services-list .mbf--current-services-item:last-child {
+    margin-left: 15px;
+}
+.mbf--current-services-item-buttons{
+    margin-top: 15px;
+}
+.mbf--current-services-item-buttons button{
+    margin-right: 15px;
 }

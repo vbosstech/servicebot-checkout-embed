@@ -170,7 +170,7 @@ class ServicebotManagedBilling extends React.Component {
             <div>
                 {self.state.funds.length === 0 || !self.state.funds[0].source ?
                     <div className="mbf--funding-card-wrapper">
-                        <p className="mbf--add-funding-message">Add your funding credit/debit card.</p>
+                        <h5 className="mbf--add-funding-message">Add your funding credit/debit card.</h5>
                         <BillingForm buttonText={buttonText}
                                      handleResponse={self.handleResponse(self.state.instances[0])}
                                      token={self.props.token} spk={self.state.spk}
@@ -250,33 +250,30 @@ class ServicebotManagedBilling extends React.Component {
                     {self.state.instances.length > 0 ?
                         <div className="">
                                 {this.getTrialStatus()}
-                                <h2>Account Billing</h2>
+                                <h4>Account Billing</h4>
                                 {this.getBillingForm()}
                                 <hr/>
-                                <h2>Manage Account</h2>
+                                <h4>Manage Account</h4>
+                                <h5>Your current subscriptions are listed below:</h5>
                                 {self.state.instances.length > 0 ?
-                                    <div>
-                                        <p>Your current subscriptions are listed below:</p>
+                                    <div className="mbf--current-services-list">
                                         {self.state.instances.map(service => (
-                                            <div className="service-instance-box">
-                                                <div className="service-instance-box-title">
-                                                    {service.name}
-                                                    <div className="pull-right">
-                                                        <b><Price value={service.payment_plan.amount} /> / {service.payment_plan.interval}</b><br/>
-                                                        {(service.status === "running" || service.status === "requested" || service.status === "in_progress") &&
-                                                        <button className="btn btn-default btn-rounded btn-sm m-r-5" style={buttonStyle} onClick={this.requestCancellation.bind(this, service.id)}>Cancel Service</button>
-
-                                                        }
-                                                        {service.status === "cancelled" && self.state.funds[0] && <button className="btn btn-default btn-rounded btn-sm m-r-5" style={buttonStyle2} onClick={self.resubscribe(service.id)}>Resubscribe</button>}
-                                                    </div>
+                                            <div className="mbf--current-services-item">
+                                                <div className="mbf--current-services-item-details">
+                                                    <h6 className="mbf--current-services-item-title">{service.name}</h6>
+                                                    <b><Price value={service.payment_plan.amount} /> / {service.payment_plan.interval}</b><br/>
                                                 </div>
                                                 <div className="service-instance-box-content">
                                                     <div>Status: <b>{service.status}</b></div>
                                                     <div>Purchased: <b><DateFormat date={service.created_at} time/></b></div>
                                                 </div>
-
-                                                {!self.props.disablePlanChange && service.references.service_instance_properties.filter(prop => prop.config.pricing).length > 0 && <button onClick={self.showPropEdit(service)}>Change Plan</button>}
-
+                                                <div className="mbf--current-services-item-buttons">
+                                                    {(service.status === "running" || service.status === "requested" || service.status === "in_progress") &&
+                                                    <button className="btn btn-default btn-rounded btn-sm m-r-5" style={buttonStyle} onClick={this.requestCancellation.bind(this, service.id)}>Cancel Service</button>
+                                                    }
+                                                    {service.status === "cancelled" && self.state.funds[0] && <button className="btn btn-default btn-rounded btn-sm m-r-5" style={buttonStyle2} onClick={self.resubscribe(service.id)}>Resubscribe</button>}
+                                                    {!self.props.disablePlanChange && service.references.service_instance_properties.filter(prop => prop.config.pricing).length > 0 && <button onClick={self.showPropEdit(service)}>Change Plan</button>}
+                                                </div>
                                             </div>
                                         ))}
                                     </div>

@@ -233,11 +233,21 @@ class CreditCardForm extends React.Component {
                 )
             }else{
                 return (
-                    <div className="card-accordion">
-                        <p>
-                            <i className="fa fa-plus"/>
-                            <span>Add your card</span>
-                        </p>
+                    <div className="mbf--card-wrapper no-card">
+                        <div className="mbf--card-display">
+                            <div className="mbf--card-chip"/>
+                            <div className="mbf--card-number-holder">
+                                <span className="mbf--card-first-12"><span/><span/><span/><span/><span/><span/><span/><span/><span/><span/><span/><span/></span>
+                                <span className="mbf--card-last4">XXXX</span>
+                            </div>
+                            <div className="mbf--card-info-holder">
+                                <div className="mbf--card-date-holder">
+                                    <span className="mbf--card-exp-month">XX/ </span>
+                                    <span className="mbf--card-exp-year">XXXX</span>
+                                </div>
+                                <span className="mbf--card-brand">Add Card</span>
+                            </div>
+                        </div>
                     </div>
                 )
             }
