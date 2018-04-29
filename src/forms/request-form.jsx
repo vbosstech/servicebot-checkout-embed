@@ -44,7 +44,12 @@ let renderCustomProperty = (props) => {
         <div>
             {fields.map((customProperty, index) => {
                     let property = widgets[formJSON[index].type];
-                    if(formJSON[index].prompt_user){
+                    let validate = [];
+                if (formJSON[index].required) {
+                    validate.push(required());
+                }
+
+                if(formJSON[index].prompt_user){
 
                         return (
                             <Field
@@ -57,7 +62,7 @@ let renderCustomProperty = (props) => {
                                 // value={formJSON[index].data.value}
                                 formJSON={formJSON[index]}
                                 configValue={formJSON[index].config}
-                                validate={required()}
+                                validate={validate}
                             />)
                     }else{
                         if(formJSON[index].data && formJSON[index].data.value && !formJSON[index].private){
