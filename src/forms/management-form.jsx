@@ -6,6 +6,7 @@ import {BillingForm} from "./billing-settings-form.jsx";
 import '../css/managed.css';
 import {injectStripe} from "react-stripe-elements";
 import {connect} from "react-redux";
+import {ModalEditProperties} from "./edit-properties-form.jsx"
 
 class ServicebotManagedBilling extends React.Component {
 
