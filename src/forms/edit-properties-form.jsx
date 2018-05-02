@@ -114,21 +114,25 @@ function ModalEditProperties(props){
 
 
     return (
-            <div className="p-20">
-                <ServiceBotBaseForm
-                    form={CustomFieldEditForm}
-                    //todo: is there a way to not need initial values to reference a prop name? (for array of X cases)
-                    initialValues={{"service_instance_properties" : instance.references.service_instance_properties}}
-                    submissionRequest={submissionRequest}
-                    successMessage={"Properties edited successfully"}
-                    handleResponse={hide}
-                    // handleFailure={handleFailureResponse}
-                    formName={"edit_properties_form"}
-                    formProps={{instance}}
-                    token={token}
-
-                />
-                <button onClick={props.hide}>Cancel</button>
+            <div className="change-plan-modal">
+                <div className="change-plan-modal-form-wrapper">
+                    <h3>Change Plan</h3>
+                    <div className="change-plan-modal-form">
+                        <ServiceBotBaseForm
+                            form={CustomFieldEditForm}
+                            //todo: is there a way to not need initial values to reference a prop name? (for array of X cases)
+                            initialValues={{"service_instance_properties" : instance.references.service_instance_properties}}
+                            submissionRequest={submissionRequest}
+                            successMessage={"Properties edited successfully"}
+                            handleResponse={hide}
+                            // handleFailure={handleFailureResponse}
+                            formName={"edit_properties_form"}
+                            formProps={{instance}}
+                            token={token}
+                        />
+                        <button onClick={props.hide}>Cancel</button>
+                    </div>
+                </div>
             </div>
     )
 

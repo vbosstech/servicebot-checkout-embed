@@ -59,6 +59,8 @@
     height: 100vh;
     width: 100vw;
     background: #ffffffab;
+    top: 0px;
+    left: 0px;
 }
 .page-loader > div, .page-loader .page-loader-text{
     position: absolute;
@@ -190,6 +192,33 @@
     width: 9px;
     height: 1px;
     background-color: currentColor;
+}
+
+/* Edit properties / change plan modal */
+.change-plan-modal{
+    position: fixed;
+    min-height: 100%;
+    width: 100%;
+    background: #050413a1;
+    top: 0px;
+    left: 0px;
+    z-index: 999;
+}
+.change-plan-modal h3 {
+    padding: 20px 50px;
+    background-color: #0f407d;
+    color: white;
+}
+.change-plan-modal-form-wrapper{
+    background: white;
+    border-radius: 5px;
+    max-width: 80%;
+    margin: auto;
+    margin-top: 150px;
+    overflow: hidden;
+}
+.change-plan-modal-form{
+    padding: 50px;
 }
 
 
