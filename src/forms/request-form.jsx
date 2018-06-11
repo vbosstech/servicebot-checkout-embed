@@ -10,19 +10,15 @@ import {
 } from 'redux-form'
 import {connect} from "react-redux";
 import {RenderWidget, WidgetList, widgets, SelectWidget} from "../utilities/widgets";
-import {inputField, selectField, widgetField, priceField} from "../widget-inputs/servicebot-base-field.jsx";
+import {inputField, selectField, widgetField, priceField, ServicebotBaseForm, Fetcher} from "servicebot-base-form";
 import {CardSection} from "../forms/billing-settings-form.jsx";
 import getSymbolFromCurrency from 'currency-symbol-map'
 
 import {Price} from "../utilities/price.jsx";
-import Fetcher from "../utilities/fetcher.jsx";
 import {required, email, numericality, length, confirmation} from 'redux-form-validators'
 import {injectStripe, Elements, StripeProvider} from 'react-stripe-elements';
 import getWidgets from "../core-input-types/client";
-
 let _ = require("lodash");
-
-import ServiceBotBaseForm from "./servicebot-base-form.jsx";
 import {getPrice} from "../widget-inputs/handleInputs";
 import values from 'object.values';
 
