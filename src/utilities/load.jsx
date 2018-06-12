@@ -1,6 +1,5 @@
 import React from 'react';
 import {connect} from "react-redux"
-import {getFormValues} from "redux-form";
 class Load extends React.Component {
 
     constructor(props) {
