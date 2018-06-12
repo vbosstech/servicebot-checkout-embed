@@ -11,19 +11,7 @@ const Checkout = (config) => {
 }
 
 
-if (module.hot) {
-    module.hot.accept('./ServicebotCheckout.js', () => {
-        const NextApp = require('./ServicebotCheckout.js').default;
-        ReactDOM.render(
-            <AppContainer>
-                <NextApp/>
-            </AppContainer>,
-            document.getElementById('root')
-        );
-    });
-}
 export {ServicebotCheckoutEmbed, Checkout}
-
 
 if (module.hot) {
     module.hot.accept('./ServicebotCheckout.js', () => {

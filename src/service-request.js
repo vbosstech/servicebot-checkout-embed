@@ -1,7 +1,7 @@
 import React from 'react';
-import ServiceRequestForm from "./forms/request-form.jsx"
+import ServiceRequestForm from "./forms/request-form.js"
 import {Fetcher} from "servicebot-base-form"
-import {Price, getPrice} from "./utilities/price.jsx";
+import {Price, getPrice} from "./utilities/price.js";
 import {connect} from 'react-redux';
 import {formValueSelector, getFormValues} from 'redux-form'
 const REQUEST_FORM_NAME = "serviceInstanceRequestForm";

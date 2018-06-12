@@ -11,10 +11,10 @@ import {
 import {connect} from "react-redux";
 import {RenderWidget, WidgetList, widgets, SelectWidget} from "../utilities/widgets";
 import {inputField, selectField, widgetField, priceField, ServicebotBaseForm, Fetcher} from "servicebot-base-form";
-import {CardSection} from "../forms/billing-settings-form.jsx";
+import {CardSection} from "./billing-settings-form.js";
 import getSymbolFromCurrency from 'currency-symbol-map'
 
-import {Price} from "../utilities/price.jsx";
+import {Price} from "../utilities/price.js";
 import {required, email, numericality, length, confirmation} from 'redux-form-validators'
 import {injectStripe, Elements, StripeProvider} from 'react-stripe-elements';
 import getWidgets from "../core-input-types/client";
