@@ -135,7 +135,6 @@ class ServiceRequestForm extends React.Component {
                 }
             }
         };
-
         let buttonText =  plan && plan.type !== "custom" ? "Next"  : "Contact";
 
         //Sort users and if user does not have name set, set it to the email value which will always be there
@@ -369,7 +368,7 @@ class ServiceInstanceForm extends React.Component {
                     handleFailure={this.handleFailure}
                     formName="serviceInstanceRequestForm"
                     helpers={helpers}
-                    formProps={{step : this.props.step}}
+                    formProps={{plan: this.props.plan, step : this.props.step}}
                     validations={this.formValidation}
                     loaderTimeout={false}
                     external={this.props.external}
