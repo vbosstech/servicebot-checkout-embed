@@ -1,6 +1,6 @@
 import React from 'react';
 import {Elements, injectStripe, CardElement, StripeProvider} from 'react-stripe-elements';
-import "../css/servicebot--form-elements.css";
+import "../../css/servicebot--form-elements.css";
 
 class CardSection extends React.Component {
     render() {
