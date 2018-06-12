@@ -236,11 +236,7 @@ class ServiceInstanceForm extends React.Component {
         // let headers = new Headers({
         //     "Content-Type": "application/json"
         // });
-        // // Fetcher(self.state.formURL,"GET", null, {
-        //     method: "GET",
-        //     headers: headers,
-        //
-        // }).then(function (response) {
+        // // Fetcher(self.state.formURL,).then(function (response) {
         //     if (!response.error) {
         //         self.setState({loading: false, templateData: response, formData: response});
         //     } else {

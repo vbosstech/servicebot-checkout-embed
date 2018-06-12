@@ -1,16 +1,11 @@
 import React from 'react';
 import ServiceRequestForm from "./forms/request-form.jsx"
-import Fetcher from "./utilities/fetcher.jsx"
+import {Fetcher} from "servicebot-base-form"
 import {Price, getPrice} from "./utilities/price.jsx";
-import {getPrice as getTotalPrice, getPriceAdjustments} from "./widget-inputs/handleInputs";
 import {connect} from 'react-redux';
-
-let _ = require("lodash");
 import {formValueSelector, getFormValues} from 'redux-form'
-
 const REQUEST_FORM_NAME = "serviceInstanceRequestForm";
 const selector = formValueSelector(REQUEST_FORM_NAME); // <-- same as form name
-import {StickyContainer, Sticky} from 'react-sticky';
 import getSymbolFromCurrency from 'currency-symbol-map'
 import {getPriceData} from "./core-input-types/client";
 class ServiceRequest extends React.Component {
@@ -103,7 +98,15 @@ class ServiceRequest extends React.Component {
 
     getService() {
         let self = this;
-        Fetcher(`${self.props.url}/api/v1/service-templates/${this.state.id}/request`).then(function (response) {
+        let headers = new Headers({
+            "Content-Type": "application/json"
+        });
+        let req = {
+                method: "GET",
+                headers: headers,
+
+        };
+        Fetcher(`${self.props.url}/api/v1/service-templates/${this.state.id}/request`, "GET", null, req).then(function (response) {
             if (!response.error) {
                 let propertyOverrides = self.props.propertyOverrides;
                 response.payment_structure_template_id = self.props.paymentStructureTemplateId;

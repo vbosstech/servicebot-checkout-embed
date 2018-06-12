@@ -2,7 +2,6 @@ import React from "react";
 import TagsInput from "react-tagsinput"
 
 //todo: all the imports from the main app will result in duplicate code.... need to fix this!
-import {priceField} from "../../widget-inputs/servicebot-base-field.jsx";
 import handler from "./widgetHandler";
 import WidgetPricingInput from '../../widget-inputs/WidgetPricingInput.jsx';
 import PriceAdjustment from '../../widget-inputs/WidgetPriceAdjustment';

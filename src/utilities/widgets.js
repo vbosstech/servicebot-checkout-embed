@@ -1,6 +1,6 @@
 import React from "react";
 import {Field, FormSection} from "redux-form";
-import {inputField, selectField, priceField} from "../widget-inputs/servicebot-base-field.jsx";
+import {selectField} from "servicebot-base-form";
 import getWidgets from "../core-input-types/client"
 const values = require('object.values');
 if (!Object.values) {

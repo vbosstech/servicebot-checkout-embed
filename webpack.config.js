@@ -2,7 +2,7 @@ const path = require("path");
 const BUILD_DIR = path.resolve(__dirname, './public/build');
 const APP_DIR = path.resolve(__dirname, './src');
 var webpack = require('webpack');
-const MODE = "development";
+const MODE = "production";
 
 let config = async function () {
     return {
