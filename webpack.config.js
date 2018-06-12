@@ -2,23 +2,11 @@ const path = require("path");
 const BUILD_DIR = path.resolve(__dirname, './public/build');
 const APP_DIR = path.resolve(__dirname, './src');
 var webpack = require('webpack');
+const MODE = "development";
 
 let config = async function () {
-    let pluginbotConfig = {
-        "core-input-types": {
-            "pluginPackage" : {
-                "pluginbot" : {
-                    "client" : {
-                        "main" : "client.js"
-                    }
-                }
-            },
-            "clientConfig" : {
-
-            }
-        }
-    }
     return {
+        mode: MODE,
         entry: {
             "servicebot-embed": [ APP_DIR + '/index.js'],
 
@@ -31,7 +19,6 @@ let config = async function () {
             library: 'Servicebot',
             libraryTarget: 'umd',
             umdNamedDefine: true,
-
         },
         module : {
             rules: [
@@ -46,10 +33,6 @@ let config = async function () {
                 }
             ]
         },
-        externals: {
-            pluginbot_client_config: JSON.stringify(pluginbotConfig),
-            _plugins: "_plugins",
-        },
         devServer: {
             historyApiFallback: true,
             hot: true,
@@ -60,6 +43,11 @@ let config = async function () {
         },
         plugins : [
             new webpack.HotModuleReplacementPlugin(),
+            new webpack.DefinePlugin({
+                'process.env': {
+                    NODE_ENV: JSON.stringify(MODE)
+                }
+            })
 
         ]
     }

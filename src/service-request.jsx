@@ -26,7 +26,8 @@ class ServiceRequest extends React.Component {
             icon: null,
             editingMode: false,
             editingGear: false,
-            error: null
+            error: null,
+            step : 0
         };
         this.getCoverImage = this.getCoverImage.bind(this);
         this.getIcon = this.getIcon.bind(this);
@@ -34,6 +35,8 @@ class ServiceRequest extends React.Component {
         this.toggleOnEditingGear = this.toggleOnEditingGear.bind(this);
         this.toggleOffEditingGear = this.toggleOffEditingGear.bind(this);
         this.getService = this.getService.bind(this);
+        this.stepForward = this.stepForward.bind(this);
+        this.stepBack = this.stepBack.bind(this);
     }
 
     componentDidMount() {
@@ -57,6 +60,13 @@ class ServiceRequest extends React.Component {
         }).catch(function (error) {
 
         });
+    }
+    stepForward(e){
+        this.setState({step: 1});
+    }
+    stepBack(e){
+        e.preventDefault();
+        this.setState({step: 0});
     }
 
     getIcon() {
@@ -96,6 +106,7 @@ class ServiceRequest extends React.Component {
         Fetcher(`${self.props.url}/api/v1/service-templates/${this.state.id}/request`).then(function (response) {
             if (!response.error) {
                 let propertyOverrides = self.props.propertyOverrides;
+                response.payment_structure_template_id = self.props.paymentStructureTemplateId;
                 if(propertyOverrides) {
                     response.references.service_template_properties = response.references.service_template_properties.map(prop => {
                         if (propertyOverrides[prop.name]){
@@ -138,14 +149,22 @@ class ServiceRequest extends React.Component {
         if (this.state.loading) {
             return (<span></span>);
         } else {
-            let {formJSON, options} = this.props;
+            let {formJSON, options, paymentStructureTemplateId} = this.props;
             let {service, error} = this.state;
+            let pricingPlan = service.references.tiers.reduce((acc, tier) => {
+               let plan = tier.references.payment_structure_templates.find(p => p.id === paymentStructureTemplateId);
+               if(plan){
+                   acc = plan;
+               }
+               return acc;
+            }, null);
+
             if(this.state.error){
                 return (<span>{error}</span>)
             }
 
             let prefix = getSymbolFromCurrency(service.currency);
-            let {total, adjustments} = getPriceData(formJSON && formJSON.amount, formJSON && formJSON.references.service_template_properties);
+            let {total, adjustments} = getPriceData(pricingPlan && pricingPlan.amount, formJSON && formJSON.references.service_template_properties);
             let filteredAdjustments = adjustments.filter(adjustment => adjustment.value > 0);
             let splitPricing = service.split_configuration;
             let splitTotal = 0;
@@ -156,7 +175,7 @@ class ServiceRequest extends React.Component {
                     rightHeading = "Payment Summary";
                     break;
                 case 'custom':
-                    rightHeading = "Custom Service";
+                    rightHeading = "Contact";
                     break;
                 case 'split':
                     rightHeading = "Scheduled Payments";
@@ -190,30 +209,30 @@ class ServiceRequest extends React.Component {
                                     }
                                 </div>
                                 {!this.props.hideHeaders && <div className="divider"><hr/></div>}
-                                <ServiceRequestForm {...this.props} service={service}/>
+                                <ServiceRequestForm plan={pricingPlan} {...this.props} step={this.state.step} stepForward={this.stepForward} stepBack={this.stepBack} service={service}/>
                             </div>
                         </div>
                     </div>
-                    {!this.props.hideSummary &&
+                    {!this.props.hideSummary && this.state.step === 1 && pricingPlan &&
                         <div className="rf--summary-wrapper">
                             <div className="rf--summary">
                                 <div className="rf--summary-heading"><h4>{rightHeading}</h4></div>
                                 <div className="rf--summary-content">
-                                    {(service.trial_period_days > 0) ? (
+                                    {(pricingPlan.trial_period_days > 0) ? (
                                         <div className="rf--free-trial-content">
-                                            {service.trial_period_days} Day Free Trial
+                                            {pricingPlan.trial_period_days} Day Free Trial
                                         </div>
                                     ) : null}
-                                    {(service.type === "subscription" || service.type === "one_time") ? (
+                                    {(pricingPlan.type === "subscription" || pricingPlan.type === "one_time") ? (
                                         <div className="rf--pricing-content">
                                             <div className="fe--pricing-breakdown-wrapper">
                                                 <div className="subscription-pricing">
-                                                    {(service.type === "subscription") ? (
+                                                    {(pricingPlan.type === "subscription") ? (
                                                         <div className="fe--recurring-fee"><h5>Recurring Fee</h5></div>) : null}
-                                                    {(service.type === "one_time") ? (
+                                                    {(pricingPlan.type === "one_time") ? (
                                                         <div className="fe--base-price"><h5>Base Cost</h5></div>) : null}
                                                     <div className="fe--base-price-value">
-                                                        {getPrice(service)}
+                                                        {getPrice(pricingPlan)}
                                                     </div>
                                                 </div>
                                             </div>
@@ -237,34 +256,10 @@ class ServiceRequest extends React.Component {
                                         </div>
                                     ) : null}
 
-                                    {(service.type === "custom") ? (
-                                        <div className="rf--quote-content">Custom Quote</div>
+                                    {(pricingPlan.type === "custom") ? (
+                                        <div className="rf--quote-content">Contact</div>
                                     ) : null}
 
-                                    {(service.type === "split" && splitPricing) ? (
-                                        <div>
-                                            {splitPricing.splits.map((splitItem, index) => (
-                                                <div key={"split-" + index} className="rf--split-wrapper">
-                                                    <div className="subscription-pricing">
-                                                        <div className="col-md-6 p-r-0 p-l-0">{(splitItem.charge_day === 0) ? (
-                                                            <span>Right Now</span>) : (
-                                                            <span>After {splitItem.charge_day} Days</span>)}</div>
-                                                        <div className="col-md-6 p-r-0 p-l-0 text-right"><b><Price
-                                                            value={splitItem.amount} prefix={prefix}/></b>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            ))}
-                                            <div className="total-price">
-                                                <div className="row m-r-0 m-l-0">
-                                                    <div className="col-md-6 p-r-0 p-l-0">Total:</div>
-                                                    <div className="col-md-6 p-r-0 p-l-0 text-right">
-                                                        <b><Price value={splitTotal} prefix={prefix}/></b>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    ) : null}
                                 </div>
                             </div>
                         </div>

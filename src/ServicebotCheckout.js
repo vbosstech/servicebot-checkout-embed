@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 // import './App.css';
-import ServicebotManage from "./forms/management-form.jsx"
+// import ServicebotManage from "./forms/management-form.jsx"
 import ServicebotRequest from "./service-request.jsx"
 
 import { Provider } from 'react-redux'
@@ -9,7 +9,6 @@ import {reducer as formReducer} from 'redux-form'
 import Load from "./utilities/load.jsx"
 class App extends Component {
   render() {
-
       const options = (state = {currency : {value : "usd"}}, action) => {
           switch (action.type) {
               case 'SET_CURRENCY':
@@ -32,23 +31,13 @@ class App extends Component {
           loading : loadingReducer,
           form : formReducer,
       }));
-      let Component;
-      switch(this.props.config.type){
-          case "request":
-              Component = ServicebotRequest;
-              break;
-          case "manage" :
-              Component = ServicebotManage;
-              break;
-          default:
-              Component = ServicebotRequest;
-      }
+
       return (
       <div className="App">
       <Provider store={store}>
           <div>
               <Load/>
-              <Component {...this.props.config}/>
+              <ServicebotRequest {...this.props}/>
           </div>
         </Provider>
       </div>

@@ -93,7 +93,7 @@ class ServiceRequestForm extends React.Component {
 
     render() {
         let props = this.props;
-        const {handleSubmit, formJSON, helpers, error} = props;
+        const {handleSubmit, formJSON, helpers, error, step, plan} = props;
         let handlers = getWidgets().reduce((acc, widget) => {
             acc[widget.type] = widget.handler;
             return acc;
@@ -135,12 +135,15 @@ class ServiceRequestForm extends React.Component {
                 }
             }
         };
+
+        let buttonText =  plan && plan.type !== "custom" ? "Next"  : "Contact";
+
         //Sort users and if user does not have name set, set it to the email value which will always be there
 
         return (
             <div className="rf--body">
                 <form onSubmit={handleSubmit}>
-
+                    {step === 0 && <div>
                     {!helpers.uid &&
                     <div>
                         <Field name="email" type="text" component={inputField}
@@ -155,14 +158,28 @@ class ServiceRequestForm extends React.Component {
                         </div>}
                     </div>
                     }
-                    <FormSection name="references">
-                        <FieldArray name="service_template_properties" component={renderCustomProperty}
-                                    formJSON={formJSON.references.service_template_properties}/>
-                    </FormSection>
+                        <FormSection name="references">
+                            <FieldArray name="service_template_properties" component={renderCustomProperty}
+                                        formJSON={formJSON.references.service_template_properties}/>
+                        </FormSection>
+                        <button className="btn btn-rounded btn-primary btn-bar submit-request">
+                            {buttonText}
+                        </button>
 
-                    <button className="btn btn-rounded btn-primary btn-bar submit-request" type="submit" value="submit">
+                    </div>
+
+                    }
+                    {step === 1 &&
+                        <div>
+                            <button onClick={helpers.stepBack} className="btn btn-rounded btn-primary btn-bar submit-request">
+                                Back
+                            </button>
+
+                            <button className="btn btn-rounded btn-primary btn-bar submit-request" type="submit" value="submit">
                         {getRequestText()}
                     </button>
+                        </div>
+                    }
                     {error &&
                     <strong>
                         {error}
@@ -197,12 +214,13 @@ class ServiceInstanceForm extends React.Component {
             formResponseData: null,
             formResponseError: null,
             serviceCreated: false,
-            servicePrice: this.props.service.amount,
+            servicePrice: this.props.plan.amount,
             usersData: {},
             usersURL: "/api/v1/users",
             hasCard: null,
             loading: true,
-            hasFund: false
+            hasFund: false,
+            step: 0
         };
         this.closeUserLoginModal = this.closeUserLoginModal.bind(this);
         this.updatePrice = this.updatePrice.bind(this);
@@ -212,18 +230,26 @@ class ServiceInstanceForm extends React.Component {
 
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         let self = this;
-        Fetcher(self.state.formURL).then(function (response) {
-            if (!response.error) {
-                self.setState({loading: false, templateData: response, formData: response});
-            } else {
-                console.error("Error", response.error);
-                self.setState({loading: false});
-            }
-        }).catch(function (err) {
-            console.error("ERROR!", err);
-        });
+        this.setState({loading:false});
+        // let headers = new Headers({
+        //     "Content-Type": "application/json"
+        // });
+        // // Fetcher(self.state.formURL,"GET", null, {
+        //     method: "GET",
+        //     headers: headers,
+        //
+        // }).then(function (response) {
+        //     if (!response.error) {
+        //         self.setState({loading: false, templateData: response, formData: response});
+        //     } else {
+        //         console.error("Error", response.error);
+        //         self.setState({loading: false});
+        //     }
+        // }).catch(function (err) {
+        //     console.error("ERROR!", err);
+        // });
     }
 
     componentDidUpdate(nextProps, nextState) {
@@ -246,13 +272,23 @@ class ServiceInstanceForm extends React.Component {
     }
 
     async submissionPrep(values) {
-        this.props.setLoading(true);
-        let token = await this.props.stripe.createToken();
-        if (token.error) {
-            this.props.setLoading(false);
-            throw token.error.message
+        if(this.state.step === 0 && this.props.plan.type !== "custom" ){
+            this.props.stepForward();
+            throw ""
         }
-        return {...values, token_id: token.token.id};
+        this.props.setLoading(true);
+        let needsCard = (this.state.servicePrice > 0 && this.props.plan.type !== "custom" &&
+            !this.state.hasCard && this.props.plan.trial_period_days <= 0) || this.props.forceCard || this.props.plan.type === "split"
+        if (needsCard) {
+            let token = await this.props.stripe.createToken();
+            if (token.error) {
+                this.props.setLoading(false);
+                throw token.error.message
+            }
+            return {...values, token_id: token.token.id};
+        }else{
+            return values;
+        }
     }
     async handleResponse(response){
         this.setState({serviceCreated: true});
@@ -289,12 +325,14 @@ class ServiceInstanceForm extends React.Component {
 
     }
 
+
     render() {
 
         let self = this;
         let initialValues = this.props.service;
+        console.log(this.props.service)
         let initialRequests = [];
-        let submissionPrep = (values) => {self.props.setLoading(true); return values;}
+        // let submissionPrep = (values) => {self.props.setLoading(true); return values;}
         let submissionRequest = {
             'method': 'POST',
             'url': `${this.props.url}/api/v1/service-templates/${this.props.templateId}/request`
@@ -302,26 +340,32 @@ class ServiceInstanceForm extends React.Component {
         let successMessage = "Service Requested";
         let successRoute = "/my-services";
         //If admin requested, redirect to the manage subscription page
+        let needsCard = (this.state.servicePrice > 0 && this.props.plan.type !== "custom" &&
+            !this.state.hasCard && this.props.plan.trial_period_days <= 0) || this.props.forceCard || this.props.plan.type === "split"
 
         let helpers = Object.assign(this.state, this.props);
         helpers.updatePrice = self.updatePrice;
+        helpers.stepForward = this.props.stepForward;
+        helpers.stepBack = this.props.stepBack;
+
+        //     consoe.log("HELLO!!!!");
+        // }
+        // self.setState({step : step + 1})};
+        // helpers.stepBack = () => {console.log("HELLO")};
+        // self.setState({step : step - 1})};
+        helpers.step = this.props.step;
         //Gets a token to populate token_id for instance request
-        let needsCard = (this.state.servicePrice > 0 &&
-            !this.state.hasCard && initialValues.trial_period_days <= 0) || this.props.forceCard || this.state.templateData.type === "split"
-        if ( needsCard){
-            submissionPrep = this.submissionPrep;
-        }
         return (
             <div className="rf--form-elements">
-                {needsCard && !this.state.serviceCreated &&
+                {needsCard && !this.state.serviceCreated && this.props.step === 1 &&
                 <CardSection/>}
 
 
-                <ServiceBotBaseForm
+                <ServicebotBaseForm
                     form={ServiceRequestForm}
                     initialValues={initialValues}
                     initialRequests={initialRequests}
-                    submissionPrep={submissionPrep}
+                    submissionPrep={this.submissionPrep}
                     submissionRequest={submissionRequest}
                     successMessage={successMessage}
                     // successRoute={successRoute}
@@ -329,8 +373,10 @@ class ServiceInstanceForm extends React.Component {
                     handleFailure={this.handleFailure}
                     formName="serviceInstanceRequestForm"
                     helpers={helpers}
+                    formProps={{step : this.props.step}}
                     validations={this.formValidation}
                     loaderTimeout={false}
+                    external={this.props.external}
                 />
             </div>
         )
@@ -379,7 +425,7 @@ class ServicebotRequestForm extends React.Component {
     }
 
     render() {
-
+        console.log(this.props);
         let spk = this.props.spk;
         if(this.state.loading){
             return (
