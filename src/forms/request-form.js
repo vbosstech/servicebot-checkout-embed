@@ -89,28 +89,43 @@ class ServiceRequestForm extends React.Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            price: props.plan.amount
+        }
+
+    }
+    componentDidUpdate(prevProps, prevState){
+        const {handleSubmit, formJSON, helpers, error, step, plan} = this.props;
+        let self = this;
+        if(prevState.price === this.state.price) {
+            let handlers = getWidgets().reduce((acc, widget) => {
+                acc[widget.type] = widget.handler;
+                return acc;
+
+            }, {});
+            let newPrice = plan.amount;
+            try {
+                newPrice = getPrice(formJSON.references.service_template_properties, handlers, plan.amount);
+                if(newPrice !== self.state.price) {
+                    helpers.updatePrice(newPrice);
+                    self.setState({price: newPrice})
+                }
+
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+
     }
 
     render() {
-        let props = this.props;
-        const {handleSubmit, formJSON, helpers, error, step, plan} = props;
-        let handlers = getWidgets().reduce((acc, widget) => {
-            acc[widget.type] = widget.handler;
-            return acc;
-
-        }, {});
-        let newPrice = formJSON.amount;
-        try {
-            newPrice = getPrice(formJSON.references.service_template_properties, handlers, formJSON.amount);
-            helpers.updatePrice(newPrice);
-        } catch (e) {
-            console.error(e);
-        }
-
+        const {handleSubmit, formJSON, helpers, error, step, plan} = this.props;
+        const {price} = this.state;
         let getRequestText = () => {
-            let serType = formJSON.type;
-            let trial = formJSON.trial_period_days !== 0;
-            let prefix = getSymbolFromCurrency(formJSON.currency);
+            let serType = plan.type;
+            let trial = plan.trial_period_days > 0;
+            let prefix = getSymbolFromCurrency(plan.currency);
             if(trial){
                 return ("Get your Free Trial")
             }
@@ -118,20 +133,20 @@ class ServiceRequestForm extends React.Component {
                 if (serType === "subscription") {
                     return (
                         <span>{"Subscribe "}
-                            <Price value={newPrice} prefix={prefix}/>
-                            {formJSON.interval_count == 1 ? ' /' : ' / ' + formJSON.interval_count} {' ' + formJSON.interval}
+                            <Price value={price} prefix={prefix}/>
+                            {plan.interval_count == 1 ? ' /' : ' / ' + plan.interval_count} {' ' + plan.interval}
                     </span>
                     );
                 } else if (serType === "one_time") {
                     return (
-                        <span>{"Buy Now"} <Price value={newPrice} prefix={prefix}/></span>
+                        <span>{"Buy Now"} <Price value={price} prefix={prefix}/></span>
                     );
                 } else if (serType === "custom") {
                     return ("Request");
                 } else if (serType === "split") {
                     return ("Buy Now");
                 } else {
-                    return (<span><Price value={newPrice} prefix={prefix}/></span>)
+                    return (<span><Price value={price} prefix={prefix}/></span>)
                 }
             }
         };
@@ -256,6 +271,7 @@ class ServiceInstanceForm extends React.Component {
 
     updatePrice(newPrice) {
         let self = this;
+        console.log("UP RIC", newPrice);
         self.setState({servicePrice: newPrice});
     }
 
@@ -325,7 +341,6 @@ class ServiceInstanceForm extends React.Component {
 
         let self = this;
         let initialValues = this.props.service;
-        console.log(this.props.service)
         let initialRequests = [];
         // let submissionPrep = (values) => {self.props.setLoading(true); return values;}
         let submissionRequest = {
@@ -335,6 +350,7 @@ class ServiceInstanceForm extends React.Component {
         let successMessage = "Service Requested";
         let successRoute = "/my-services";
         //If admin requested, redirect to the manage subscription page
+        console.log(this.state.servicePrice, this.props.plan);
         let needsCard = (this.state.servicePrice > 0 && this.props.plan.type !== "custom" &&
             !this.state.hasCard && this.props.plan.trial_period_days <= 0) || this.props.forceCard || this.props.plan.type === "split"
 
