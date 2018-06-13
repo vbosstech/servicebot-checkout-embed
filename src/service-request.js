@@ -155,7 +155,7 @@ class ServiceRequest extends React.Component {
             let {formJSON, options, paymentStructureTemplateId} = this.props;
             let {service, error} = this.state;
             let pricingPlan = service.references.tiers.reduce((acc, tier) => {
-               let plan = tier.references.payment_structure_templates.find(p => p.id === paymentStructureTemplateId);
+               let plan = tier.references.payment_structure_templates.find(p => p.id == paymentStructureTemplateId);
                if(plan){
                    acc = plan;
                }
