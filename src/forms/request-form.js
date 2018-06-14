@@ -46,7 +46,6 @@ let renderCustomProperty = (props) => {
                 }
 
                 if(formJSON[index].prompt_user){
-
                         return (
                             <Field
                                 key={index}
@@ -164,7 +163,7 @@ class ServiceRequestForm extends React.Component {
                                label="Email Address" validate={[required(), email()]}/>
 
                         {helpers.emailExists && "That email is in use"}
-                        {helpers.setPassword && <div>
+                        {helpers.setPassword && plan.type !== "custom" && <div>
                             <Field name="password" type="password" component={inputField} label="Password" validate={[length({min: 8}), required()]}/>
                             <Field name="password_confirmation" type="password" label="Password confirmation" component={inputField}
                                    validate={[confirmation({ field: 'password', fieldLabel: 'Password' })]} />
