@@ -9,7 +9,7 @@ pipeline {
         }
         stage('Build Bundle') {
           steps {
-            sh './node_modules/.bin/webpack'
+            sh 'npm run-script build'
           }
         }
 

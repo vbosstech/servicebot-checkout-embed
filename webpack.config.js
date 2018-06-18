@@ -8,7 +8,7 @@ let config = async function () {
     return {
         mode: MODE,
         entry: {
-            "servicebot-embed": [ APP_DIR + '/index.js'],
+            "servicebot-checkout-embed": [ APP_DIR + '/index.js'],
 
 
         },
@@ -48,7 +48,6 @@ let config = async function () {
                     NODE_ENV: JSON.stringify(MODE)
                 }
             })
-
         ]
     }
 };
