@@ -417,26 +417,23 @@ class ServicebotRequestForm extends React.Component {
         this.state = {
             loading : false
         };
-        this.getService = this.getService.bind(this);
+        this.getSPK = this.getSPK.bind(this);
     }
     componentDidMount(){
-        // this.getService();
+        this.getSPK();
     }
-    getService(){
+    getSPK(){
         let self = this;
-        Fetcher(`${this.props.url}/api/v1/service-templates/${this.props.templateId}/request`).then(function(response){
-            if(!response.error){
-                self.setState({service : response});
-            }else{
-                console.error("Error getting template request data", response);
-            }
-            self.setState({loading:false});
-        });
+        fetch(`${this.props.url}/api/v1/stripe/spk`)
+            .then(function(response) {
+                return response.json()
+            }).then(function(json) {
+            self.setState({spk : json.spk});
+        }).catch(e => console.error(e));
     }
-
     render() {
         console.log(this.props);
-        let spk = this.props.spk;
+        let spk = this.state.spk;
         if(this.state.loading){
             return (
                 <div className="loader">
