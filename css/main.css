@@ -102,6 +102,11 @@
   border-radius: 1px;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.17);
 }
+.buttons._text {
+  background: none !important;
+  color: #475981 !important;
+  box-shadow: none !important;
+}
 .buttons._right {
   float: right;
 }
@@ -1009,11 +1014,13 @@ input, .form-control {
   font-size: 14px;
   color: #0033A0;
   font-weight: 600;
+  font-size: 16px;
+  font-weight: normal;
 }
 .servicebot--embeddable .rf--form-wrapper .rf--form .rf--form-content .rf--form-elements .rf--body form .rf--form-inner .rf--summary .fe--total-price-wrapper {
   border-top: 1px solid #EBF3F9;
-  padding: 24px 0;
-  margin: 24px 0;
+  padding-top: 16px;
+  margin-top: 16px;
 }
 .servicebot--embeddable .rf--form-wrapper .rf--form .rf--form-content .rf--form-elements .rf--body form .rf--form-inner .rf--summary .fe--total-price-wrapper .fe--total-price-label h5 {
   color: #0033A0;
@@ -1028,6 +1035,9 @@ input, .form-control {
 }
 .servicebot--embeddable .rf--form-wrapper .rf--form .rf--form-content .rf--form-elements .rf--body form .rf--form-inner ._content_wrapper {
   padding: 32px;
+}
+.servicebot--embeddable .rf--form-wrapper .rf--form .rf--form-content .rf--form-elements .rf--body form .rf--form-inner._step-1 ._content_wrapper {
+  padding: 16px 32px;
 }
 .servicebot--embeddable .rf--form-wrapper .rf--form .rf--form-content .rf--form-elements .rf--body form .form-group label {
   font-size: 14px;
@@ -1060,9 +1070,13 @@ input, .form-control {
   padding: 10px 32px;
   background: #0033A0;
 }
+.servicebot--embeddable .rf--form-wrapper .rf--form .rf--form-content .rf--form-elements .rf--body form button._text {
+  font-weight: normal;
+  color: #0033A0;
+}
 
 #card-element {
-  padding: 0 32px 32px;
+  padding: 16px 0 64px;
 }
 #card-element h5 {
   margin: 8px 0;

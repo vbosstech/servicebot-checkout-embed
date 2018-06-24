@@ -192,7 +192,7 @@ class ServiceRequestForm extends React.Component {
                             <div className="_content_wrapper">
                                 {needsCard && <CardSection/>}
                                 <div className="button-wrapper _center _space-between">
-                                    <button onClick={helpers.stepBack} className="buttons _primary submit-request">
+                                    <button onClick={helpers.stepBack} className="buttons _primary _text submit-request">
                                         Back
                                     </button>
 
