@@ -187,6 +187,7 @@ class ServiceRequestForm extends React.Component {
 
                     {step === 1 &&
                         <div className="rf--form-inner _step-1">
+                            {this.props.summary}
                             <div className="_heading-wrapper"><h2>Checkout</h2></div>
                             <div className="_content_wrapper">
                                 <button onClick={helpers.stepBack} className="buttons submit-request">
@@ -385,7 +386,7 @@ class ServiceInstanceForm extends React.Component {
                     handleFailure={this.handleFailure}
                     formName="serviceInstanceRequestForm"
                     helpers={helpers}
-                    formProps={{plan: this.props.plan, step : this.props.step}}
+                    formProps={{summary: this.props.summary, plan: this.props.plan, step : this.props.step}}
                     validations={this.formValidation}
                     loaderTimeout={false}
                     external={this.props.external}

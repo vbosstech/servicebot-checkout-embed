@@ -8,6 +8,63 @@ const REQUEST_FORM_NAME = "serviceInstanceRequestForm";
 const selector = formValueSelector(REQUEST_FORM_NAME); // <-- same as form name
 import getSymbolFromCurrency from 'currency-symbol-map'
 import {getPriceData} from "./core-input-types/client";
+
+
+
+function Summary(props){
+    let {pricingPlan, filteredAdjustments, rightHeading, prefix, total} = props;
+    return (
+        <div className="rf--summary-wrapper">
+            <div className="rf--summary">
+                <div className="rf--summary-heading"><h4>{rightHeading}</h4></div>
+                <div className="rf--summary-content">
+                    {(pricingPlan.trial_period_days > 0) ? (
+                        <div className="rf--free-trial-content">
+                            {pricingPlan.trial_period_days} Day Free Trial
+                        </div>
+                    ) : null}
+                    {(pricingPlan.type === "subscription" || pricingPlan.type === "one_time") ? (
+                        <div className="rf--pricing-content">
+                            <div className="fe--pricing-breakdown-wrapper">
+                                <div className="subscription-pricing">
+                                    {(pricingPlan.type === "subscription") ? (
+                                        <div className="fe--recurring-fee"><h5>Recurring Fee</h5></div>) : null}
+                                    {(pricingPlan.type === "one_time") ? (
+                                        <div className="fe--base-price"><h5>Base Cost</h5></div>) : null}
+                                    <div className="fe--base-price-value">
+                                        {getPrice(pricingPlan)}
+                                    </div>
+                                </div>
+                            </div>
+                            {filteredAdjustments.map((lineItem, index) => (
+                                <div key={"line-" + index} className="fe--line-item-pricing-wrapper">
+                                    <div className="subscription-pricing">
+                                        <div
+                                            className="fe--line-item">{lineItem.prop_label}</div>
+                                        <div className="fe--line-item-price-value">
+                                            {this.getAdjustmentSign(lineItem, prefix)}
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                            <div className="fe--total-price-wrapper">
+                                <div className="fe--total-price-label"><h5>Total:</h5></div>
+                                <div className="fe--total-price-value">
+                                    <Price value={total} prefix={prefix}/>
+                                </div>
+                            </div>
+                        </div>
+                    ) : null}
+
+                    {(pricingPlan.type === "custom") ? (
+                        <div className="rf--quote-content">Contact</div>
+                    ) : null}
+
+                </div>
+            </div>
+        </div>
+    )
+}
 class ServiceRequest extends React.Component {
 
     constructor(props) {
@@ -193,6 +250,13 @@ class ServiceRequest extends React.Component {
             }
 
             const requestClasses = this.props.hideSummary ? "summary-hidden" : "summary-shown";
+            let summaryProps = {
+                rightHeading,
+                pricingPlan,
+                filteredAdjustments,
+                prefix,
+                total
+            };
             return (
                 <div className="servicebot--embeddable servicebot--request-user-form-wrapper custom">
                     {/*{JSON.stringify(this.getPriceData())}*/}
@@ -211,61 +275,10 @@ class ServiceRequest extends React.Component {
                                         </div>
                                     }
                                 </div>
-                                <ServiceRequestForm plan={pricingPlan} {...this.props} step={this.state.step} stepForward={this.stepForward} stepBack={this.stepBack} service={service}/>
+                                <ServiceRequestForm summary={(<Summary {...summaryProps}/>)} plan={pricingPlan} {...this.props} step={this.state.step} stepForward={this.stepForward} stepBack={this.stepBack} service={service}/>
                             </div>
                         </div>
                     </div>
-                    {!this.props.hideSummary && this.state.step === 1 && pricingPlan &&
-                        <div className="rf--summary-wrapper">
-                            <div className="rf--summary">
-                                <div className="rf--summary-heading"><h4>{rightHeading}</h4></div>
-                                <div className="rf--summary-content">
-                                    {(pricingPlan.trial_period_days > 0) ? (
-                                        <div className="rf--free-trial-content">
-                                            {pricingPlan.trial_period_days} Day Free Trial
-                                        </div>
-                                    ) : null}
-                                    {(pricingPlan.type === "subscription" || pricingPlan.type === "one_time") ? (
-                                        <div className="rf--pricing-content">
-                                            <div className="fe--pricing-breakdown-wrapper">
-                                                <div className="subscription-pricing">
-                                                    {(pricingPlan.type === "subscription") ? (
-                                                        <div className="fe--recurring-fee"><h5>Recurring Fee</h5></div>) : null}
-                                                    {(pricingPlan.type === "one_time") ? (
-                                                        <div className="fe--base-price"><h5>Base Cost</h5></div>) : null}
-                                                    <div className="fe--base-price-value">
-                                                        {getPrice(pricingPlan)}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            {filteredAdjustments.map((lineItem, index) => (
-                                                <div key={"line-" + index} className="fe--line-item-pricing-wrapper">
-                                                    <div className="subscription-pricing">
-                                                        <div
-                                                            className="fe--line-item">{lineItem.prop_label}</div>
-                                                        <div className="fe--line-item-price-value">
-                                                            {this.getAdjustmentSign(lineItem, prefix)}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            ))}
-                                            <div className="fe--total-price-wrapper">
-                                                <div className="fe--total-price-label"><h5>Total:</h5></div>
-                                                <div className="fe--total-price-value">
-                                                    <Price value={total} prefix={prefix}/>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    ) : null}
-
-                                    {(pricingPlan.type === "custom") ? (
-                                        <div className="rf--quote-content">Contact</div>
-                                    ) : null}
-
-                                </div>
-                            </div>
-                        </div>
-                    }
                 </div>
             );
         }
