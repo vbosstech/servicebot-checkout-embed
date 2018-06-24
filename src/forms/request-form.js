@@ -415,7 +415,7 @@ class ServicebotRequestForm extends React.Component {
     constructor(props){
         super(props)
         this.state = {
-            loading : false
+            loading : true
         };
         this.getSPK = this.getSPK.bind(this);
     }
@@ -428,7 +428,7 @@ class ServicebotRequestForm extends React.Component {
             .then(function(response) {
                 return response.json()
             }).then(function(json) {
-            self.setState({spk : json.spk});
+            self.setState({loading:false, spk : json.spk});
         }).catch(e => console.error(e));
     }
     render() {
