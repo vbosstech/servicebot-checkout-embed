@@ -6,6 +6,7 @@ class CardSection extends React.Component {
     render() {
         return (
             <div className="form-group" id="card-element">
+                <h5>Payment Info</h5>
                 <CardElement style={{
                     base: {
                         color: '#32325d',

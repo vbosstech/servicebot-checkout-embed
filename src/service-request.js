@@ -229,7 +229,7 @@ class ServiceRequest extends React.Component {
             let splitPricing = service.split_configuration;
             let splitTotal = 0;
 
-            let rightHeading = "Plan Summary";
+            let rightHeading = "Items";
             switch (service.type) {
                 case 'one_time':
                     rightHeading = "Payment Summary";
@@ -246,7 +246,7 @@ class ServiceRequest extends React.Component {
                     }
                     break;
                 default:
-                    rightHeading = "Plan Summary";
+                    rightHeading = "Items";
             }
 
             const requestClasses = this.props.hideSummary ? "summary-hidden" : "summary-shown";

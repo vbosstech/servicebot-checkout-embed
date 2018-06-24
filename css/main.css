@@ -106,8 +106,12 @@
   float: right;
 }
 
-._center {
+.button-wrapper._center {
   text-align: center;
+}
+.button-wrapper._space-between {
+  display: flex;
+  justify-content: space-around;
 }
 
 .clear {
@@ -940,11 +944,11 @@ input, .form-control {
 
 /* servicebot-checkout-embed client -- for this repo project only! */
 .servicebot--embeddable {
+  font-size: 14px;
+  color: #0033A0;
   position: relative;
   display: flex;
   flex-direction: row;
-  font-size: 14px;
-  color: #0033A0;
   width: 100%;
 }
 .servicebot--embeddable .rf--form-wrapper {
@@ -955,6 +959,7 @@ input, .form-control {
   box-shadow: inset 1px 1px 3px 0 #CCD1D9;
   border-radius: 1px;
   border-radius: 3px;
+  border-color: #0033A0;
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.05);
   width: 384px;
   justify-content: space-around;
@@ -975,12 +980,58 @@ input, .form-control {
   text-align: center;
   margin: 0;
 }
+.servicebot--embeddable .rf--form-wrapper .rf--form .rf--form-content .rf--form-elements .rf--body form .rf--form-inner .rf--summary {
+  background-color: #FBFCFF;
+  padding: 16px 32px;
+}
+.servicebot--embeddable .rf--form-wrapper .rf--form .rf--form-content .rf--form-elements .rf--body form .rf--form-inner .rf--summary > * {
+  margin: 8px 0;
+}
+.servicebot--embeddable .rf--form-wrapper .rf--form .rf--form-content .rf--form-elements .rf--body form .rf--form-inner .rf--summary h4 {
+  font-size: 14px;
+  color: #0033A0;
+  font-weight: 600;
+  margin: 0;
+}
+.servicebot--embeddable .rf--form-wrapper .rf--form .rf--form-content .rf--form-elements .rf--body form .rf--form-inner .rf--summary h5 {
+  font-size: 14px;
+  line-height: 16px;
+  font-weight: 300;
+  color: #6F7F9F;
+  margin: 0;
+}
+.servicebot--embeddable .rf--form-wrapper .rf--form .rf--form-content .rf--form-elements .rf--body form .rf--form-inner .rf--summary .subscription-pricing, .servicebot--embeddable .rf--form-wrapper .rf--form .rf--form-content .rf--form-elements .rf--body form .rf--form-inner .rf--summary .fe--total-price-wrapper {
+  display: flex;
+  justify-content: space-between;
+  margin: 8px 0;
+}
+.servicebot--embeddable .rf--form-wrapper .rf--form .rf--form-content .rf--form-elements .rf--body form .rf--form-inner .rf--summary .fe--base-price-value, .servicebot--embeddable .rf--form-wrapper .rf--form .rf--form-content .rf--form-elements .rf--body form .rf--form-inner .rf--summary .fe--total-price-value {
+  font-size: 14px;
+  color: #0033A0;
+  font-weight: 600;
+}
+.servicebot--embeddable .rf--form-wrapper .rf--form .rf--form-content .rf--form-elements .rf--body form .rf--form-inner .rf--summary .fe--total-price-wrapper {
+  border-top: 1px solid #EBF3F9;
+  padding: 24px 0;
+  margin: 24px 0;
+}
+.servicebot--embeddable .rf--form-wrapper .rf--form .rf--form-content .rf--form-elements .rf--body form .rf--form-inner .rf--summary .fe--total-price-wrapper .fe--total-price-label h5 {
+  color: #0033A0;
+  padding: 8px 0;
+}
+.servicebot--embeddable .rf--form-wrapper .rf--form .rf--form-content .rf--form-elements .rf--body form .rf--form-inner .rf--summary .fe--total-price-wrapper .fe--total-price-value {
+  padding: 8px 16px;
+  -webkit-border-radius: 16px;
+  -moz-border-radius: 16px;
+  border-radius: 16px;
+  background-color: rgba(76, 130, 252, 0.1);
+}
 .servicebot--embeddable .rf--form-wrapper .rf--form .rf--form-content .rf--form-elements .rf--body form .rf--form-inner ._content_wrapper {
   padding: 32px;
 }
 .servicebot--embeddable .rf--form-wrapper .rf--form .rf--form-content .rf--form-elements .rf--body form .form-group label {
-  color: #0033A0;
   font-size: 14px;
+  color: #0033A0;
   font-weight: 600;
   text-transform: none;
 }
@@ -1008,6 +1059,32 @@ input, .form-control {
   font-weight: 600;
   padding: 10px 32px;
   background: #0033A0;
+}
+
+#card-element {
+  padding: 0 32px 32px;
+}
+#card-element h5 {
+  margin: 8px 0;
+  font-size: 14px;
+  color: #0033A0;
+  font-weight: 600;
+}
+#card-element .StripeElement {
+  border: 1px solid #EBF3F9;
+  box-shadow: inset 1px 1px 3px 0 #CCD1D9;
+  border-radius: 1px;
+  padding: 5.3333333333px 8px;
+  box-shadow: none;
+}
+#card-element .StripeElement:focus {
+  border-color: #0033A0;
+}
+#card-element .StripeElement > * {
+  color: #9B9B9B;
+}
+#card-element .StripeElement .ElementsApp .InputElement {
+  color: black;
 }
 
 img {

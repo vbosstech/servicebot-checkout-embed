@@ -42,8 +42,15 @@
 
 }
 
-._center{
-  text-align: center;
+.button-wrapper {
+
+  &._center {
+    text-align: center;
+  }
+  &._space-between {
+    display: flex;
+    justify-content: space-around;
+  }
 }
 
 .clear{

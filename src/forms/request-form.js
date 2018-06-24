@@ -173,7 +173,7 @@ class ServiceRequestForm extends React.Component {
 
                                 </div>}
 
-                                <div className="_center">
+                                <div className="button-wrapper _center">
                                     <button className="buttons _primary submit-request">
                                         {buttonText}
                                     </button>
@@ -187,16 +187,18 @@ class ServiceRequestForm extends React.Component {
 
                     {step === 1 &&
                         <div className="rf--form-inner _step-1">
-                            {this.props.summary}
                             <div className="_heading-wrapper"><h2>Checkout</h2></div>
+                            {this.props.summary}
                             <div className="_content_wrapper">
-                                <button onClick={helpers.stepBack} className="buttons submit-request">
-                                    Back
-                                </button>
+                                <div className="button-wrapper _center _space-between">
+                                    <button onClick={helpers.stepBack} className="buttons _primary submit-request">
+                                        Back
+                                    </button>
 
-                                <button className="buttons submit-request" type="submit" value="submit">
-                                    {getRequestText()}
-                                </button>
+                                    <button className="buttons _primary submit-request" type="submit" value="submit">
+                                        Pay Now{/*{getRequestText()}*/}
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     }
