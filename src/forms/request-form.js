@@ -119,7 +119,7 @@ class ServiceRequestForm extends React.Component {
     }
 
     render() {
-        const {handleSubmit, formJSON, helpers, error, step, plan} = this.props;
+        const {handleSubmit, formJSON, helpers, error, step, plan, needsCard} = this.props;
         const {price} = this.state;
         let getRequestText = () => {
             let serType = plan.type;
@@ -190,6 +190,7 @@ class ServiceRequestForm extends React.Component {
                             <div className="_heading-wrapper"><h2>Checkout</h2></div>
                             {this.props.summary}
                             <div className="_content_wrapper">
+                                {needsCard && <CardSection/>}
                                 <div className="button-wrapper _center _space-between">
                                     <button onClick={helpers.stepBack} className="buttons _primary submit-request">
                                         Back
@@ -388,12 +389,11 @@ class ServiceInstanceForm extends React.Component {
                     handleFailure={this.handleFailure}
                     formName="serviceInstanceRequestForm"
                     helpers={helpers}
-                    formProps={{summary: this.props.summary, plan: this.props.plan, step : this.props.step}}
+                    formProps={{needsCard, summary: this.props.summary, plan: this.props.plan, step : this.props.step}}
                     validations={this.formValidation}
                     loaderTimeout={false}
                     external={this.props.external}
                 />
-                {needsCard && !this.state.serviceCreated && this.props.step === 1 && <CardSection/>}
             </div>
         )
 
