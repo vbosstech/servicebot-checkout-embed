@@ -211,7 +211,6 @@ class ServiceRequest extends React.Component {
                                         </div>
                                     }
                                 </div>
-                                {!this.props.hideHeaders && <div className="divider"><hr/></div>}
                                 <ServiceRequestForm plan={pricingPlan} {...this.props} step={this.state.step} stepForward={this.stepForward} stepBack={this.stepBack} service={service}/>
                             </div>
                         </div>

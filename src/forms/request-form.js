@@ -156,41 +156,47 @@ class ServiceRequestForm extends React.Component {
         return (
             <div className="rf--body">
                 <form onSubmit={handleSubmit}>
-                    {step === 0 && <div>
-                    {!helpers.uid &&
+                    {step === 0 &&
                     <div>
-                        <Field name="email" type="text" component={inputField}
-                               label="Email Address" validate={[required(), email()]}/>
+                        {!helpers.uid &&
+                        <div className="rf--form-inner _step-0">
+                            <div className="_heading-wrapper"><h2>Create Account</h2></div>
+                            <div className="_content_wrapper">
+                                <Field name="email" type="text" component={inputField}
+                                       label="Email Address" validate={[required(), email()]}/>
 
-                        {helpers.emailExists && "That email is in use"}
-                        {helpers.setPassword && plan.type !== "custom" && <div>
-                            <Field name="password" type="password" component={inputField} label="Password" validate={[length({min: 8}), required()]}/>
-                            <Field name="password_confirmation" type="password" label="Password confirmation" component={inputField}
-                                   validate={[confirmation({ field: 'password', fieldLabel: 'Password' })]} />
+                                {helpers.emailExists && "That email is in use"}
+                                {helpers.setPassword && plan.type !== "custom" && <div>
+                                    <Field name="password" type="password" component={inputField} label="Password" validate={[length({min: 8}), required()]}/>
+                                    <Field name="password_confirmation" type="password" label="Password confirmation" component={inputField}
+                                           validate={[confirmation({ field: 'password', fieldLabel: 'Password' })]} />
 
-                        </div>}
+                                </div>}
+
+                                <div className="_center">
+                                    <button className="buttons _primary submit-request">
+                                        {buttonText}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        }
                     </div>
+                    //end step 0
                     }
-                        <FormSection name="references">
-                            <FieldArray name="service_template_properties" component={renderCustomProperty}
-                                        formJSON={formJSON.references.service_template_properties}/>
-                        </FormSection>
-                        <button className="btn btn-rounded btn-primary btn-bar submit-request">
-                            {buttonText}
-                        </button>
 
-                    </div>
-
-                    }
                     {step === 1 &&
-                        <div>
-                            <button onClick={helpers.stepBack} className="btn btn-rounded btn-primary btn-bar submit-request">
-                                Back
-                            </button>
+                        <div className="rf--form-inner _step-1">
+                            <div className="_heading-wrapper"><h2>Checkout</h2></div>
+                            <div className="_content_wrapper">
+                                <button onClick={helpers.stepBack} className="buttons submit-request">
+                                    Back
+                                </button>
 
-                            <button className="btn btn-rounded btn-primary btn-bar submit-request" type="submit" value="submit">
-                        {getRequestText()}
-                    </button>
+                                <button className="buttons submit-request" type="submit" value="submit">
+                                    {getRequestText()}
+                                </button>
+                            </div>
                         </div>
                     }
                     {error &&
@@ -367,10 +373,6 @@ class ServiceInstanceForm extends React.Component {
         //Gets a token to populate token_id for instance request
         return (
             <div className="rf--form-elements">
-                {needsCard && !this.state.serviceCreated && this.props.step === 1 &&
-                <CardSection/>}
-
-
                 <ServicebotBaseForm
                     form={ServiceRequestForm}
                     initialValues={initialValues}
@@ -388,6 +390,7 @@ class ServiceInstanceForm extends React.Component {
                     loaderTimeout={false}
                     external={this.props.external}
                 />
+                {needsCard && !this.state.serviceCreated && this.props.step === 1 && <CardSection/>}
             </div>
         )
 

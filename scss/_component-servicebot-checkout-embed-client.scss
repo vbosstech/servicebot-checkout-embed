@@ -1,0 +1,151 @@
+.servicebot--embeddable{
+
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  font-size: 14px;
+  color: $color-blue;
+  width: 100%;
+
+  &.servicebot--request-user-form-wrapper{
+  }
+
+  .rf--form-wrapper{
+
+    @include text;
+    @include border;
+    border-radius: 3px;
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,0.05);
+    width: 384px;
+    justify-content: space-around;
+
+    &.summary-shown{
+
+    }
+
+    .rf--form{
+
+      .rf--form-heading {
+
+      }
+
+      .rf--form-content{
+
+        .rf--basic-info{
+
+        }
+
+        .divider{
+
+        }
+
+        .rf--form-elements{
+
+          .rf--body{
+
+            form{
+
+              .rf--form-inner{
+
+                &._step--0{
+
+                }
+
+                &._step--1{
+
+                }
+
+                ._heading-wrapper{
+                  color: $color-blue;
+                  border-radius: 3px 3px 0 0;
+                  background-color: $color-light-blue-gray;
+                  box-shadow: 0 3px 2px 0 rgba(0,0,0,0.03);
+                  padding: $gutter;
+
+                  h2{
+                    font-size: 20px;
+                    line-height: 24px;
+                    text-align: center;
+                    margin: 0;
+                  }
+                }
+
+                ._content_wrapper{
+                  padding: $gutter * 2;
+
+                }
+
+              }
+
+              .form-group{
+
+                label{
+                  color: $color-blue;
+                  font-size: 14px;
+                  font-weight: 600;
+                  text-transform: none;
+                }
+
+                .form-input-flex{
+                  display: flex;
+                  flex-direction: column;
+
+                  input {
+                    font-size: 14px;
+                    color: $color-blue;
+                    height: $gutter * 2;
+                    margin: {
+                      top: $gutter / 2;
+                      bottom: $gutter;
+                    };
+                    padding: {
+                      left: $gutter;
+                      right: $gutter;
+                    }
+
+                    &.form-control {
+
+                      &.has-error {
+                        margin: {
+                          bottom: $gutter / 2;
+                        }
+
+                      }
+
+                    }
+                  }
+
+                  .form-error{
+                    margin: {
+                      bottom: $gutter / 2;
+                    }
+                  }
+
+                }
+
+              }
+
+              button{
+
+                &.buttons{
+                  font-size: 14px;
+                  font-weight: 600;
+                  padding: 10px $gutter * 2;
+                  background: $color-blue;
+                }
+
+              }
+
+            }
+
+          }
+
+        }
+
+      }
+
+    }
+
+  }
+
+}
