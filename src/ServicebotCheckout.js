@@ -4,6 +4,7 @@ import { Provider } from 'react-redux'
 import { createStore, combineReducers} from 'redux'
 import {reducer as formReducer} from 'redux-form'
 import Load from "./utilities/load.js"
+import '../scss/main.scss';
 class App extends Component {
   render() {
       const options = (state = {currency : {value : "usd"}}, action) => {

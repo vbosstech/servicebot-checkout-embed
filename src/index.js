@@ -4,7 +4,6 @@ import ReactDOM from 'react-dom';
 // import '../css/servicebot--form-elements.css';
 // import '../css/servicebot--layout.css';
 // import '../css/servicebot--text-elements.css';
-import '../css/main.css';
 import ServicebotCheckoutEmbed from './ServicebotCheckout';
 import { AppContainer } from 'react-hot-loader'
 
