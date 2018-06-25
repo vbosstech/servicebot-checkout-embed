@@ -956,6 +956,10 @@ input, .form-control {
   flex-direction: row;
   width: 100%;
 }
+.servicebot--embeddable.servicebot--request-user-form-wrapper {
+  flex-direction: column;
+  width: 384px;
+}
 .servicebot--embeddable .rf--form-wrapper {
   color: #475981;
   font-size: 14px;
@@ -1072,7 +1076,10 @@ input, .form-control {
 }
 .servicebot--embeddable .rf--form-wrapper .rf--form .rf--form-content .rf--form-elements .rf--body form button._text {
   font-weight: normal;
-  color: #0033A0;
+  color: #0033A0 !important;
+  position: absolute;
+  left: 0;
+  font-size: 0.9em;
 }
 
 #card-element {
@@ -1099,6 +1106,14 @@ input, .form-control {
 }
 #card-element .StripeElement .ElementsApp .InputElement {
   color: black;
+}
+
+.servicebot-logo-footer {
+  font-family: "Open Sans", "Arial";
+  font-size: 10px;
+  text-align: right;
+  color: #6D7688;
+  padding: 8px 0;
 }
 
 img {

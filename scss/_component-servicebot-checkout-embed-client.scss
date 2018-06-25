@@ -16,7 +16,8 @@
   width: 100%;
 
   &.servicebot--request-user-form-wrapper{
-
+    flex-direction: column;
+    width: 384px;
   }
 
   .rf--form-wrapper{
@@ -205,7 +206,10 @@
 
                 &._text{
                   font-weight: normal;
-                  color: $color-blue;
+                  color: $color-blue !important;
+                  position: absolute;
+                  left: 0;
+                  font-size: 0.9em;
                 }
 
               }
@@ -249,4 +253,12 @@
     }
   }
 
+}
+
+.servicebot-logo-footer{
+  font-family: "Open Sans", "Arial";
+  font-size: 10px;
+  text-align: right;
+  color: $color-gray;
+  padding: $gutter/2 0;
 }
