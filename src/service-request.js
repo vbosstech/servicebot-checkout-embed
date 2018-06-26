@@ -12,6 +12,7 @@ import {getPriceData} from "./core-input-types/client";
 
 
 function Summary(props){
+    let self = this;
     let {pricingPlan, filteredAdjustments, rightHeading, prefix, total} = props;
     return (
         <div className="rf--summary-wrapper">
@@ -36,17 +37,7 @@ function Summary(props){
                                     </div>
                                 </div>
                             </div>
-                            {filteredAdjustments.map((lineItem, index) => (
-                                <div key={"line-" + index} className="fe--line-item-pricing-wrapper">
-                                    <div className="subscription-pricing">
-                                        <div
-                                            className="fe--line-item">{lineItem.prop_label}</div>
-                                        <div className="fe--line-item-price-value">
-                                            {this.getAdjustmentSign(lineItem, prefix)}
-                                        </div>
-                                    </div>
-                                </div>
-                            ))}
+                            {filteredAdjustments}
                             <div className="fe--total-price-wrapper">
                                 <div className="fe--total-price-label"><h5>Total:</h5></div>
                                 <div className="fe--total-price-value">
@@ -225,7 +216,17 @@ class ServiceRequest extends React.Component {
 
             let prefix = getSymbolFromCurrency(service.currency);
             let {total, adjustments} = getPriceData(pricingPlan && pricingPlan.amount, formJSON && formJSON.references.service_template_properties);
-            let filteredAdjustments = adjustments.filter(adjustment => adjustment.value > 0);
+            let filteredAdjustments = adjustments.filter(adjustment => adjustment.value > 0).map((lineItem, index) => (
+                <div key={"line-" + index} className="fe--line-item-pricing-wrapper">
+                    <div className="subscription-pricing">
+                        <div
+                            className="fe--line-item">{lineItem.prop_label}</div>
+                        <div className="fe--line-item-price-value">
+                            {this.getAdjustmentSign(lineItem, prefix)}
+                        </div>
+                    </div>
+                </div>
+            ));
             let splitPricing = service.split_configuration;
             let splitTotal = 0;
 

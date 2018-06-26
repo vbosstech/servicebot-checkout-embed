@@ -173,6 +173,11 @@ class ServiceRequestForm extends React.Component {
 
                                 </div>}
 
+                                <FormSection name="references">
+                                    <FieldArray name="service_template_properties" component={renderCustomProperty}
+                                                formJSON={formJSON.references.service_template_properties}/>
+                                </FormSection>
+
                                 <div className="button-wrapper _center">
                                     <button className="buttons _primary submit-request">
                                         {buttonText}
