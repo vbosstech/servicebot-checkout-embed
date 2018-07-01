@@ -259,7 +259,7 @@ class ServiceRequest extends React.Component {
                 total
             };
             return (
-                <div className="servicebot--embeddable servicebot--request-user-form-wrapper custom">
+                <div className="servicebot--embeddable servicebot--rf-embeddable servicebot--request-user-form-wrapper custom">
                     {/*{JSON.stringify(this.getPriceData())}*/}
                     <div className={`rf--form-wrapper ${requestClasses}`}>
                         <div className={`rf--form`}>
