@@ -41,6 +41,9 @@ let renderCustomProperty = (props) => {
             {fields.map((customProperty, index) => {
                     let property = widgets[formJSON[index].type];
                     let validate = [];
+                    if(formJSON[index].type ==="metric"){
+                        return <div></div>
+                    }
                 if (formJSON[index].required) {
                     validate.push(required());
                 }
