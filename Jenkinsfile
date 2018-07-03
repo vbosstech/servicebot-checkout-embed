@@ -18,11 +18,10 @@ pipeline {
           steps {
 
               withCredentials([string(credentialsId: 'npm-token', variable: 'NPM_TOKEN')]) {
-                                echo "$GIT_BRANCH"
-
-                              sh '''
+                              sshagent(credentials: ["${gitCredentials}"]){
+                                sh '''
                                       npm version patch
-                                    npm version patch
+                                      npm version patch
                                       git add .
                                       git commit -m "Jenkins version bump" | true
                                       git push origin cleanup-and-styling
@@ -30,6 +29,7 @@ pipeline {
                                       echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
                                       npm publish
                                 '''
+                                }
 
               }
 
