@@ -16,17 +16,23 @@ pipeline {
                 branch 'cleanup-and-styling'
             }
           steps {
-            sh '''
-                  npm install
-                  npm run-script build
-                  npm version patch
-                  npm publish
-                  git add .
-                  git commit -m "Jenkins version bump"
-                  git push cleanup-and-styling
-                  git push --tags
-              '''
 
+              withCredentials([
+                  [$class: 'StringBinding', credentialsId: 'npm-token', variable: 'NPM_TOKEN']]) {
+
+                              sh '''
+                                    npm install
+                                    npm run-script build
+                                    npm version patch
+                                    echo '//registry.npmjs.org/:_authToken=${env.NPM_TOKEN}' >> \$HOME/.npmrc
+                                    npm publish
+                                    git add .
+                                    git commit -m "Jenkins version bump"
+                                    git push cleanup-and-styling
+                                    git push --tags
+                                '''
+
+              }
 
           }
         }
