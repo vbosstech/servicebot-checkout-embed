@@ -23,7 +23,8 @@ pipeline {
                               sh '''
                                       npm version patch
                                       git branch
-                                      git add .
+                                      git add package.json
+                                      git status
                                       git commit -m "Jenkins version bump"
                                       git push origin cleanup-and-styling
                                       git push origin --tags
