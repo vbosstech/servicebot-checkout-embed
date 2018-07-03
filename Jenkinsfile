@@ -82,7 +82,11 @@ pipeline {
 
         stage('Upload To S3') {
           when {
-              branch 'cleanup-and-styling'
+                branch 'cleanup-and-styling'
+                expression {
+                    return env.shouldBuild != "false"
+                }
+
           }
           steps {
             withAWS(credentials: 'aws', region: 'us-east-1') {
