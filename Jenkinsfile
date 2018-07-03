@@ -8,19 +8,38 @@ def gitCredentials = "JenkinsGithub"
 
 
 pipeline {
+    parameters {
+          booleanParam(defaultValue: true, description: 'Execute pipeline?', name: 'shouldBuild')
+       }
+
   agent any
   stages {
+        stage("Check if should build"){
+        script {
+            result = sh (script: "git log -1 | grep '.*Jenkins version bump.*'", returnStatus: true)
+            if (result == 0) {
+                echo ("'Version bump' spotted in git commit. Aborting.")
+                env.shouldBuild = "false"
+            }
+        }
 
-        stage('Publish NPM') {
+        }
+        stage('Build, bump version, and Publish NPM Package') {
             when {
-                branch 'master'
+                branch 'cleanup-and-styling'
+                expression {
+                    return env.shouldBuild != "false"
+                }
+
+
             }
           steps {
 
               withCredentials([string(credentialsId: 'npm-token', variable: 'NPM_TOKEN')]) {
                               sshagent(credentials: ["${gitCredentials}"]){
+
                                 sh '''
-                                      npm version patch
+                                      npm version patch -m "Jenkins version bump"
                                       git add .
                                       git commit -m "Jenkins version bump" | true
                                       git push origin cleanup-and-styling
@@ -38,7 +57,10 @@ pipeline {
         }
         stage('Update Servicebot repo'){
           when {
-              branch 'master'
+              branch 'cleanup-and-styling'
+              expression {
+                  return env.shouldBuild != "false"
+              }
           }
           steps{
             dir('servicebot'){
