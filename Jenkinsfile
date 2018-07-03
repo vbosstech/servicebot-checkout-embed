@@ -20,8 +20,6 @@ pipeline {
               withCredentials([string(credentialsId: 'npm-token', variable: 'NPM_TOKEN')]) {
 
                               sh '''
-    //                                npm install
-  //                                  npm run-script build
                                       npm version patch
                                       git add .
                                       git commit -m "Jenkins version bump"
