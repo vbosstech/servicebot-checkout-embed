@@ -4,7 +4,7 @@ def getRepo(){
             return value[0];
 }
 
-def gitCredentials = "5f030cd1-e0e4-4f75-8522-38baf2111155"
+def gitCredentials = "JenkinsGithub"
 
 
 pipeline {
