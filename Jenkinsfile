@@ -41,6 +41,8 @@ pipeline {
 
                                 sh '''
                                       npm version patch -m "Jenkins version bump"
+                                      npm install
+                                      npm run-script build
                                       git add .
                                       git commit -m "Jenkins version bump" | true
                                       git push origin cleanup-and-styling
@@ -82,7 +84,7 @@ pipeline {
 
         stage('Upload To S3') {
           when {
-                branch 'cleanup-and-styling'
+                branch 'master'
                 expression {
                     return env.shouldBuild != "false"
                 }
