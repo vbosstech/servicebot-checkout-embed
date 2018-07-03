@@ -22,14 +22,13 @@ pipeline {
 
                               sh '''
                                       npm version patch
-                                      git branch
-                                      git add package.json
-                                      git status
-                                      git commit -m "Jenkins version bump"
+                                    npm version patch
+                                      git add .
+                                      git commit -m "Jenkins version bump" | true
                                       git push origin cleanup-and-styling
                                       git push origin --tags
-                                  echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
-                                    npm publish
+                                      echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
+                                      npm publish
                                 '''
 
               }
