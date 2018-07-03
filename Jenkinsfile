@@ -21,7 +21,7 @@ pipeline {
 
                               sh '''
                                     echo "$NPM_TOKEN"
-                                    sh "echo //registry.npmjs.org/:_authToken=${env.NPM_TOKEN} > .npmrc"
+                                    sh "echo //registry.npmjs.org/:_authToken=$NPM_TOKEN > .npmrc"
                                     npm whoami
                                     npm install
                                     npm run-script build
