@@ -20,9 +20,8 @@ pipeline {
               withCredentials([string(credentialsId: 'npm-token', variable: 'NPM_TOKEN')]) {
 
                               sh '''
-                                      cat package.json
                                       npm version patch
-                                      cat package.json
+                                      git branch
                                       git add .
                                       git commit -m "Jenkins version bump"
                                       git push origin cleanup-and-styling
