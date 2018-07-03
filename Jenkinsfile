@@ -13,14 +13,13 @@ pipeline {
 
         stage('Publish NPM') {
             when {
-                branch 'cleanup-and-styling'
+                branch 'master'
             }
           steps {
 
               withCredentials([string(credentialsId: 'npm-token', variable: 'NPM_TOKEN')]) {
                               sshagent(credentials: ["${gitCredentials}"]){
                                 sh '''
-                                      npm version patch
                                       npm version patch
                                       git add .
                                       git commit -m "Jenkins version bump" | true
@@ -37,7 +36,7 @@ pipeline {
         }
         stage('Update Servicebot repo'){
           when {
-              branch 'cleanup-and-styling'
+              branch 'master'
           }
           steps{
             dir('servicebot'){
