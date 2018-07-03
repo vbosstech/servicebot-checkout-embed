@@ -15,6 +15,7 @@ pipeline {
   agent any
   stages {
         stage("Check if should build"){
+        steps{
         script {
             result = sh (script: "git log -1 | grep '.*Jenkins version bump.*'", returnStatus: true)
             if (result == 0) {
@@ -22,7 +23,7 @@ pipeline {
                 env.shouldBuild = "false"
             }
         }
-
+}
         }
         stage('Build, bump version, and Publish NPM Package') {
             when {
