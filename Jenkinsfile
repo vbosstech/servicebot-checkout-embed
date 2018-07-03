@@ -18,6 +18,7 @@ pipeline {
           steps {
 
               withCredentials([string(credentialsId: 'npm-token', variable: 'NPM_TOKEN')]) {
+                                echo "$GIT_BRANCH"
 
                               sh '''
                                       npm version patch
