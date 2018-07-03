@@ -12,10 +12,10 @@ pipeline {
   stages {
 
         stage('Publish NPM') {
-          steps {
             when {
                 branch 'cleanup-and-styling'
             }
+          steps {
             sh '''
                   npm install
                   npm run-script build
