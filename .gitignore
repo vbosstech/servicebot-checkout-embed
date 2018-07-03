@@ -8,6 +8,7 @@ yarn-error.log*
 dist
 .idea/
 build
+.npmrc
 # Runtime data
 pids
 *.pid

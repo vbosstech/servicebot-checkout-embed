@@ -20,17 +20,15 @@ pipeline {
               withCredentials([string(credentialsId: 'npm-token', variable: 'NPM_TOKEN')]) {
 
                               sh '''
-                                    echo NPM_TOKEN
-                                    echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
-                                    npm whoami
-                                    npm install
-                                    npm run-script build
-                                    npm version patch
+    //                                npm install
+  //                                  npm run-script build
+                                      npm version patch
+                                      git add .
+                                      git commit -m "Jenkins version bump"
+                                      git push origin cleanup-and-styling
+                                      git push origin --tags
+                                  echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
                                     npm publish
-                                    git add .
-                                    git commit -m "Jenkins version bump"
-                                    git push cleanup-and-styling
-                                    git push --tags
                                 '''
 
               }
