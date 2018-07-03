@@ -16,7 +16,7 @@ pipeline {
             when {
                 branch 'cleanup-and-styling'
             }
-            sh ```
+            sh '''
                   npm install
                   npm run-script build
                   npm version patch
@@ -25,7 +25,7 @@ pipeline {
                   git commit -m "Jenkins version bump"
                   git push cleanup-and-styling
                   git push --tags
-              ```
+              '''
 
 
           }
@@ -39,12 +39,12 @@ pipeline {
                   git(url: "git@github.com:service-bot/servicebot.git", branch: 'tiers', credentialsId: "${gitCredentials}")
 
                 sshagent(credentials: ["${gitCredentials}"]){
-                 sh ```
+                 sh '''
                     npm update ${getRepo()}
                     git add .
                     git commit -m "Jenkins version bump"
                     git push origin tiers
-                    ```
+                    '''
               }
             }
         }
