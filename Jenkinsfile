@@ -17,14 +17,13 @@ pipeline {
             }
           steps {
 
-              withCredentials([
-                  [$class: 'StringBinding', credentialsId: 'npm-token', variable: 'NPM_TOKEN']]) {
+              withCredentials([string(credentialsId: 'npm-token', variable: 'NPM_TOKEN')]) {
 
                               sh '''
                                     npm install
                                     npm run-script build
                                     npm version patch
-                                    echo '//registry.npmjs.org/:_authToken=${env.NPM_TOKEN}' >> \$HOME/.npmrc
+                                    echo '//registry.npmjs.org/:_authToken=$NPM_TOKEN' >> \$HOME/.npmrc
                                     npm publish
                                     git add .
                                     git commit -m "Jenkins version bump"
