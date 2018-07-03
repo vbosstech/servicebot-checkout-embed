@@ -20,8 +20,8 @@ pipeline {
               withCredentials([string(credentialsId: 'npm-token', variable: 'NPM_TOKEN')]) {
 
                               sh '''
-                                    echo "$NPM_TOKEN"
-                                    sh "echo //registry.npmjs.org/:_authToken=$NPM_TOKEN > $HOME/.npmrc"
+                                    echo "${env.NPM_TOKEN}"
+                                    echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
                                     npm whoami
                                     npm install
                                     npm run-script build
