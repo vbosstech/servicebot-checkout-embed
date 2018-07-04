@@ -71,8 +71,7 @@ pipeline {
 
                 sshagent(credentials: ["${gitCredentials}"]){
                  sh '''
-                    npm install
-                    npm update ''' + getRepo() + '''
+                    npm install ''' + getRepo() + '''@latest
                     git add .
                     git commit -m "Jenkins version bump"
                     git push origin tiers
