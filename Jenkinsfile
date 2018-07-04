@@ -40,7 +40,7 @@ pipeline {
                               sshagent(credentials: ["${gitCredentials}"]){
 
                                 sh '''
-                                      echo "${getRepo()}"
+                                      echo "\${getRepo()}"
                                       npm version patch -m "Jenkins version bump"
                                       npm install
                                       npm run-script build
