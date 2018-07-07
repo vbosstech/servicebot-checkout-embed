@@ -85,7 +85,7 @@ pipeline {
 
         stage('Upload To S3') {
           when {
-                branch 'master'
+                branch 'cleanup-and-styling'
                 expression {
                     return env.shouldBuild != "false"
                 }
