@@ -226,33 +226,32 @@
 
   }
 
-}
+  #card-element{
+    padding: $gutter 0 $gutter*4;
 
-#card-element{
-  padding: $gutter 0 $gutter*4;
-
-  h5{
-    margin: $gutter/2 0;
-    @include embed-label;
-  }
-
-  .StripeElement{
-    @include border;
-    padding: $gutter/3 $gutter/2;
-    box-shadow: none;
-
-    & > *{
-      color: #9B9B9B;
+    h5{
+      margin: $gutter/2 0;
+      @include embed-label;
     }
 
-    .ElementsApp{
+    .StripeElement{
+      @include border;
+      padding: $gutter/3 $gutter/2;
+      box-shadow: none;
 
-      .InputElement{
-        color: black;
+      & > *{
+        color: #9B9B9B;
+      }
+
+      .ElementsApp{
+
+        .InputElement{
+          color: black;
+        }
       }
     }
-  }
 
+  }
 }
 
 .servicebot-logo-footer{
