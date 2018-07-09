@@ -79,6 +79,19 @@ pipeline {
                     '''
               }
             }
+            dir('servicebot-tiers-embed'){
+                              git(url: "git@github.com:service-bot/servicebot-tiers-embed.git", branch: 'master', credentialsId: "${gitCredentials}")
+
+                            sshagent(credentials: ["${gitCredentials}"]){
+                             sh '''
+                                wait-for-package-replication -p ''' + getRepo() + '''
+                                npm install ''' + getRepo() + '''@latest
+                                git add .
+                                git commit -m "Jenkins updating version of" ``` + getRepo() + ```
+                                git push origin master
+                                '''
+                          }
+            }
         }
     }
 
