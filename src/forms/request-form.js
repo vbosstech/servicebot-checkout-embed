@@ -129,31 +129,24 @@ class ServiceRequestForm extends React.Component {
             let trial = plan.trial_period_days > 0;
             let prefix = getSymbolFromCurrency(plan.currency);
             if(trial){
-                return ("Get your Free Trial")
+                return ("Sign Up")
             }
             else {
                 if (serType === "subscription") {
-                    return (
-                        <span>{"Subscribe "}
-                            <Price value={price} prefix={prefix}/>
-                            {plan.interval_count == 1 ? ' /' : ' / ' + plan.interval_count} {' ' + plan.interval}
-                    </span>
-                    );
+                    return ( <span>Subscribe Now</span> );
                 } else if (serType === "one_time") {
-                    return (
-                        <span>{"Buy Now"} <Price value={price} prefix={prefix}/></span>
-                    );
+                    return ( <span>Pay Now</span> );
                 } else if (serType === "custom") {
-                    return ("Request");
+                    return ( <span>Request</span> );
                 } else if (serType === "split") {
-                    return ("Buy Now");
+                    return ( <span>Pay Now</span> );
                 } else {
-                    return (<span><Price value={price} prefix={prefix}/></span>)
+                    return (<span>Pay Now</span>)
                 }
             }
         };
         let buttonText =  plan && plan.type !== "custom" ? "Next"  : "Contact";
-
+        let checkoutText = plan && plan.trial_period_days > 0 ? "Sign Up" : "Pay Now";
         //Sort users and if user does not have name set, set it to the email value which will always be there
 
         return (
@@ -205,7 +198,7 @@ class ServiceRequestForm extends React.Component {
                                     </button>
 
                                     <button className="buttons _primary submit-request" type="submit" value="submit">
-                                        Pay Now{/*{getRequestText()}*/}
+                                        {getRequestText()}
                                     </button>
                                 </div>
                             </div>
