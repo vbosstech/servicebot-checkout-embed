@@ -182,7 +182,7 @@ class ServiceRequestForm extends React.Component {
                                 </FormSection>
 
                                 <div className="button-wrapper _center">
-                                    <button className="buttons _primary submit-request">
+                                    <button className="buttons _primary _next">
                                         {buttonText}
                                     </button>
                                 </div>
