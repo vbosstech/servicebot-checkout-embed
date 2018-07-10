@@ -4,7 +4,7 @@ $section_heading: 16px;
 @mixin text{
   color: $color-blue-gray;
   font-size: 14px;
-  font-family: "Open Sans", "Arial";
+  font-family: "Open Sans", "Arial" !important;
 }
 @mixin text_muted{
   @include text;

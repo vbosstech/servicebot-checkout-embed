@@ -34,6 +34,12 @@
 
     }
 
+    .p-20 p{
+      padding: 20px 50px;
+      line-height: 25px;
+      text-align: center;
+    }
+
     .rf--form{
 
       .rf--form-heading {
@@ -70,6 +76,9 @@
                     line-height: 24px;
                     text-align: center;
                     margin: 0;
+                    color: #0033A0;
+                    text-transform: none;
+                    letter-spacing: 0.5px;
                   }
                 }
 
@@ -84,6 +93,8 @@
                   h4{
                     @include embed-label;
                     margin: 0;
+                    text-transform: none;
+                    letter-spacing: 0.5px;
                   }
 
                   h5{
@@ -92,6 +103,8 @@
                     font-weight: 300;
                     color: #6F7F9F;
                     margin: 0;
+                    text-transform: none;
+                    letter-spacing: 0.5px;
                   }
 
                   .subscription-pricing, .fe--total-price-wrapper{
@@ -133,7 +146,7 @@
 
                 ._content_wrapper{
                   padding: $gutter * 2;
-
+                  background: white;
                 }
 
                 &._step-0{
@@ -282,6 +295,6 @@
   font-family: "Open Sans", "Arial";
   font-size: 10px;
   text-align: right;
-  color: $color-gray;
+  color: $color-light-grey;
   padding: $gutter/2 0;
 }
