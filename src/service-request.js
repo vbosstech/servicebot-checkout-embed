@@ -60,7 +60,6 @@ class ServiceRequest extends React.Component {
 
     constructor(props) {
         super(props);
-
         this.state = {
             loading: true,
             id: this.props.templateId,
@@ -177,6 +176,8 @@ class ServiceRequest extends React.Component {
                 console.error("Error getting template request data", response);
             }
             self.setState({loading: false});
+            self.props.setLoading(false);
+
         });
     }
 
@@ -295,9 +296,16 @@ function mapStateToProps(state) {
         formJSON: getFormValues(REQUEST_FORM_NAME)(state)
     }
 }
+let mapDispatchToProps = function(dispatch){
+    return {
+        setLoading : function(is_loading){
+            dispatch({type: "SET_LOADING", is_loading});
+        }
+    }
+}
 
 
-ServiceRequest = connect(mapStateToProps)(ServiceRequest);
+ServiceRequest = connect(mapStateToProps, mapDispatchToProps)(ServiceRequest);
 let Wrapper = function (props) {
 
     return (<Provider store={store}>

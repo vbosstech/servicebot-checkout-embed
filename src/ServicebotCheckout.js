@@ -15,7 +15,7 @@ class App extends Component {
                   return state
           }
       }
-      const loadingReducer = (state = false, action) => {
+      const loadingReducer = (state = true, action) => {
           switch(action.type){
               case "SET_LOADING" :
                   return action.is_loading;
