@@ -357,7 +357,7 @@ class ServiceInstanceForm extends React.Component {
             'method': 'POST',
             'url': `${this.props.url}/api/v1/service-templates/${this.props.templateId}/request`
         };
-        let successMessage = "Service Requested";
+        let successMessage = 'Purchase Completed! You should receive an email shortly.';
         let successRoute = "/my-services";
         //If admin requested, redirect to the manage subscription page
         console.log(this.state.servicePrice, this.props.plan);

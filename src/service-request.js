@@ -264,18 +264,8 @@ class ServiceRequest extends React.Component {
                     {/*{JSON.stringify(this.getPriceData())}*/}
                     <div className={`rf--form-wrapper ${requestClasses}`}>
                         <div className={`rf--form`}>
-                            {!this.props.hideHeaders &&
-                                <div className="rf--form-heading">
-                                    <h4>{service.name}</h4>
-                                </div>
-                            }
                             <div className="rf--form-content">
                                 <div className="rf--basic-info">
-                                    {!this.props.hideHeaders &&
-                                        <div className="rf--details">
-                                            <div dangerouslySetInnerHTML={{__html: service.details}}/>
-                                        </div>
-                                    }
                                 </div>
                                 <ServiceRequestForm summary={(<Summary {...summaryProps}/>)} plan={pricingPlan} {...this.props} step={this.state.step} stepForward={this.stepForward} stepBack={this.stepBack} service={service}/>
                             </div>
