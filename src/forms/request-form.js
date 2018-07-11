@@ -156,7 +156,7 @@ class ServiceRequestForm extends React.Component {
                     <div>
                         {!helpers.uid &&
                         <div className="rf--form-inner _step-0">
-                            <div className="_heading-wrapper"><h2>Create Account</h2></div>
+                            <div className="_heading-wrapper"><h2>{plan.type === "custom" ? "Contact" : "Sign Up"}</h2></div>
                             <div className="_content_wrapper">
                                 <Field name="email" type="text" component={inputField}
                                        label="Email Address" validate={[required(), email()]}/>
