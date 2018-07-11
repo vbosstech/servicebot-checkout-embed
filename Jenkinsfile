@@ -84,7 +84,6 @@ pipeline {
 
                             sshagent(credentials: ["${gitCredentials}"]){
                              sh '''
-                                wait-for-package-replication -p ''' + getRepo() + '''
                                 npm install ''' + getRepo() + '''@latest
                                 git add .
                                 git commit -m "Jenkins updating version of" ``` + getRepo() + ```
