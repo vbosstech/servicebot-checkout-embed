@@ -156,6 +156,7 @@ class ServiceRequest extends React.Component {
         Fetcher(`${self.props.url}/api/v1/service-templates/${this.state.id}/request`, "GET", null, req).then(function (response) {
             if (!response.error) {
                 let propertyOverrides = self.props.propertyOverrides;
+                let propertyDefaults = self.props.propertyDefaults;
                 response.payment_structure_template_id = self.props.paymentStructureTemplateId;
                 if(propertyOverrides) {
                     response.references.service_template_properties = response.references.service_template_properties.map(prop => {
@@ -163,6 +164,16 @@ class ServiceRequest extends React.Component {
                             prop.prompt_user = false;
                             prop.private = true;
                             prop.data = {value : propertyOverrides[prop.name]};
+                        }
+                        return prop;
+                    })
+                }
+                if(propertyDefaults){
+                    response.references.service_template_properties = response.references.service_template_properties.map(prop => {
+                        if (propertyDefaults[prop.name]){
+                            // prop.prompt_user = false;
+                            // prop.private = true;
+                            prop.data = {value : propertyDefaults[prop.name]};
                         }
                         return prop;
                     })
