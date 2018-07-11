@@ -351,6 +351,23 @@ class ServiceInstanceForm extends React.Component {
 
         let self = this;
         let initialValues = this.props.service;
+        initialValues.references.service_template_properties.sort((prop1, prop2) => {
+            let date1 = new Date(prop1.created_at);
+            let date2 = new Date(prop2.created_at);
+            if(prop1.required && !prop2.required){
+                return -1;
+            }
+            if(prop2.required && !prop1.required){
+                return 1
+            }
+            if(date1 > date2){
+                return -1
+            }
+            if(date1 < date2){
+                return 1
+            }
+            return 0
+        });
         let initialRequests = [];
         // let submissionPrep = (values) => {self.props.setLoading(true); return values;}
         let submissionRequest = {
