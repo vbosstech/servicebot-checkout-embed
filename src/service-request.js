@@ -169,6 +169,9 @@ class ServiceRequest extends React.Component {
                     })
                 }
                 if(propertyDefaults){
+                    if(propertyDefaults.email){
+                        response.email = propertyDefaults.email;
+                    }
                     response.references.service_template_properties = response.references.service_template_properties.map(prop => {
                         if (propertyDefaults[prop.name]){
                             // prop.prompt_user = false;
