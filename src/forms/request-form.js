@@ -286,6 +286,9 @@ class ServiceInstanceForm extends React.Component {
     }
 
     handleFailure(event){
+        if(event.message){
+            this.setState({error : event.message});
+        }
         this.props.setLoading(false);
     }
     closeUserLoginModal() {
