@@ -405,7 +405,6 @@ class ServiceInstanceForm extends React.Component {
                     submissionPrep={this.submissionPrep}
                     submissionRequest={submissionRequest}
                     successMessage={successMessage}
-                    // successRoute={successRoute}
                     handleResponse={this.handleResponse}
                     handleFailure={this.handleFailure}
                     formName="serviceInstanceRequestForm"
