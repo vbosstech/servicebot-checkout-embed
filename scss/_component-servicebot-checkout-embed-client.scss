@@ -18,7 +18,8 @@
   &.servicebot--request-user-form-wrapper{
     flex-direction: column;
     width: 384px;
-    margin: 48px auto;
+    max-width: 100%;
+    margin: $gutter auto;
   }
 
   .rf--form-wrapper{
@@ -29,6 +30,7 @@
     border-color: #0033A0;
     box-shadow: 0 2px 2px 0 rgba(0,0,0,0.05);
     width: 384px;
+    max-width: 100%;
     justify-content: space-around;
 
     &.summary-shown{
