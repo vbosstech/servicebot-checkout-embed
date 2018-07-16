@@ -27,7 +27,7 @@ pipeline {
         }
         stage('Build, bump version, and Publish NPM Package') {
             when {
-                branch 'cleanup-and-styling'
+                branch 'master'
                 expression {
                     return env.shouldBuild != "false"
                 }
@@ -45,7 +45,7 @@ pipeline {
                                       npm run-script build
                                       git add .
                                       git commit -m "Jenkins version bump" | true
-                                      git push origin cleanup-and-styling
+                                      git push origin master
                                       git push origin --tags
                                       echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
                                       npm publish
@@ -60,7 +60,7 @@ pipeline {
         }
         stage('Update Servicebot repo'){
           when {
-              branch 'cleanup-and-styling'
+              branch 'master'
               expression {
                   return env.shouldBuild != "false"
               }
@@ -97,7 +97,7 @@ pipeline {
 
         stage('Upload To S3') {
           when {
-                branch 'cleanup-and-styling'
+                branch 'master'
                 expression {
                     return env.shouldBuild != "false"
                 }
