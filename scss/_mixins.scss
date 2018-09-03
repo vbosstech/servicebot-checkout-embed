@@ -101,3 +101,29 @@
     border-color: $color-blue;
   }
 }
+
+@mixin success-ui-default{
+  ._success-ui{
+
+    height: 349px;
+    width: 278px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: auto;
+
+    ._svg-icon{
+
+    }
+
+    ._success-heading{
+      @include heading-text;
+      margin-top: 28px;
+    }
+
+    ._success-message{
+      @include description-text;
+    }
+
+  }
+}

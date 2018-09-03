@@ -7,7 +7,11 @@
   font-weight: 600;
 }
 
-.servicebot--rf-embeddable{
+//Test commit
+
+.servicebot--rf-embeddable {
+
+  @include success-ui-default;
 
   @include embed-text;
   position: relative;
@@ -15,66 +19,66 @@
   flex-direction: row;
   width: 100%;
 
-  &.servicebot--request-user-form-wrapper{
+  &.servicebot--request-user-form-wrapper {
     flex-direction: column;
     width: 384px;
     max-width: 100%;
     margin: $gutter auto;
   }
 
-  .rf--form-wrapper{
+  .rf--form-wrapper {
 
     @include text;
     @include border;
     border-radius: 3px;
     border-color: #0033A0;
-    box-shadow: 0 2px 2px 0 rgba(0,0,0,0.05);
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.05);
     width: 384px;
     max-width: 100%;
     justify-content: space-around;
 
-    &.summary-shown{
+    &.summary-shown {
 
     }
 
-    .p-20 p{
+    .p-20 p {
       padding: 20px 50px;
       line-height: 25px;
       text-align: center;
     }
 
-    .rf--form{
+    .rf--form {
 
       .rf--form-heading {
 
       }
 
-      .rf--form-content{
+      .rf--form-content {
 
-        .rf--basic-info{
-
-        }
-
-        .divider{
+        .rf--basic-info {
 
         }
 
-        .rf--form-elements{
+        .divider {
 
-          .rf--body{
+        }
 
-            form{
+        .rf--form-elements {
 
-              .rf--form-inner{
+          .rf--body {
 
-                ._heading-wrapper{
+            form {
+
+              .rf--form-inner {
+
+                ._heading-wrapper {
                   color: $color-blue;
                   border-radius: 3px 3px 0 0;
                   background-color: $color-light-blue-gray;
-                  box-shadow: 0 3px 2px 0 rgba(0,0,0,0.03);
+                  box-shadow: 0 3px 2px 0 rgba(0, 0, 0, 0.03);
                   padding: $gutter;
 
-                  h2{
+                  h2 {
                     font-size: 20px;
                     line-height: 24px;
                     text-align: center;
@@ -86,15 +90,15 @@
                   }
                 }
 
-                .rf--summary{
+                .rf--summary {
                   background-color: #FBFCFF;
                   padding: $gutter $gutter * 2;
 
-                  &>*{
+                  & > * {
                     margin: $gutter/2 0;
                   }
 
-                  h4{
+                  h4 {
                     @include embed-label;
                     margin: 0;
                     text-transform: none;
@@ -102,7 +106,7 @@
                     font-family: "Open Sans", "Arial";
                   }
 
-                  h5{
+                  h5 {
                     font-size: 14px;
                     line-height: 16px;
                     font-weight: 300;
@@ -113,19 +117,19 @@
                     font-family: "Open Sans", "Arial";
                   }
 
-                  .subscription-pricing, .fe--total-price-wrapper{
+                  .subscription-pricing, .fe--total-price-wrapper {
                     display: flex;
                     justify-content: space-between;
                     margin: $gutter/2 0;
                   }
 
-                  .fe--base-price-value, .fe--total-price-value{
+                  .fe--base-price-value, .fe--total-price-value {
                     @include embed-label;
                     font-size: 16px;
                     font-weight: normal;
                   }
 
-                  .fe--total-price-wrapper{
+                  .fe--total-price-wrapper {
                     border-top: 1px solid #EBF3F9;
                     padding: {
                       top: $gutter;
@@ -134,7 +138,7 @@
                       top: $gutter;
                     }
 
-                    .fe--total-price-label h5{
+                    .fe--total-price-label h5 {
                       color: $color-blue;
                       padding: $gutter/2 0;
                     }
@@ -150,16 +154,16 @@
 
                 }
 
-                ._content_wrapper{
+                ._content_wrapper {
                   padding: $gutter * 2;
                   background: white;
                 }
 
-                &._step-0{
+                &._step-0 {
 
                 }
 
-                &._step-1{
+                &._step-1 {
 
                   ._content_wrapper {
                     padding: $gutter $gutter*2;
@@ -168,14 +172,14 @@
 
               }
 
-              .form-group{
+              .form-group {
 
-                label{
+                label {
                   @include embed-label;
                   text-transform: none;
                 }
 
-                .form-input-flex{
+                .form-input-flex {
                   display: flex;
                   flex-direction: column;
 
@@ -183,6 +187,7 @@
                     font-size: 14px;
                     color: $color-blue;
                     height: $gutter * 2;
+                    width: 100%;
                     margin: {
                       top: $gutter / 2;
                       bottom: $gutter;
@@ -205,7 +210,7 @@
                     }
                   }
 
-                  .form-error{
+                  .form-error {
                     margin: {
                       bottom: $gutter / 2;
                     }
@@ -215,16 +220,16 @@
 
               }
 
-              button{
+              button {
 
-                &.buttons{
+                &.buttons {
                   font-size: 14px;
                   font-weight: 600;
                   padding: 10px $gutter * 2;
                   background: $color-blue;
                 }
 
-                &._text{
+                &._text {
                   font-weight: normal;
                   color: $color-blue !important;
                   position: absolute;
@@ -246,15 +251,22 @@
 
   }
 
-  .form-group-flex .form-error {
-    flex-basis: 100%;
-    line-height: 29px;
-    display: block;
-    background: #ff2e2e;
-    color: white;
-    padding: 0 10px;
-    border-bottom-left-radius: 3px;
-    border-bottom-right-radius: 3px;
+  .form-group-flex {
+
+    * {
+      box-sizing: border-box;
+    }
+
+    .form-error {
+      flex-basis: 100%;
+      line-height: 29px;
+      display: block;
+      background: #ff2e2e;
+      color: white;
+      padding: 0 10px;
+      border-bottom-left-radius: 3px;
+      border-bottom-right-radius: 3px;
+    }
   }
 
   .button-wrapper{
