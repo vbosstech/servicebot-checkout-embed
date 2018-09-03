@@ -405,6 +405,19 @@ class ServiceInstanceForm extends React.Component {
                     submissionPrep={this.submissionPrep}
                     submissionRequest={submissionRequest}
                     successMessage={successMessage}
+                    svgIcon={`<svg width="56px" height="56px" viewBox="0 0 56 56" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 49 (51002) - http://www.bohemiancoding.com/sketch -->
+    <title>sb-icon-success</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="sb-icon-success" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group">
+            <circle id="Oval" stroke="#2AC09D" stroke-width="0.699999988" fill="#50CDAB" cx="28" cy="28" r="28"></circle>
+            <path d="M17.5,27.3 L23.090905,36.6595151 C23.4874182,37.3233022 24.3469615,37.5399706 25.0107487,37.1434574 C25.17712,37.0440756 25.3210464,36.9112352 25.4334168,36.7533457 L38.6378803,18.2" id="Path-5" stroke="#FFFFFF" stroke-width="4.19999993" stroke-linecap="round"></path>
+        </g>
+    </g>
+</svg>`}
+                    successHeading={`Success`}
                     handleResponse={this.handleResponse}
                     handleFailure={this.handleFailure}
                     formName="serviceInstanceRequestForm"

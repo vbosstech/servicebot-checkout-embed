@@ -48,7 +48,7 @@ let config = async function () {
             contentBase: path.resolve(__dirname, 'public'),
             inline: true,
             host: 'localhost', // Defaults to `localhost`
-            port: 3004
+            port: 3005
         },
         plugins : [
             new webpack.HotModuleReplacementPlugin(),

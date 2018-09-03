@@ -11,6 +11,8 @@
 
 .servicebot--rf-embeddable {
 
+  @include success-ui-default;
+
   @include embed-text;
   position: relative;
   display: flex;
