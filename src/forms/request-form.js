@@ -169,7 +169,7 @@ class ServiceRequestForm extends React.Component {
                         <div className="rf--form-inner _step-0">
                             <div className="_heading-wrapper"><h2>{plan.type === "custom" ? "Contact" : "Sign Up"}</h2></div>
                             <div className="_content_wrapper">
-                                {helpers.setName && !formJSON.token && <Field name="name" type="text" component={inputField} validate={[required()]}/>}
+                                {helpers.setName && !formJSON.token && <Field name="userName" type="text" component={inputField} validate={[required()]}/>}
                                 {!formJSON.token && <Field name="email" type="text" component={inputField}
                                        label="Email Address" validate={[required(), email()]}/>}
 
@@ -249,7 +249,7 @@ ServiceRequestForm = connect((state, ownProps) => {
         setGoogleInformation: (response) => {
             let {email, name, googleId} = response.profileObj;
             dispatch(change("serviceInstanceRequestForm", `email`, email));
-            dispatch(change("serviceInstanceRequestForm", `name`, name));
+            dispatch(change("serviceInstanceRequestForm", `userName`, name));
             dispatch(change("serviceInstanceRequestForm", `token`, googleId));
 
 
