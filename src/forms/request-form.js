@@ -122,7 +122,7 @@ class ServiceRequestForm extends React.Component {
     }
 
     render() {
-        const {handleSubmit, formJSON, helpers, error, step, plan, needsCard} = this.props;
+        const {handleSubmit, emailOverride, formJSON, helpers, error, step, plan, needsCard} = this.props;
         const {price} = this.state;
         let getRequestText = () => {
             let serType = plan.type;
@@ -158,8 +158,8 @@ class ServiceRequestForm extends React.Component {
                         <div className="rf--form-inner _step-0">
                             <div className="_heading-wrapper"><h2>{plan.type === "custom" ? "Contact" : "Sign Up"}</h2></div>
                             <div className="_content_wrapper">
-                                <Field name="email" type="text" component={inputField}
-                                       label="Email Address" validate={[required(), email()]}/>
+                                {!emailOverride && <Field name="email" type="text" component={inputField}
+                                       label="Email Address" validate={[required(), email()]}/>}
 
                                 {helpers.emailExists && "That email is in use"}
                                 {helpers.setPassword && plan.type !== "custom" && <div>
@@ -354,6 +354,7 @@ class ServiceInstanceForm extends React.Component {
 
         let self = this;
         let initialValues = this.props.service;
+        initialValues.email = this.props.email;
         initialValues.references.service_template_properties.sort((prop1, prop2) => {
             let date1 = new Date(prop1.created_at);
             let date2 = new Date(prop2.created_at);
@@ -389,13 +390,13 @@ class ServiceInstanceForm extends React.Component {
         helpers.stepForward = this.props.stepForward;
         helpers.stepBack = this.props.stepBack;
 
-        //     consoe.log("HELLO!!!!");
         // }
         // self.setState({step : step + 1})};
         // helpers.stepBack = () => {console.log("HELLO")};
         // self.setState({step : step - 1})};
         helpers.step = this.props.step;
         //Gets a token to populate token_id for instance request
+
         return (
             <div className="rf--form-elements">
                 <ServicebotBaseForm
@@ -422,7 +423,7 @@ class ServiceInstanceForm extends React.Component {
                     handleFailure={this.handleFailure}
                     formName="serviceInstanceRequestForm"
                     helpers={helpers}
-                    formProps={{needsCard, summary: this.props.summary, plan: this.props.plan, step : this.props.step}}
+                    formProps={{emailOverride: this.props.email, needsCard, summary: this.props.summary, plan: this.props.plan, step : this.props.step}}
                     validations={this.formValidation}
                     loaderTimeout={false}
                     external={this.props.external}
