@@ -316,3 +316,5 @@
   color: $color-light-grey;
   padding: $gutter/2 0;
 }
+
+@include google-login;
