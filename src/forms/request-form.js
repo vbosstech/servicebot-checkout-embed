@@ -126,7 +126,7 @@ class ServiceRequestForm extends React.Component {
     }
 
     render() {
-        const {googleClientId, handleSubmit, formJSON, helpers, error, step, plan, needsCard, setGoogleInformation} = this.props;
+        const {token, googleClientId, handleSubmit, formJSON, helpers, error, step, plan, needsCard, setGoogleInformation} = this.props;
         const {price} = this.state;
         let getRequestText = () => {
             let serType = plan.type;
@@ -169,12 +169,12 @@ class ServiceRequestForm extends React.Component {
                         <div className="rf--form-inner _step-0">
                             <div className="_heading-wrapper"><h2>{plan.type === "custom" ? "Contact" : "Sign Up"}</h2></div>
                             <div className="_content_wrapper">
-                                {helpers.setName && !formJSON.token && <Field name="userName" type="text" component={inputField} validate={[required()]}/>}
-                                {!formJSON.token && <Field name="email" type="text" component={inputField}
+                                {helpers.setName && !formJSON.token && !token && <Field name="userName" type="text" component={inputField} validate={[required()]}/>}
+                                {!formJSON.token && !token && <Field name="email" type="text" component={inputField}
                                        label="Email Address" validate={[required(), email()]}/>}
 
                                 {helpers.emailExists && "That email is in use"}
-                                {helpers.setPassword && plan.type !== "custom" && !formJSON.token && <div>
+                                {helpers.setPassword && plan.type !== "custom" && !formJSON.token && !token && <div>
                                     <Field name="password" type="password" component={inputField} label="Password" validate={[length({min: 8}), required()]}/>
                                     <Field name="password_confirmation" type="password" label="Password confirmation" component={inputField}
                                            validate={[confirmation({ field: 'password', fieldLabel: 'Password' })]} />
@@ -192,7 +192,7 @@ class ServiceRequestForm extends React.Component {
                                     </button>
                                 </div>
 
-                                {googleClientId && googleClientId.value && googleClientId.value.length > 0 && plan.type !== "custom" && !formJSON.token && <div className={`google-login-container`}>
+                                {googleClientId && googleClientId.value && googleClientId.value.length > 0 && plan.type !== "custom" && !formJSON.token && !token && <div className={`google-login-container`}>
                                     <span className={`_divider`}>Or</span>
                                     <GoogleLogin
                                         disabledStyle={{}}
@@ -285,7 +285,7 @@ class ServiceInstanceForm extends React.Component {
             servicePrice: this.props.plan.amount,
             usersData: {},
             usersURL: "/api/v1/users",
-            hasCard: null,
+            hasCard: false,
             loading: true,
             hasFund: false,
             step: 0
@@ -303,9 +303,22 @@ class ServiceInstanceForm extends React.Component {
         let headers = new Headers({
             "Content-Type": "application/json"
         });
+        let funds = [];
+        let hasCard = false;
         let options = await (await fetch(`${this.props.url}/api/v1/system-options/public`, {headers})).json();
+        if(this.props.token){
+            let headers = new Headers({
+                "Content-Type": "application/json",
+                "Authorization" : "JWT " + this.props.token
+            });
 
-        this.setState({googleClientId: options.google_client_id, loading:false});
+             funds = await (await fetch(`${this.props.url}/api/v1/funds/own`, {headers})).json();
+             if(funds.length > 0) {
+                 hasCard = true
+             }
+
+        }
+        this.setState({googleClientId: options.google_client_id, loading:false, funds, hasCard});
         // // Fetcher(self.state.formURL,).then(function (response) {
         //     if (!response.error) {
         //         self.setState({loading: false, templateData: response, formData: response});
@@ -428,7 +441,7 @@ class ServiceInstanceForm extends React.Component {
         //If admin requested, redirect to the manage subscription page
         console.log(this.state.servicePrice, this.props.plan);
         let needsCard = (this.state.servicePrice > 0 && this.props.plan.type !== "custom" &&
-            !this.state.hasCard && this.props.plan.trial_period_days <= 0) || this.props.forceCard || this.props.plan.type === "split"
+            !this.state.hasCard && this.props.plan.trial_period_days <= 0) || (this.props.forceCard && !this.state.hasCard) || this.props.plan.type === "split"
 
         let helpers = Object.assign(this.state, this.props);
         helpers.updatePrice = self.updatePrice;
@@ -468,10 +481,11 @@ class ServiceInstanceForm extends React.Component {
                     handleFailure={this.handleFailure}
                     formName="serviceInstanceRequestForm"
                     helpers={helpers}
-                    formProps={{googleClientId: this.state.googleClientId, needsCard, summary: this.props.summary, plan: this.props.plan, step : this.props.step}}
+                    formProps={{token: this.props.token, funds: this.state.funds, googleClientId: this.state.googleClientId, needsCard, summary: this.props.summary, plan: this.props.plan, step : this.props.step}}
                     validations={this.formValidation}
                     loaderTimeout={false}
                     external={this.props.external}
+                    token={this.props.token}
                 />
             </div>
         )
