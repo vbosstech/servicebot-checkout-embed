@@ -7,6 +7,7 @@ import {
     FieldArray,
     formValueSelector,
     getFormValues,
+    change
 } from 'redux-form'
 import {connect} from "react-redux";
 import {RenderWidget, WidgetList, widgets, SelectWidget} from "../utilities/widgets";
@@ -21,6 +22,7 @@ import getWidgets from "../core-input-types/client";
 let _ = require("lodash");
 import {getPrice} from "../widget-inputs/handleInputs";
 import values from 'object.values';
+import { GoogleLogin } from 'react-google-login';
 
 if (!Object.values) {
     values.shim();
@@ -122,7 +124,7 @@ class ServiceRequestForm extends React.Component {
     }
 
     render() {
-        const {handleSubmit, emailOverride, formJSON, helpers, error, step, plan, needsCard} = this.props;
+        const {handleSubmit, formJSON, emailOverride,token, googleClientId, helpers, error, step, plan, needsCard, setGoogleInformation} = this.props;
         const {price} = this.state;
         let getRequestText = () => {
             let serType = plan.type;
@@ -148,6 +150,13 @@ class ServiceRequestForm extends React.Component {
         let buttonText =  plan && plan.type !== "custom" ? "Next"  : "Contact";
         let checkoutText = plan && plan.trial_period_days > 0 ? "Sign Up" : "Pay Now";
         //Sort users and if user does not have name set, set it to the email value which will always be there
+        const responseGoogle = (response) => {
+            console.log(response);
+            if(!response.error) {
+                setGoogleInformation(response)
+            }
+
+        }
 
         return (
             <div className="rf--body">
@@ -158,11 +167,12 @@ class ServiceRequestForm extends React.Component {
                         <div className="rf--form-inner _step-0">
                             <div className="_heading-wrapper"><h2>{plan.type === "custom" ? "Contact" : "Sign Up"}</h2></div>
                             <div className="_content_wrapper">
-                                {!emailOverride && <Field name="email" type="text" component={inputField}
+                                {helpers.setName && !formJSON.token && !token && <Field name="userName" type="text" component={inputField} validate={[required()]}/>}
+                                {!emailOverride && !formJSON.token && !token && <Field name="email" type="text" component={inputField}
                                        label="Email Address" validate={[required(), email()]}/>}
 
                                 {helpers.emailExists && "That email is in use"}
-                                {helpers.setPassword && plan.type !== "custom" && <div>
+                                {helpers.setPassword && plan.type !== "custom" && !formJSON.token && !token && <div>
                                     <Field name="password" type="password" component={inputField} label="Password" validate={[length({min: 8}), required()]}/>
                                     <Field name="password_confirmation" type="password" label="Password confirmation" component={inputField}
                                            validate={[confirmation({ field: 'password', fieldLabel: 'Password' })]} />
@@ -179,6 +189,25 @@ class ServiceRequestForm extends React.Component {
                                         {buttonText}
                                     </button>
                                 </div>
+
+                                {googleClientId && googleClientId.value && googleClientId.value.length > 0 && plan.type !== "custom" && !formJSON.token && !token && <div className={`google-login-container`}>
+                                    <span className={`_divider`}>Or</span>
+                                    <GoogleLogin
+                                        disabledStyle={{}}
+                                        className="google-button"
+                                        clientId={googleClientId.value}
+                                        buttonText="Sign up with Google"
+                                        onSuccess={responseGoogle}
+                                        onFailure={responseGoogle}
+                                    >
+                                        <span className="google-button__icon">
+                    <img src='data:image/svg+xml;utf8,<svg viewBox="0 0 366 372" xmlns="http://www.w3.org/2000/svg"><path d="M125.9 10.2c40.2-13.9 85.3-13.6 125.3 1.1 22.2 8.2 42.5 21 59.9 37.1-5.8 6.3-12.1 12.2-18.1 18.3l-34.2 34.2c-11.3-10.8-25.1-19-40.1-23.6-17.6-5.3-36.6-6.1-54.6-2.2-21 4.5-40.5 15.5-55.6 30.9-12.2 12.3-21.4 27.5-27 43.9-20.3-15.8-40.6-31.5-61-47.3 21.5-43 60.1-76.9 105.4-92.4z" id="Shape" fill="#EA4335"/><path d="M20.6 102.4c20.3 15.8 40.6 31.5 61 47.3-8 23.3-8 49.2 0 72.4-20.3 15.8-40.6 31.6-60.9 47.3C1.9 232.7-3.8 189.6 4.4 149.2c3.3-16.2 8.7-32 16.2-46.8z" id="Shape" fill="#FBBC05"/><path d="M361.7 151.1c5.8 32.7 4.5 66.8-4.7 98.8-8.5 29.3-24.6 56.5-47.1 77.2l-59.1-45.9c19.5-13.1 33.3-34.3 37.2-57.5H186.6c.1-24.2.1-48.4.1-72.6h175z" id="Shape" fill="#4285F4"/><path d="M81.4 222.2c7.8 22.9 22.8 43.2 42.6 57.1 12.4 8.7 26.6 14.9 41.4 17.9 14.6 3 29.7 2.6 44.4.1 14.6-2.6 28.7-7.9 41-16.2l59.1 45.9c-21.3 19.7-48 33.1-76.2 39.6-31.2 7.1-64.2 7.3-95.2-1-24.6-6.5-47.7-18.2-67.6-34.1-20.9-16.6-38.3-38-50.4-62 20.3-15.7 40.6-31.5 60.9-47.3z" fill="#34A853"/></svg>'/>
+                </span>
+                                        <span className="google-button__text">Sign up with Google</span>
+                                    </GoogleLogin>
+
+
+                                </div>}
                             </div>
                         </div>
                         }
@@ -220,6 +249,19 @@ ServiceRequestForm = connect((state, ownProps) => {
         formJSON: getFormValues('serviceInstanceRequestForm')(state),
 
     }
+}, (dispatch) => {
+    return {
+        setGoogleInformation: (response) => {
+            let {email, name, googleId} = response.profileObj;
+            dispatch(change("serviceInstanceRequestForm", `email`, email));
+            dispatch(change("serviceInstanceRequestForm", `userName`, name));
+            dispatch(change("serviceInstanceRequestForm", `token`, googleId));
+
+
+            // dispatch(change("serviceInstanceRequestForm", `strategy`, "google"));
+
+        }
+    }
 })(ServiceRequestForm);
 
 class ServiceInstanceForm extends React.Component {
@@ -241,7 +283,7 @@ class ServiceInstanceForm extends React.Component {
             servicePrice: this.props.plan.amount,
             usersData: {},
             usersURL: "/api/v1/users",
-            hasCard: null,
+            hasCard: false,
             loading: true,
             hasFund: false,
             step: 0
@@ -256,10 +298,25 @@ class ServiceInstanceForm extends React.Component {
 
     async componentDidMount() {
         let self = this;
-        this.setState({loading:false});
-        // let headers = new Headers({
-        //     "Content-Type": "application/json"
-        // });
+        let headers = new Headers({
+            "Content-Type": "application/json"
+        });
+        let funds = [];
+        let hasCard = false;
+        let options = await (await fetch(`${this.props.url}/api/v1/system-options/public`, {headers})).json();
+        if(this.props.token){
+            let headers = new Headers({
+                "Content-Type": "application/json",
+                "Authorization" : "JWT " + this.props.token
+            });
+
+             funds = await (await fetch(`${this.props.url}/api/v1/funds/own`, {headers})).json();
+             if(funds.length > 0) {
+                 hasCard = true
+             }
+
+        }
+        this.setState({googleClientId: options.google_client_id, loading:false, funds, hasCard});
         // // Fetcher(self.state.formURL,).then(function (response) {
         //     if (!response.error) {
         //         self.setState({loading: false, templateData: response, formData: response});
@@ -383,7 +440,7 @@ class ServiceInstanceForm extends React.Component {
         //If admin requested, redirect to the manage subscription page
         console.log(this.state.servicePrice, this.props.plan);
         let needsCard = (this.state.servicePrice > 0 && this.props.plan.type !== "custom" &&
-            !this.state.hasCard && this.props.plan.trial_period_days <= 0) || this.props.forceCard || this.props.plan.type === "split"
+            !this.state.hasCard && this.props.plan.trial_period_days <= 0) || (this.props.forceCard && !this.state.hasCard) || this.props.plan.type === "split"
 
         let helpers = Object.assign(this.state, this.props);
         helpers.updatePrice = self.updatePrice;
@@ -396,7 +453,6 @@ class ServiceInstanceForm extends React.Component {
         // self.setState({step : step - 1})};
         helpers.step = this.props.step;
         //Gets a token to populate token_id for instance request
-
         return (
             <div className="rf--form-elements">
                 <ServicebotBaseForm
@@ -423,10 +479,11 @@ class ServiceInstanceForm extends React.Component {
                     handleFailure={this.handleFailure}
                     formName="serviceInstanceRequestForm"
                     helpers={helpers}
-                    formProps={{emailOverride: this.props.email, needsCard, summary: this.props.summary, plan: this.props.plan, step : this.props.step}}
+                    formProps={{token: this.props.token, funds: this.state.funds, googleClientId: this.state.googleClientId, emailOverride: this.props.email, needsCard, summary: this.props.summary, plan: this.props.plan, step : this.props.step}}
                     validations={this.formValidation}
                     loaderTimeout={false}
                     external={this.props.external}
+                    token={this.props.token}
                 />
             </div>
         )
