@@ -448,9 +448,6 @@ class ServiceInstanceForm extends React.Component {
         helpers.stepBack = this.props.stepBack;
 
         // }
-        // self.setState({step : step + 1})};
-        // helpers.stepBack = () => {console.log("HELLO")};
-        // self.setState({step : step - 1})};
         helpers.step = this.props.step;
         //Gets a token to populate token_id for instance request
         return (
