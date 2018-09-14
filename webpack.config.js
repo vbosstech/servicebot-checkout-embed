@@ -16,7 +16,7 @@ let config = async function () {
             path: BUILD_DIR,
             publicPath: "/build/",
             filename: '[name].js',
-            library: 'Servicebot',
+            library: ['Servicebot', "Checkout"],
             libraryTarget: 'umd',
             umdNamedDefine: true,
         },

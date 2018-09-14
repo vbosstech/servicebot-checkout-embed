@@ -10,11 +10,12 @@ import { AppContainer } from 'react-hot-loader'
 // ReactDOM.render(<App />, document.getElementById('root'));
 
 const Checkout = (config) => {
+    if(config.useAsComponent || config.external === false){
+        return <ServicebotCheckoutEmbed {...config}/>
+    }
     ReactDOM.render(<ServicebotCheckoutEmbed {...config} external={true} />, config.selector);
 }
 
-
-export {ServicebotCheckoutEmbed, Checkout}
 
 if (module.hot) {
     module.hot.accept('./ServicebotCheckout.js', () => {
@@ -27,3 +28,5 @@ if (module.hot) {
         );
     });
 }
+
+export default Checkout
