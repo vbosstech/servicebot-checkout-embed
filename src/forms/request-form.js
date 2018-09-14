@@ -222,9 +222,9 @@ class ServiceRequestForm extends React.Component {
                             <div className="_content_wrapper">
                                 {needsCard && <CardSection/>}
                                 <div className="button-wrapper _center _space-between">
-                                    <button onClick={helpers.stepBack} className="buttons _primary _text submit-request">
+                                    {!this.props.skippedStep0 && <button onClick={helpers.stepBack} className="buttons _primary _text submit-request">
                                         Back
-                                    </button>
+                                    </button>}
 
                                     <button className="buttons _primary submit-request" type="submit" value="submit">
                                         {getRequestText()}
@@ -252,7 +252,7 @@ ServiceRequestForm = connect((state, ownProps) => {
 }, (dispatch) => {
     return {
         setGoogleInformation: (response) => {
-            let {email, name, googleId} = response.profileObj;
+            let {email, name, googleId, } = response.profileObj;
             dispatch(change("serviceInstanceRequestForm", `email`, email));
             dispatch(change("serviceInstanceRequestForm", `userName`, name));
             dispatch(change("serviceInstanceRequestForm", `token`, googleId));
@@ -303,6 +303,7 @@ class ServiceInstanceForm extends React.Component {
         });
         let funds = [];
         let hasCard = false;
+        let skippedStep0 = false;
         let options = await (await fetch(`${this.props.url}/api/v1/system-options/public`, {headers})).json();
         if(this.props.token){
             let headers = new Headers({
@@ -316,7 +317,16 @@ class ServiceInstanceForm extends React.Component {
              }
 
         }
-        this.setState({googleClientId: options.google_client_id, loading:false, funds, hasCard});
+        console.log(this.props.service.references.service_template_properties);
+        let promptUser = this.props.service.references.service_template_properties.find(prop => prop.prompt_user === true);
+        console.log("Prompto", promptUser, this.props.emailOverride);
+        console.log(this.props, "herro");
+        if(!promptUser && (this.props.token || (this.props.email && !this.props.setName && !this.props.setPassword))){
+            this.props.stepForward();
+            skippedStep0 = true;
+        }
+        this.setState({skippedStep0, googleClientId: options.google_client_id, loading:false, funds, hasCard});
+
         // // Fetcher(self.state.formURL,).then(function (response) {
         //     if (!response.error) {
         //         self.setState({loading: false, templateData: response, formData: response});
@@ -476,7 +486,7 @@ class ServiceInstanceForm extends React.Component {
                     handleFailure={this.handleFailure}
                     formName="serviceInstanceRequestForm"
                     helpers={helpers}
-                    formProps={{token: this.props.token, funds: this.state.funds, googleClientId: this.state.googleClientId, emailOverride: this.props.email, needsCard, summary: this.props.summary, plan: this.props.plan, step : this.props.step}}
+                    formProps={{skippedStep0: this.state.skippedStep0, token: this.props.token, funds: this.state.funds, googleClientId: this.state.googleClientId, emailOverride: this.props.email, needsCard, summary: this.props.summary, plan: this.props.plan, step : this.props.step}}
                     validations={this.formValidation}
                     loaderTimeout={false}
                     external={this.props.external}
