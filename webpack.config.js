@@ -2,7 +2,8 @@ const path = require("path");
 const BUILD_DIR = path.resolve(__dirname, './public/build');
 const APP_DIR = path.resolve(__dirname, './src');
 var webpack = require('webpack');
-const MODE = "development";
+const ci = require("ci-info");
+const MODE = ci.isCI ? "production" : "development";
 
 let config = async function () {
     return {

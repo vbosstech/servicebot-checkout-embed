@@ -10,7 +10,7 @@ import { AppContainer } from 'react-hot-loader'
 // ReactDOM.render(<App />, document.getElementById('root'));
 
 const Checkout = (config) => {
-    if(config.useAsComponent || config.external === false){
+    if(config.useAsComponent){
         return <ServicebotCheckoutEmbed {...config}/>
     }
     ReactDOM.render(<ServicebotCheckoutEmbed {...config} external={true} />, config.selector);
