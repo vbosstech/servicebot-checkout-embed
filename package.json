@@ -1,6 +1,6 @@
 {
   "name": "servicebot-checkout-embed",
-  "version": "0.2.99",
+  "version": "0.2.100",
   "dependencies": {
     "babel-plugin-add-module-exports": "^1.0.0",
     "currency-symbol-map": "^4.0.4",
