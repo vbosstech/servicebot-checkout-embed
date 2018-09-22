@@ -49,6 +49,37 @@
   }
 }
 
+@mixin request-form-checkbox-option{
+  display: flex;
+  margin-top: 8px;
+  margin-bottom: 16px;
+
+  .request-form-price-adjustment-wrapper{
+    flex-basis: 50%;
+  }
+}
+
+@mixin addon-options-widget-option{
+
+  .form-input-flex{
+    border: 1px solid #6F7F9F;
+    border-radius: 1px;
+    height: 32px;
+    margin-top: 8px;
+    margin-bottom: 16px;
+
+    select {
+      font-size: 14px;
+      height: 32px;
+      width: 100%;
+      padding-left: 16px;
+      padding-right: 16px;
+      background-color: white;
+      border: none;
+    }
+  }
+}
+
 .form-help-text{
   font-size: 0.89rem;
   line-height: 1.2rem;
@@ -134,6 +165,13 @@
   }
 }
 
+
+.addon-options-widget-default-value-wrapper{
+  @include addon-options-widget-option;
+}
+.request-form-toggle-option-wrapper{
+  @include request-form-checkbox-option;
+}
 .addon-checkbox-widget-default-value-wrapper{
   @include form-checkboxes;
 }
