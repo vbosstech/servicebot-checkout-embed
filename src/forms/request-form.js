@@ -151,7 +151,6 @@ class ServiceRequestForm extends React.Component {
         let checkoutText = plan && plan.trial_period_days > 0 ? "Sign Up" : "Pay Now";
         //Sort users and if user does not have name set, set it to the email value which will always be there
         const responseGoogle = (response) => {
-            console.log(response);
             if(!response.error) {
                 setGoogleInformation(response)
             }
@@ -317,10 +316,7 @@ class ServiceInstanceForm extends React.Component {
              }
 
         }
-        console.log(this.props.service.references.service_template_properties);
         let promptUser = this.props.service.references.service_template_properties.find(prop => prop.prompt_user === true);
-        console.log("Prompto", promptUser, this.props.emailOverride);
-        console.log(this.props, "herro");
         if(!promptUser && (this.props.token || (this.props.email && !this.props.setName && !this.props.setPassword))){
             this.props.stepForward();
             skippedStep0 = true;
@@ -348,7 +344,6 @@ class ServiceInstanceForm extends React.Component {
 
     updatePrice(newPrice) {
         let self = this;
-        console.log("UP RIC", newPrice);
         self.setState({servicePrice: newPrice});
     }
 
@@ -448,7 +443,6 @@ class ServiceInstanceForm extends React.Component {
         let successMessage = this.props.message || 'Request Successful';
         let successRoute = "/my-services";
         //If admin requested, redirect to the manage subscription page
-        console.log(this.state.servicePrice, this.props.plan);
         let needsCard = (this.state.servicePrice > 0 && this.props.plan.type !== "custom" &&
             !this.state.hasCard && this.props.plan.trial_period_days <= 0) || (this.props.forceCard && !this.state.hasCard) || this.props.plan.type === "split"
 
@@ -536,7 +530,6 @@ class ServicebotRequestForm extends React.Component {
         }).catch(e => console.error(e));
     }
     render() {
-        console.log(this.props);
         let spk = this.state.spk;
         if(this.state.loading){
             return (

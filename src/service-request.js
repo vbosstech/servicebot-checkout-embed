@@ -13,7 +13,7 @@ import {getPriceData} from "./core-input-types/client";
 
 function Summary(props){
     let self = this;
-    let {pricingPlan, filteredAdjustments, rightHeading, prefix, total} = props;
+    let {pricingPlan,metricProp, filteredAdjustments, rightHeading, prefix, total} = props;
     return (
         <div className="rf--summary-wrapper">
             <div className="rf--summary">
@@ -33,7 +33,7 @@ function Summary(props){
                                     {(pricingPlan.type === "one_time") ? (
                                         <div className="fe--base-price"><h5>Base Cost</h5></div>) : null}
                                     <div className="fe--base-price-value">
-                                        {getPrice(pricingPlan)}
+                                        {getPrice(pricingPlan, null, metricProp)}
                                     </div>
                                 </div>
                             </div>
@@ -217,9 +217,11 @@ class ServiceRequest extends React.Component {
         } else {
             let {formJSON, options, paymentStructureTemplateId} = this.props;
             let {service, error} = this.state;
+            let selectedTier = null;
             let pricingPlan = service.references.tiers.reduce((acc, tier) => {
                let plan = tier.references.payment_structure_templates.find(p => p.id == paymentStructureTemplateId);
                if(plan){
+                   selectedTier = tier;
                    acc = plan;
                }
                return acc;
@@ -230,7 +232,10 @@ class ServiceRequest extends React.Component {
             }
 
             let prefix = getSymbolFromCurrency(service.currency);
-            let {total, adjustments} = getPriceData(pricingPlan && pricingPlan.amount, formJSON && formJSON.references.service_template_properties);
+            let metricProp = formJSON && formJSON.references.service_template_properties.find(prop => prop.type === "metric")
+            let isMetric = metricProp && metricProp.config.pricing && metricProp.config.pricing.tiers && metricProp.config.pricing.tiers.includes(selectedTier.name);
+            let basePrice = isMetric ? 0 : pricingPlan && pricingPlan.amount;
+            let {total, adjustments} = getPriceData(basePrice, formJSON && formJSON.references.service_template_properties);
             let filteredAdjustments = adjustments.filter(adjustment => adjustment.value > 0).map((lineItem, index) => (
                 <div key={"line-" + index} className="fe--line-item-pricing-wrapper">
                     <div className="subscription-pricing">
@@ -281,7 +286,7 @@ class ServiceRequest extends React.Component {
                             <div className="rf--form-content">
                                 <div className="rf--basic-info">
                                 </div>
-                                <ServiceRequestForm summary={(<Summary {...summaryProps}/>)} plan={pricingPlan} {...this.props} step={this.state.step} stepForward={this.stepForward} stepBack={this.stepBack} service={service}/>
+                                <ServiceRequestForm summary={(<Summary {...summaryProps} metricProp={isMetric && metricProp}/>)} plan={pricingPlan} {...this.props} step={this.state.step} stepForward={this.stepForward} stepBack={this.stepBack} service={service}/>
                             </div>
                         </div>
                     </div>

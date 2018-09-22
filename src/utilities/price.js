@@ -29,7 +29,8 @@ let Price = function(props){
     );
 };
 
-let getPrice = (myService, serviceType = null)=>{
+let getPrice = (myService, serviceType = null, metricProp)=>{
+    let metricName = metricProp && metricProp.config.unit;
     let serType = myService.type || serviceType;
     let prefix = getSymbolFromCurrency(myService.currency);
 
@@ -37,7 +38,7 @@ let getPrice = (myService, serviceType = null)=>{
         return (
             <span>
                 <Price value={myService.amount} prefix={prefix}/>
-                <span>{myService.interval_count === 1 ? ' /' : ' / ' + myService.interval_count} {' '+myService.interval}</span>
+                <span>{myService.interval_count === 1 ? ' /' : ' / ' + myService.interval_count}{metricName && ` ${metricName} /`}{' '+myService.interval}</span>
             </span>
         );
     }else if (serType === "one_time"){

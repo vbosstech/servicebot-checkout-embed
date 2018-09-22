@@ -13,7 +13,6 @@ class Load extends React.Component {
 
     componentDidMount() {
         let self = this;
-        console.log("loading");
         // if(this.props.timeout !== false ){
         //     this.timeout = setTimeout(function(){
         //         // self.setState({message: "There seems to be a problem in processing your request. Please try again.", loadState: "done" });
@@ -22,7 +21,6 @@ class Load extends React.Component {
     }
 
     componentWillUnmount() {
-        console.log("unloading");
         clearTimeout(this.timeout);
     }
 
@@ -57,7 +55,6 @@ class Load extends React.Component {
                 };
             }
         }
-        console.log("loading:", this.props.loading);
         if(this.props.loading){
             return (
                 <div className="page-loader">
