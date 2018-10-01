@@ -1,5 +1,5 @@
 {
-  "name": "servicebot-checkout-embed",
+  "name": "@eservices/servicebot-checkout-embed",
   "version": "0.2.105",
   "dependencies": {
     "babel-plugin-add-module-exports": "^1.0.0",
